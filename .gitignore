@@ -1,0 +1,13 @@
+# Archive -- superseded artifacts and one-off outputs
+archive/*
+!archive/README.md
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local

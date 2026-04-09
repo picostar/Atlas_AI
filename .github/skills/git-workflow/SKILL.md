@@ -1,0 +1,73 @@
+---
+name: git-workflow
+description: 'Git workflow conventions. Use when creating branches, writing commit messages, managing PRs, or working with git in a project. Covers feature branches, commit format, and merge strategy.'
+---
+
+# Git Workflow
+
+## When to Use
+
+- Creating feature branches for new work
+- Writing commit messages
+- Managing pull requests
+- Setting up git in a new project
+
+## Branch Strategy
+
+- Work on feature branches, not directly on `main`
+- Branch naming: `feature/<short-description>`, `fix/<short-description>`, `rdt/<short-description>`
+- Keep branches short-lived -- merge and delete after completion
+
+## Commit Messages
+
+Format: `<type>: <short summary>`
+
+When working from `devcycle.md`, start the summary with the DT or RDT identifier, for example `feat: DT3 add user authentication endpoint`.
+
+Types:
+- `feat` -- new feature or capability
+- `fix` -- bug fix
+- `docs` -- documentation only
+- `refactor` -- code change that does not add a feature or fix a bug
+- `test` -- adding or updating tests
+- `chore` -- maintenance, dependencies, tooling
+
+Examples:
+- `feat: add user authentication endpoint`
+- `fix: correct date parsing in report generator`
+- `docs: update deployment instructions`
+- `chore: update ntelio_ai kit to latest`
+
+## Rules
+
+- Create at least one small, descriptive commit per DT or RDT instead of batching completed tasks together
+- Commit after the smoketest passes and the `UAT:` section is completed so the handoff or explicit non-UAT note is based on committed work
+- If a GitHub remote exists, push the active branch after each completed devtask
+- If the repository uses GitHub for review, create or update the related pull request after each completed devtask
+- If no GitHub remote exists, record that blocker instead of silently skipping the follow-up
+- Do not use `--force` push without explicit user approval
+- Do not use `--no-verify` to skip hooks
+- Do not amend published commits without user approval
+- Include the DT or RDT identifier in the commit message when working from a devcycle task
+- Stage and review changes before committing -- no blind `git add -A` on large repos
+
+## Common Commands
+
+```powershell
+# Create and switch to a feature branch
+git checkout -b feature/my-feature
+
+# Stage specific files
+git add <file>
+
+# Commit with message
+git commit -m "feat: add new feature"
+
+# Push branch
+git push -u origin feature/my-feature
+
+# Merge back to main
+git checkout main
+git merge feature/my-feature
+git branch -d feature/my-feature
+```
