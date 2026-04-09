@@ -11,3 +11,6 @@ Desktop.ini
 .env
 .env.local
 .env.*.local
+
+# Local scratch notes
+todo.txt
