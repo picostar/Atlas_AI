@@ -6,7 +6,7 @@ If `docs/agile/` files still contain placeholder scaffold content, treat the rep
 
 If the user opens with a greeting or start-of-session phrase, such as `hi`, `hello`, `good morning`, or `ready to start`, treat it as a request for a quick project check-in. Review project state using `ATLAS.md`, then prioritize `docs/agile/status.md`, `docs/agile/devcycle.md`, and `docs/agile/backlog.md` as needed. Confirm whether the project appears ready to start and suggest the next ATLAS-based step.
 
-If the user uses a short launch phrase, such as `do it`, `lets go`, `let's go`, `go ahead`, `start`, `proceed`, `make it so`, `engage`, `hit it`, or `punch it`, treat it as authorization to begin work. Perform a brief ATLAS readiness check, confirm the next task is clear, then execute immediately unless a blocker requires a minimal clarification.
+If the user uses a short launch phrase, such as `do it`, `lets go`, `let's go`, `go ahead`, `start`, `proceed`, `make it so`, `engage`, `hit it`, `punch it`, or `newproject`, treat it as authorization to begin work. Perform a brief ATLAS readiness check, confirm the next task is clear, then execute immediately unless a blocker requires a minimal clarification.
 
 If the user closes with a sign-off phrase, such as `good night`, `goodnight`, `goodbye`, `that's all`, or `we are done`, treat it as a request for a quick end-of-session check. Confirm whether the current state appears to follow ATLAS, call out obvious closeout gaps such as missing smoketest confirmation, missing UAT handoff or explicit non-UAT note, missing task-level commit, missing GitHub follow-up, or missing doc updates, and confirm whether any required git or GitHub follow-up step is still pending.
 

@@ -59,11 +59,13 @@
 
 ## Launch And Execute Behavior
 - If the user uses a short launch phrase, such as `do it`, `lets go`, `let's go`, `go ahead`, `start`, `proceed`, `make it so`, `engage`, `hit it`, or `punch it`, treat it as authorization to begin work.
+- If the user says `newproject`, treat it as a request to run the non-interactive ntelio_ai installer flow from the repository root using: `pwsh -File ./ntelio_ai/ntelio_ai.ps1 -IncludeScaffold -OrganizeExisting -InitGit -SeedPath ./ntelio_ai -RemoveSeed`.
 - Before acting, perform a brief ATLAS readiness check. Review the current state, confirm the next task is clear, and look for obvious blockers or missing planning context.
 - Use `docs/agile/status.md` for current state, `docs/agile/devcycle.md` for the active task, and `docs/agile/backlog.md` if the active cycle is empty or unclear.
 - If the repository appears to be a scaffold or template, use the next clear maintenance or adoption task rather than expecting an active live-project devcycle.
 - If the next task is clear and no blocker prevents progress, start executing it immediately rather than waiting for another confirmation.
 - If a blocker exists, call it out briefly and either resolve it or ask the minimum clarifying question needed to proceed.
+- For `newproject`, after installation and seed cleanup handling complete, if startup-oriented files were moved into `docs/reference/`, ask whether to generate an initial `docs/agile/devcycle.md` from those files.
 - Keep the response short and action-oriented. The purpose of these phrases is to move from readiness review into execution.
 
 ## Session Close And Sign-Off Behavior

@@ -10,9 +10,10 @@ Use it to describe project intent and first-cycle priorities before generating a
 3. Recommended chat-only command:
 
 ```powershell
-$seed = (Resolve-Path .\ntelio_ai).Path
-pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -OrganizeExisting -InitGit -SeedPath $seed -RemoveSeed
+pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -OrganizeExisting -InitGit -SeedPath .\ntelio_ai -RemoveSeed
 ```
+
+You can also just say `newproject` in AI chat and the agent should run this same command flow.
 
 4. With -OrganizeExisting, startup files like this one are moved to docs/reference.
 5. After seed cleanup is complete, ask the agent: build an initial docs/agile/devcycle.md from docs/reference startup files.

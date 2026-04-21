@@ -248,8 +248,7 @@ If you do not want to use an agent prompt, run the installer directly:
 
 ```powershell
 # Chat-only equivalent of NewProject.bat (run from project root)
-$seed = (Resolve-Path .\ntelio_ai).Path
-pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -OrganizeExisting -InitGit -SeedPath $seed -RemoveSeed
+pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -OrganizeExisting -InitGit -SeedPath .\ntelio_ai -RemoveSeed
 
 # Basic -- core workflow and scaffold only
 pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold
@@ -284,6 +283,8 @@ pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -IncludePS -IncludeCGR -In
 # Overwrite existing files
 pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -IncludePS -IncludeCGR -Force
 ```
+
+Chat shortcut: in AI chat, you can say `newproject` and the agent should execute the same non-interactive installer flow.
 
 `-OrganizeExisting` reviews existing non-code artifacts in the target root and moves matched files into `docs/agile`, `docs/projects`, `docs/reference`, `scripts`, or `archive` using filename and extension heuristics. Startup-oriented files such as `todo`, `seed`, `startup`, `kickoff`, and `project-start` are treated as reference inputs and moved to `docs/reference`. It does not reorganize the seed folder itself. `-InitGit` copies the `.gitignore` from the kit, runs `git init` (if needed), and makes an initial commit with project artifacts only. `-GitHubRepo` creates a GitHub repository using the `gh` CLI (defaults to private, add `-Public` for public). `-GitHubRepo` implies `-InitGit`.
 
