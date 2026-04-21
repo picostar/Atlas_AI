@@ -86,6 +86,8 @@
 - Prefer feature branches over direct work on `main` when working in a git repository.
 - Remove matching `*_TEMPLATE.md` files from `docs/projects/` once live MRD, PRD, or ESD artifacts exist.
 - Do not hardcode project names, tenant values, URLs, credentials, or deployment targets in reusable kits.
+- During `ntelio_ai` adoption with `-OrganizeExisting`, treat startup-oriented files such as `todo`, `seed`, `startup`, `kickoff`, `project-start`, and similar inputs as reference artifacts and keep them in `docs/reference/`.
+- When startup-oriented files are moved into `docs/reference/`, ask the user whether to generate an initial `devcycle.md` from those files, but do this only after seed cleanup is complete.
 
 ## Recommended Repo Structure
 - `docs/agile/` -- active planning and delivery docs such as `devcycle.md`, `retro.md`, `backlog.md`, `status.md`

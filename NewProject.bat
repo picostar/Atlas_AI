@@ -17,27 +17,30 @@ set "DOIT_DIR=%~dp0"
 if "%DOIT_DIR:~-1%"=="\" set "DOIT_DIR=%DOIT_DIR:~0,-1%"
 for %%I in ("%DOIT_DIR%\..") do set "TARGET=%%~fI"
 for %%I in ("%TARGET%") do set "PROJECT_NAME=%%~nxI"
+for %%I in ("%DOIT_DIR%") do set "SEED_NAME=%%~nxI"
 
 echo  Project folder: %TARGET%
 echo  Project name:   %PROJECT_NAME%
 echo.
 
-:: Check for existing files that should be moved to docs/reference
+:: Check for existing top-level files that can be reorganized into project folders
 set "HAS_EXISTING=0"
-for %%F in ("%TARGET%\*.*") do (
+for %%F in ("%TARGET%\*") do (
+    if /i not "%%~nxF"=="%SEED_NAME%" (
     if /i not "%%~nxF"==".gitignore" (
     if /i not "%%~nxF"==".gitattributes" (
         set "HAS_EXISTING=1"
-    ))
+    )))
 )
 set "DO_MOVE=n"
 if "%HAS_EXISTING%"=="1" (
     echo  Existing files found in project folder.
-    echo  These will be moved to docs\reference\ so they are preserved
-    echo  and available to the AI agent as reference material.
+    echo  These can be reviewed and reorganized into project folders:
+    echo    docs\agile, docs\projects, docs\reference, scripts, archive.
+    echo  The seed folder itself is not reorganized.
     echo.
 )
-if "%HAS_EXISTING%"=="1" set /p DO_MOVE=Move existing files to docs\reference? [y/n, default y]: 
+if "%HAS_EXISTING%"=="1" set /p DO_MOVE=Review and reorganize existing project files? [y/n, default y]: 
 if "%HAS_EXISTING%"=="1" if not defined DO_MOVE set "DO_MOVE=y"
 
 echo.
@@ -127,19 +130,8 @@ if /i "%DO_PS%"=="y" set "PS_FLAG=-IncludePS"
 set "CGR_FLAG="
 if /i "%DO_CGR%"=="y" set "CGR_FLAG=-IncludeCGR"
 
-:: Move existing files to docs/reference if requested
-if /i "%DO_MOVE%"=="y" (
-    echo.
-    echo  Moving existing files to docs\reference\ ...
-    if not exist "%TARGET%\docs\reference" mkdir "%TARGET%\docs\reference"
-    for %%F in ("%TARGET%\*.*") do (
-        if /i not "%%~nxF"==".gitignore" (
-        if /i not "%%~nxF"==".gitattributes" (
-            move "%%F" "%TARGET%\docs\reference\" >nul 2>nul
-            echo    Moved %%~nxF
-        ))
-    )
-)
+set "ORG_FLAG="
+if /i "%DO_MOVE%"=="y" set "ORG_FLAG=-OrganizeExisting"
 
 echo.
 echo  Running ntelio_ai installer ...
@@ -162,7 +154,7 @@ if not defined PSCMD (
     exit /b 1
 )
 
-%PSCMD% -ExecutionPolicy Bypass -File "%DOIT_DIR%\ntelio_ai.ps1" -IncludeScaffold -InitGit -SeedPath "%DOIT_DIR%" -RemoveSeed %PS_FLAG% %CGR_FLAG% %SKILLS_FLAG% %SKILLS_SRC_FLAG% %GITHUB_FLAG% %PUBLIC_FLAG%
+%PSCMD% -ExecutionPolicy Bypass -File "%DOIT_DIR%\ntelio_ai.ps1" -IncludeScaffold -InitGit -SeedPath "%DOIT_DIR%" -RemoveSeed %PS_FLAG% %CGR_FLAG% %ORG_FLAG% %SKILLS_FLAG% %SKILLS_SRC_FLAG% %GITHUB_FLAG% %PUBLIC_FLAG%
 
 if errorlevel 1 (
     echo.
@@ -173,7 +165,8 @@ if errorlevel 1 (
 
 echo.
 echo  Done. Project is at %TARGET%
-echo  Cleanup scheduled for %DOIT_DIR%
-echo  If that path is a symlink or junction, only the link is removed.
+echo  Seed cleanup status is shown in the installer output above.
+echo  If startup files were moved into docs\reference, ask your AI agent
+echo  whether to generate an initial devcycle after cleanup completes.
 echo.
 exit /b 0

@@ -46,6 +46,9 @@ In that layout:
 - `ntelio_ai.ps1` -- copies kit files into the target repository root
 - `.gitignore` -- default ignore patterns, copied to the target when `-InitGit` is used
 
+### Startup seed file
+- `seed.md` -- optional startup brief and usage notes for adoption runs. Keep high-level project intent here, then move it to `docs/reference/` during `-OrganizeExisting`.
+
 This `README.md` is for the kit itself. It is not copied into the target repository by the installer.
 
 ### Scaffold
@@ -244,6 +247,10 @@ Add `-IncludePS` and/or `-IncludeCGR` to the install step if the project needs p
 If you do not want to use an agent prompt, run the installer directly:
 
 ```powershell
+# Chat-only equivalent of NewProject.bat (run from project root)
+$seed = (Resolve-Path .\ntelio_ai).Path
+pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -OrganizeExisting -InitGit -SeedPath $seed -RemoveSeed
+
 # Basic -- core workflow and scaffold only
 pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold
 
@@ -255,6 +262,9 @@ pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -IncludeCGR
 
 # Everything
 pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -IncludePS -IncludeCGR
+
+# Reorganize existing docs and scripts into project folders before install copy
+pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -OrganizeExisting
 
 # Initialize git repo with .gitignore and initial commit
 pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -InitGit
@@ -275,7 +285,7 @@ pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -IncludePS -IncludeCGR -In
 pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -IncludePS -IncludeCGR -Force
 ```
 
-`-InitGit` copies the `.gitignore` from the kit, runs `git init` (if needed), and makes an initial commit. `-GitHubRepo` creates a GitHub repository using the `gh` CLI (defaults to private, add `-Public` for public). `-GitHubRepo` implies `-InitGit`.
+`-OrganizeExisting` reviews existing non-code artifacts in the target root and moves matched files into `docs/agile`, `docs/projects`, `docs/reference`, `scripts`, or `archive` using filename and extension heuristics. Startup-oriented files such as `todo`, `seed`, `startup`, `kickoff`, and `project-start` are treated as reference inputs and moved to `docs/reference`. It does not reorganize the seed folder itself. `-InitGit` copies the `.gitignore` from the kit, runs `git init` (if needed), and makes an initial commit with project artifacts only. `-GitHubRepo` creates a GitHub repository using the `gh` CLI (defaults to private, add `-Public` for public). `-GitHubRepo` implies `-InitGit`.
 
 Prerequisites: `git` must be on PATH. For `-GitHubRepo`, install the [GitHub CLI](https://cli.github.com/) and run `gh auth login` first.
 
@@ -314,7 +324,11 @@ The installer resolves paths through symlinks and junctions, so it works the sam
 
 The installer copies all selected files out of `ntelio_ai/` into the repository root. After that, the `ntelio_ai/` folder is no longer needed for the project to function.
 
-`NewProject.bat` now treats `ntelio_ai/` as a one-shot seed. After a successful run, it schedules removal of the seed path it ran from.
+`NewProject.bat` treats `ntelio_ai/` as a one-shot seed. During git initialization, the seed path is excluded from staging so commits contain only installed project artifacts.
+
+After a successful run, it schedules removal of the seed path it ran from, unless that seed path is currently tracked by git.
+
+If startup-oriented files were moved into `docs/reference`, decide whether to generate the initial `docs/agile/devcycle.md` from those reference files only after seed cleanup is complete.
 
 If that path is a symlink or junction, only the link is removed. The master ntelio_ai folder that the link points to is left untouched.
 
