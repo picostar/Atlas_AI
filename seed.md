@@ -1,16 +1,16 @@
 # Seed Notes For Project Startup
 
 ## Purpose
-This file captures startup context for an ntelio_ai adoption run.
+This file captures startup context for an atlas_ai adoption run.
 Use it to describe project intent and first-cycle priorities before generating an initial devcycle.
 
 ## How To Use
 1. Update the Project Outline section in this file.
-2. Install ntelio_ai into the repository root.
+2. Install atlas_ai into the repository root.
 3. Recommended chat-only command:
 
 ```powershell
-pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -OrganizeExisting -InitGit -SeedPath .\ntelio_ai -RemoveSeed
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -OrganizeExisting -InitGit -SeedPath .\atlas_ai -RemoveSeed
 ```
 
 You can also just say `newproject` in AI chat and the agent should run this same command flow.
@@ -20,7 +20,7 @@ You can also just say `newproject` in AI chat and the agent should run this same
 6. Review and adjust scope, priorities, and CU estimates.
 
 ## Project Outline (Brief)
-Project name: ntelio_ai
+Project name: atlas_ai
 
 Project goal:
 - Provide a reusable process kit that installs root-level AI instruction files and a practical delivery workflow for software repositories.
@@ -32,7 +32,7 @@ Primary outcomes:
 - Predictable adoption path for both new and existing repositories.
 
 Current implementation scope:
-- Installer and setup flow (ntelio_ai.ps1 and NewProject.bat).
+- Installer and setup flow (atlas_ai.ps1 and NewProject.bat).
 - Root instruction stack (.github/copilot-instructions.md, ATLAS.md, AGENTS.md, CLAUDE.md).
 - Docs scaffold under docs/agile, docs/projects, docs/reference, scripts, and archive.
 - Skill scaffolding under .github/skills.

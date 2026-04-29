@@ -3,12 +3,12 @@ setlocal enabledelayedexpansion
 cd /d "%~dp0"
 
 echo.
-echo  ntelio_ai -- Project Setup
+echo  atlas_ai -- Project Setup
 echo  ------------------------
 echo.
-echo  This script installs the ntelio_ai development process kit into a project.
-echo  The project folder is the parent of the ntelio_ai folder (or symlink).
-echo  After a successful install, this script removes the ntelio_ai seed path.
+echo  This script installs the atlas_ai development process kit into a project.
+echo  The project folder is the parent of the atlas_ai folder (or symlink).
+echo  After a successful install, this script removes the atlas_ai seed path.
 echo.
 
 :: Resolve the project folder as the parent of wherever this .bat lives
@@ -76,6 +76,18 @@ echo.
 set /p DO_GITHUB=Create GitHub repo? [y/n, default n]: 
 if not defined DO_GITHUB set "DO_GITHUB=n"
 
+set "GITHUB_OWNER="
+if /i "%DO_GITHUB%"=="y" (
+    echo.
+    echo  Enter your GitHub username or organization name.
+    echo  This is the account the repo will be created under.
+    echo  Example: myusername  or  my-org
+    echo  If not logged in to GitHub CLI, you will be prompted to log in.
+    echo.
+    set /p GITHUB_OWNER=GitHub account or org: 
+    if not defined GITHUB_OWNER echo  No account entered -- repo will be created under the current gh auth account.
+)
+
 echo.
 echo  -- Skills --
 echo.
@@ -83,7 +95,7 @@ echo  Skills are reusable AI agent workflows installed to .github\skills\.
 echo  Default skills included in this kit:
 echo    - azure-deploy      : Azure Functions and SWA deployment procedures
 echo    - devcycle-management: DT/RDT task lifecycle, retro logging, CU scoring
-echo    - project-setup     : ntelio_ai adoption and repo bootstrapping
+echo    - project-setup     : atlas_ai adoption and repo bootstrapping
 echo    - powershell-style  : PowerShell scripting conventions
 echo    - git-workflow      : Branch strategy, commit format, PR conventions
 echo    - example-skill     : Template for creating your own skills
@@ -107,7 +119,9 @@ if "%DO_SKILLS%"=="3" if defined SKILLS_PATH set "SKILLS_SRC_FLAG=-SkillsSource 
 if "%DO_SKILLS%"=="3" if not defined SKILLS_PATH echo  No path entered, skipping skills.
 
 set "GITHUB_FLAG="
+set "GITHUB_OWNER_FLAG="
 if /i "%DO_GITHUB%"=="y" set "GITHUB_FLAG=-GitHubRepo "%PROJECT_NAME%""
+if /i "%DO_GITHUB%"=="y" if defined GITHUB_OWNER set "GITHUB_OWNER_FLAG=-GitHubOwner "%GITHUB_OWNER%""
 
 set "DO_PUBLIC=n"
 if /i "%DO_GITHUB%"=="y" (
@@ -134,11 +148,11 @@ set "ORG_FLAG="
 if /i "%DO_MOVE%"=="y" set "ORG_FLAG=-OrganizeExisting"
 
 echo.
-echo  Running ntelio_ai installer ...
+echo  Running atlas_ai installer ...
 
-if not exist "%DOIT_DIR%\ntelio_ai.ps1" (
-    echo  ERROR: ntelio_ai.ps1 not found in %DOIT_DIR%
-    echo  The installer script is missing. Re-clone the ntelio_ai kit and try again.
+if not exist "%DOIT_DIR%\atlas_ai.ps1" (
+    echo  ERROR: atlas_ai.ps1 not found in %DOIT_DIR%
+    echo  The installer script is missing. Re-clone the atlas_ai kit and try again.
     pause
     exit /b 1
 )
@@ -154,7 +168,7 @@ if not defined PSCMD (
     exit /b 1
 )
 
-%PSCMD% -ExecutionPolicy Bypass -File "%DOIT_DIR%\ntelio_ai.ps1" -IncludeScaffold -InitGit -SeedPath "%DOIT_DIR%" -RemoveSeed %PS_FLAG% %CGR_FLAG% %ORG_FLAG% %SKILLS_FLAG% %SKILLS_SRC_FLAG% %GITHUB_FLAG% %PUBLIC_FLAG%
+%PSCMD% -ExecutionPolicy Bypass -File "%DOIT_DIR%\atlas_ai.ps1" -IncludeScaffold -InitGit -SeedPath "%DOIT_DIR%" -RemoveSeed %PS_FLAG% %CGR_FLAG% %ORG_FLAG% %SKILLS_FLAG% %SKILLS_SRC_FLAG% %GITHUB_FLAG% %GITHUB_OWNER_FLAG% %PUBLIC_FLAG%
 
 if errorlevel 1 (
     echo.

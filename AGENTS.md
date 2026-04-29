@@ -20,6 +20,6 @@ Read `CGR.md` only when the task is a governance review, stage-gate review, or d
 
 This kit is intended to live at the repository root. If it is copied into a nested folder, automatic loading may not work.
 
-Use `ntelio_ai` as the recommended session phrase when you want an agent to adopt this process in an existing repository.
+Use `atlas_ai` as the recommended session phrase when you want an agent to adopt this process in an existing repository.
 
 Response guidelines are defined in `.github/copilot-instructions.md`. Do not duplicate them here.

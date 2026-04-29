@@ -1,6 +1,6 @@
 # Project Process Instructions
 
-## ntelio_ai Use
+## atlas_ai Use
 - This file is the source of truth for AI instructions in this repository.
 - For automatic loading by common tools, keep these files at the repository root:
 	- `.github/copilot-instructions.md`
@@ -59,7 +59,7 @@
 
 ## Launch And Execute Behavior
 - If the user uses a short launch phrase, such as `do it`, `lets go`, `let's go`, `go ahead`, `start`, `proceed`, `make it so`, `engage`, `hit it`, or `punch it`, treat it as authorization to begin work.
-- If the user says `newproject`, treat it as a request to run the non-interactive ntelio_ai installer flow from the repository root using: `pwsh -File ./ntelio_ai/ntelio_ai.ps1 -IncludeScaffold -OrganizeExisting -InitGit -SeedPath ./ntelio_ai -RemoveSeed`.
+- If the user says `newproject`, treat it as a request to run the non-interactive atlas_ai installer flow from the repository root using: `pwsh -File ./atlas_ai/atlas_ai.ps1 -IncludeScaffold -OrganizeExisting -InitGit -SeedPath ./atlas_ai -RemoveSeed`.
 - Before acting, perform a brief ATLAS readiness check. Review the current state, confirm the next task is clear, and look for obvious blockers or missing planning context.
 - Use `docs/agile/status.md` for current state, `docs/agile/devcycle.md` for the active task, and `docs/agile/backlog.md` if the active cycle is empty or unclear.
 - If the repository appears to be a scaffold or template, use the next clear maintenance or adoption task rather than expecting an active live-project devcycle.
@@ -88,7 +88,7 @@
 - Prefer feature branches over direct work on `main` when working in a git repository.
 - Remove matching `*_TEMPLATE.md` files from `docs/projects/` once live MRD, PRD, or ESD artifacts exist.
 - Do not hardcode project names, tenant values, URLs, credentials, or deployment targets in reusable kits.
-- During `ntelio_ai` adoption with `-OrganizeExisting`, treat startup-oriented files such as `todo`, `seed`, `startup`, `kickoff`, `project-start`, and similar inputs as reference artifacts and keep them in `docs/reference/`.
+- During `atlas_ai` adoption with `-OrganizeExisting`, treat startup-oriented files such as `todo`, `seed`, `startup`, `kickoff`, `project-start`, and similar inputs as reference artifacts and keep them in `docs/reference/`.
 - When startup-oriented files are moved into `docs/reference/`, ask the user whether to generate an initial `devcycle.md` from those files, but do this only after seed cleanup is complete.
 
 ## Recommended Repo Structure

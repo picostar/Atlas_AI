@@ -36,7 +36,7 @@ Examples:
 - `feat: add user authentication endpoint`
 - `fix: correct date parsing in report generator`
 - `docs: update deployment instructions`
-- `chore: update ntelio_ai kit to latest`
+- `chore: update atlas_ai kit to latest`
 
 ## Rules
 

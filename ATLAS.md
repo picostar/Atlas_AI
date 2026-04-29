@@ -1,12 +1,12 @@
 # ATLAS -- Development Process
 
-ATLAS, the AI Task Lifecycle Automation System, is the default development process for ntelio_ai. It provides a structured, repeatable operating model for AI-assisted software delivery by defining how work moves from selection through implementation, validation, handoff, documentation, and closeout. The process is intended to improve consistency, accountability, and delivery quality across human-and-agent collaboration.
+ATLAS, the AI Task Lifecycle Automation System, is the default development process for atlas_ai. It provides a structured, repeatable operating model for AI-assisted software delivery by defining how work moves from selection through implementation, validation, handoff, documentation, and closeout. The process is intended to improve consistency, accountability, and delivery quality across human-and-agent collaboration.
 
 This document defines the day-to-day working process teams follow, including the task lifecycle, effort model, documentation expectations, and delivery rules. It is not a broad strategic framework. It is the operational standard intended to be copied into repository roots and adapted only where a repository has a clearly different operating model.
 
-## ntelio_ai Intent
+## atlas_ai Intent
 
-This file defines the reusable default development process for ntelio_ai. It is meant to be copied into a repository root and adapted only where the repository has a clearly different operating model.
+This file defines the reusable default development process for atlas_ai. It is meant to be copied into a repository root and adapted only where the repository has a clearly different operating model.
 
 Keep the process stable. Customize project names, paths, tools, and integration commands in repo-specific docs, not in the base kit.
 
@@ -72,7 +72,7 @@ Every dev task must include a `UAT:` section in the active task list.
 
 These are the default paths this workflow expects. If a repository uses different paths, update the repo-specific instructions to map them clearly.
 
-ntelio_ai includes a starter scaffold for these locations. Use it as a bootstrap, then replace placeholder content with project-specific material.
+atlas_ai includes a starter scaffold for these locations. Use it as a bootstrap, then replace placeholder content with project-specific material.
 
 | Doc | Recommended Location | Purpose | When to Update |
 |---|---|---|---|

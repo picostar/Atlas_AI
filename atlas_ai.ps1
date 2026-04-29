@@ -9,6 +9,7 @@ param(
     [string]$SkillsSource,
     [switch]$InitGit,
     [string]$GitHubRepo,
+    [string]$GitHubOwner,
     [switch]$Public,
     [switch]$Force,
     [switch]$Verify,
@@ -314,7 +315,7 @@ function Move-ExistingArtifacts {
     if ($movedCount -gt 0) {
         Write-Host "Reorganized $movedCount existing files into project folders."
     } else {
-        Write-Host "No existing files matched ntelio_ai reorganization rules."
+        Write-Host "No existing files matched atlas_ai reorganization rules."
     }
 
     return [pscustomobject]@{
@@ -508,7 +509,7 @@ foreach ($relativePath in $filesToCopy) {
         continue
     }
 
-    if ($PSCmdlet.ShouldProcess($destinationPath, "Copy ntelio_ai file")) {
+    if ($PSCmdlet.ShouldProcess($destinationPath, "Copy atlas_ai file")) {
         Copy-Item -Path $sourcePath -Destination $destinationPath -Force:$Force
         Write-Host "Copied $relativePath"
     }
@@ -572,27 +573,35 @@ if ($InitGit -or $GitHubRepo) {
 if ($GitHubRepo) {
     $ghAvailable = Get-Command gh -ErrorAction SilentlyContinue
     if (-not $ghAvailable) {
-        Write-Error "GitHub CLI (gh) is not installed. Install it from https://cli.github.com/ and run 'gh auth login'."
+        Write-Error "GitHub CLI (gh) is not installed. Install it from https://cli.github.com/ and try again."
         return
     }
+
+    # Ensure the user is authenticated -- prompt for login if not
+    $authStatus = gh auth status 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "GitHub CLI is not authenticated. Launching login flow..."
+        gh auth login
+        if ($LASTEXITCODE -ne 0) {
+            Write-Error "GitHub login failed or was cancelled. Skipping repo creation."
+            Write-Host "The local git repository was still created successfully. You can create the GitHub repo manually or retry later."
+            return
+        }
+    }
+
+    # Build the full repo name: owner/repo if owner was supplied, otherwise just repo
+    $fullRepoName = if ($GitHubOwner) { "$GitHubOwner/$GitHubRepo" } else { $GitHubRepo }
 
     Push-Location $resolvedTargetRoot
     try {
         $visibility = if ($Public) { "--public" } else { "--private" }
-        if ($PSCmdlet.ShouldProcess($GitHubRepo, "Create GitHub repository ($visibility)")) {
-            # Check auth status before attempting repo creation
-            $authStatus = gh auth status 2>&1
+        if ($PSCmdlet.ShouldProcess($fullRepoName, "Create GitHub repository ($visibility)")) {
+            $output = gh repo create $fullRepoName $visibility --source . --push 2>&1
             if ($LASTEXITCODE -ne 0) {
-                Write-Error "GitHub CLI is not authenticated. Run 'gh auth login' first. gh output: $authStatus"
-                return
-            }
-
-            $output = gh repo create $GitHubRepo $visibility --source . --push 2>&1
-            if ($LASTEXITCODE -ne 0) {
-                Write-Error "Failed to create GitHub repository. gh output: $output"
+                Write-Error "Failed to create GitHub repository '$fullRepoName'. gh output: $output"
                 Write-Host "The local git repository was still created successfully. You can create the GitHub repo manually or retry later."
             } else {
-                Write-Host "Created GitHub repository: $GitHubRepo"
+                Write-Host "Created GitHub repository: $fullRepoName"
             }
         }
     } finally {
@@ -600,7 +609,7 @@ if ($GitHubRepo) {
     }
 }
 
-Write-Host "ntelio_ai install complete."
+Write-Host "atlas_ai install complete."
 Write-Host "Target root: $resolvedTargetRoot"
 
 if ($RemoveSeed -and $resolvedSeedPath) {

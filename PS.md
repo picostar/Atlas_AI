@@ -1,6 +1,6 @@
 # PS -- Project Stages
 
-This file defines the optional four-stage release model and required document gates for ntelio_ai. PS stands for Project Stages and covers the EVT/DVT/PVT/GA lifecycle. It applies when a project follows a structured release process with formal gates, signers, and governance reviews.
+This file defines the optional four-stage release model and required document gates for atlas_ai. PS stands for Project Stages and covers the EVT/DVT/PVT/GA lifecycle. It applies when a project follows a structured release process with formal gates, signers, and governance reviews.
 
 Not all projects need this. POC work, internal tools, and exploratory development can follow the core process in `ATLAS.md` without these stages. Adopt this file when the project has real release gates, compliance requirements, or multi-stakeholder sign-off.
 

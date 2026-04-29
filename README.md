@@ -1,4 +1,4 @@
-# ntelio_ai
+# atlas_ai
 
 This folder is a reusable project-start kit for software repositories.
 
@@ -10,11 +10,11 @@ It gives you:
 - optional compliance and governance review prompt
 - a starter docs scaffold for active work, backlog, status, retro, project docs, reference docs, and stack-baseline guidance
 
-## What ntelio_ai Solves
+## What atlas_ai Solves
 
 The main problem with reusable instruction folders is that most AI tools do not reliably auto-load nested files. They usually look at the repository root.
 
-ntelio_ai is designed for that reality.
+atlas_ai is designed for that reality.
 
 You can keep this folder as your source kit, drop a copy into a new repository, and then install the correct files into the repo root.
 
@@ -23,7 +23,7 @@ You can keep this folder as your source kit, drop a copy into a new repository, 
 Some repositories keep control docs and AI instruction files at the repo root while the runnable application lives one level down, for example in `web/`, `api/`, or another product folder.
 
 In that layout:
-- keep the ntelio_ai instruction files at the repo root
+- keep the atlas_ai instruction files at the repo root
 - keep MRD, PRD, ESD, and `CGR-results.md` in the existing `docs/projects/` directory at the repo root
 - use the nested application folder for runtime code work only
 - only treat a child directory as the effective project root if the repo root has no `docs/projects/` directory and exactly one immediate child directory does
@@ -43,7 +43,7 @@ In that layout:
 - `.github/prompts/atlas-closeout.prompt.md` -- ATLAS closeout readiness prompt
 
 ### Installer
-- `ntelio_ai.ps1` -- copies kit files into the target repository root
+- `atlas_ai.ps1` -- copies kit files into the target repository root
 - `.gitignore` -- default ignore patterns, copied to the target when `-InitGit` is used
 
 ### Startup seed file
@@ -64,7 +64,7 @@ This `README.md` is for the kit itself. It is not copied into the target reposit
 ### Skills (installed with -IncludeSkills)
 - `.github/skills/azure-deploy/SKILL.md` -- Azure Functions and SWA deployment procedures
 - `.github/skills/devcycle-management/SKILL.md` -- DT/RDT task lifecycle, retro logging, CU scoring
-- `.github/skills/project-setup/SKILL.md` -- ntelio_ai adoption and repo bootstrapping
+- `.github/skills/project-setup/SKILL.md` -- atlas_ai adoption and repo bootstrapping
 - `.github/skills/powershell-style/SKILL.md` -- PowerShell scripting conventions
 - `.github/skills/git-workflow/SKILL.md` -- branch strategy, commit format, PR conventions
 - `.github/skills/example-skill/SKILL.md` -- template for creating new skills
@@ -75,7 +75,7 @@ Skills reference existing kit files (ATLAS.md, copilot-instructions.md) rather t
 
 If a repository has an agreed architecture, hosting, deployment, infrastructure, or platform baseline, capture it in `docs/reference/stack-patterns/active-stack-pattern.md`.
 
-When that file exists, the ntelio_ai instruction stack reads it before stack-sensitive work so architecture changes stay consistent with the repo's approved baseline.
+When that file exists, the atlas_ai instruction stack reads it before stack-sensitive work so architecture changes stay consistent with the repo's approved baseline.
 
 ### Project document templates (installed with -IncludePS or -IncludeCGR)
 - `docs/projects/MRD_TEMPLATE.md` -- market or business requirements template
@@ -88,15 +88,15 @@ When a governance review runs, save the output as `docs/projects/CGR-results.md`
 
 ## Recommended Use
 
-### Quick Start -- Point a project at ntelio_ai
+### Quick Start -- Point a project at atlas_ai
 
-The simplest way to adopt ntelio_ai is to copy or clone it into your project folder, then tell your AI agent to set it up. This works in VS Code with Copilot, Claude Code, or any Codex-style agent.
+The simplest way to adopt atlas_ai is to copy or clone it into your project folder, then tell your AI agent to set it up. This works in VS Code with Copilot, Claude Code, or any Codex-style agent.
 
-**Step 1:** Copy the `ntelio_ai` folder into your project root. You can clone it, copy it, or drop it in manually. Your project should look like this:
+**Step 1:** Copy the `atlas_ai` folder into your project root. You can clone it, copy it, or drop it in manually. Your project should look like this:
 
 ```
 my-project/
-  ntelio_ai/          <-- the kit
+  atlas_ai/          <-- the kit
   src/              <-- your existing code
   ...
 ```
@@ -106,14 +106,14 @@ my-project/
 #### Basic setup (most projects, POC, internal tools)
 
 ```text
-ntelio_ai
+atlas_ai
 
-Set up this project with ntelio_ai.
+Set up this project with atlas_ai.
 
 Tasks:
-1. Read ntelio_ai/README.md, ntelio_ai/.github/copilot-instructions.md, ntelio_ai/ATLAS.md, and ntelio_ai/AGENTS.md.
-2. Install the kit into the repository root using ntelio_ai/ntelio_ai.ps1 with -IncludeScaffold.
-3. If this repository already has docs, plans, runbooks, notes, scripts, or project files, review them and reorganize them into the ntelio_ai structure where appropriate.
+1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, and atlas_ai/AGENTS.md.
+2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold.
+3. If this repository already has docs, plans, runbooks, notes, scripts, or project files, review them and reorganize them into the atlas_ai structure where appropriate.
 4. Do not blindly overwrite useful existing project files. Merge, move, or adapt existing content into the new structure.
 5. Summarize what was installed, what was reorganized, and what was left untouched.
 ```
@@ -125,14 +125,14 @@ This installs the core workflow, AI instruction files, and docs scaffold. No rel
 If the project needs EVT/DVT/PVT/GA release gates and MRD/PRD/ESD document requirements, add `-IncludePS` to the install step:
 
 ```text
-ntelio_ai
+atlas_ai
 
-Set up this project with ntelio_ai including formal release stages.
+Set up this project with atlas_ai including formal release stages.
 
 Tasks:
-1. Read ntelio_ai/README.md, ntelio_ai/.github/copilot-instructions.md, ntelio_ai/ATLAS.md, ntelio_ai/PS.md, and ntelio_ai/AGENTS.md.
-2. Install the kit into the repository root using ntelio_ai/ntelio_ai.ps1 with -IncludeScaffold -IncludePS.
-3. If this repository already has docs, plans, runbooks, notes, scripts, or project files, review them and reorganize them into the ntelio_ai structure where appropriate.
+1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, atlas_ai/PS.md, and atlas_ai/AGENTS.md.
+2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold -IncludePS.
+3. If this repository already has docs, plans, runbooks, notes, scripts, or project files, review them and reorganize them into the atlas_ai structure where appropriate.
 4. Do not blindly overwrite useful existing project files. Merge, move, or adapt existing content into the new structure.
 5. Summarize what was installed, what was reorganized, and what was left untouched.
 ```
@@ -142,14 +142,14 @@ Tasks:
 If the project needs compliance and governance review (CGR), add `-IncludeCGR`. CGR works independently -- you can use it with or without PS:
 
 ```text
-ntelio_ai
+atlas_ai
 
-Set up this project with ntelio_ai including CGR.
+Set up this project with atlas_ai including CGR.
 
 Tasks:
-1. Read ntelio_ai/README.md, ntelio_ai/.github/copilot-instructions.md, ntelio_ai/ATLAS.md, ntelio_ai/CGR.md, and ntelio_ai/AGENTS.md.
-2. Install the kit into the repository root using ntelio_ai/ntelio_ai.ps1 with -IncludeScaffold -IncludeCGR.
-3. If this repository already has docs, plans, runbooks, notes, scripts, or project files, review them and reorganize them into the ntelio_ai structure where appropriate.
+1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, atlas_ai/CGR.md, and atlas_ai/AGENTS.md.
+2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold -IncludeCGR.
+3. If this repository already has docs, plans, runbooks, notes, scripts, or project files, review them and reorganize them into the atlas_ai structure where appropriate.
 4. Do not blindly overwrite useful existing project files. Merge, move, or adapt existing content into the new structure.
 5. Summarize what was installed, what was reorganized, and what was left untouched.
 ```
@@ -159,14 +159,14 @@ Tasks:
 If the project needs both project stages and governance review:
 
 ```text
-ntelio_ai
+atlas_ai
 
-Set up this project with ntelio_ai including PS and CGR.
+Set up this project with atlas_ai including PS and CGR.
 
 Tasks:
-1. Read ntelio_ai/README.md, ntelio_ai/.github/copilot-instructions.md, ntelio_ai/ATLAS.md, ntelio_ai/PS.md, ntelio_ai/CGR.md, and ntelio_ai/AGENTS.md.
-2. Install the kit into the repository root using ntelio_ai/ntelio_ai.ps1 with -IncludeScaffold -IncludePS -IncludeCGR.
-3. If this repository already has docs, plans, runbooks, notes, scripts, or project files, review them and reorganize them into the ntelio_ai structure where appropriate.
+1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, atlas_ai/PS.md, atlas_ai/CGR.md, and atlas_ai/AGENTS.md.
+2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold -IncludePS -IncludeCGR.
+3. If this repository already has docs, plans, runbooks, notes, scripts, or project files, review them and reorganize them into the atlas_ai structure where appropriate.
 4. Do not blindly overwrite useful existing project files. Merge, move, or adapt existing content into the new structure.
 5. Summarize what was installed, what was reorganized, and what was left untouched.
 ```
@@ -176,40 +176,40 @@ Tasks:
 You can start with the basic setup and add `PS.md` or `CGR.md` later at any time:
 
 ```text
-ntelio_ai
+atlas_ai
 
-Add project stages to this project. Install PS.md from the ntelio_ai kit.
+Add project stages to this project. Install PS.md from the atlas_ai kit.
 ```
 
 ```text
-ntelio_ai
+atlas_ai
 
-Add governance review to this project. Install CGR.md from the ntelio_ai kit.
+Add governance review to this project. Install CGR.md from the atlas_ai kit.
 ```
 
 #### Adding git and GitHub to any setup
 
-Add `-InitGit` to any install step above to initialize a git repository with a `.gitignore` and an initial commit. Add `-GitHubRepo "repo-name"` to also create a GitHub repository and push. Defaults to private -- add `-Public` for a public repo. Examples:
+Add `-InitGit` to any install step above to initialize a git repository with a `.gitignore` and an initial commit. Add `-GitHubRepo "repo-name"` to also create a GitHub repository and push. Use `-GitHubOwner "account-or-org"` to specify which GitHub account or organization the repo is created under. Defaults to private -- add `-Public` for a public repo. If the GitHub CLI is not authenticated, the script will launch `gh auth login` automatically. Examples:
 
 - `-IncludeScaffold -InitGit` -- scaffold plus git init
-- `-IncludeScaffold -IncludePS -InitGit -GitHubRepo "my-project"` -- scaffold, PS, git, private GitHub repo
-- `-IncludeScaffold -IncludeCGR -InitGit -GitHubRepo "org/my-project" -Public` -- scaffold, CGR, git, public GitHub repo under an org
+- `-IncludeScaffold -IncludePS -InitGit -GitHubRepo "my-project" -GitHubOwner "myusername"` -- scaffold, PS, git, private GitHub repo under a specific account
+- `-IncludeScaffold -IncludeCGR -InitGit -GitHubRepo "my-project" -GitHubOwner "my-org" -Public` -- scaffold, CGR, git, public GitHub repo under an org
 
-Requires `git` on PATH. For `-GitHubRepo`, install the [GitHub CLI](https://cli.github.com/) and run `gh auth login` first.
+Requires `git` on PATH. For `-GitHubRepo`, install the [GitHub CLI](https://cli.github.com/). Login is handled automatically if needed.
 
 ### Full agent-driven adoption for an existing repo
 
-If the project already has substantial docs, plans, scripts, and references that need sorting into the ntelio_ai structure, use this more detailed prompt:
+If the project already has substantial docs, plans, scripts, and references that need sorting into the atlas_ai structure, use this more detailed prompt:
 
 ```text
-ntelio_ai
+atlas_ai
 
-Adopt the ntelio_ai process into this repository.
+Adopt the atlas_ai process into this repository.
 
 Tasks:
-1. Read ntelio_ai/README.md, ntelio_ai/.github/copilot-instructions.md, ntelio_ai/ATLAS.md, and ntelio_ai/AGENTS.md.
-2. Install the kit into the repository root using ntelio_ai/ntelio_ai.ps1 with -IncludeScaffold.
-3. If this repository already has docs, plans, runbooks, notes, scripts, or project files, review them and reorganize them into the ntelio_ai structure where appropriate.
+1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, and atlas_ai/AGENTS.md.
+2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold.
+3. If this repository already has docs, plans, runbooks, notes, scripts, or project files, review them and reorganize them into the atlas_ai structure where appropriate.
 4. Create or update these folders and files when needed:
 	- docs/agile/devcycle.md
 	- docs/agile/backlog.md
@@ -248,49 +248,49 @@ If you do not want to use an agent prompt, run the installer directly:
 
 ```powershell
 # Chat-only equivalent of NewProject.bat (run from project root)
-pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -OrganizeExisting -InitGit -SeedPath .\ntelio_ai -RemoveSeed
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -OrganizeExisting -InitGit -SeedPath .\atlas_ai -RemoveSeed
 
 # Basic -- core workflow and scaffold only
-pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold
 
 # Add project stages
-pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -IncludePS
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -IncludePS
 
 # Add governance review
-pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -IncludeCGR
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -IncludeCGR
 
 # Everything
-pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -IncludePS -IncludeCGR
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -IncludePS -IncludeCGR
 
 # Reorganize existing docs and scripts into project folders before install copy
-pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -OrganizeExisting
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -OrganizeExisting
 
 # Initialize git repo with .gitignore and initial commit
-pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -InitGit
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -InitGit
 
-# Initialize git and create a private GitHub repo
-pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -InitGit -GitHubRepo "my-project"
+# Initialize git and create a private GitHub repo under a specific account
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -InitGit -GitHubRepo "my-project" -GitHubOwner "myusername"
 
-# Initialize git and create a public GitHub repo
-pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -InitGit -GitHubRepo "my-project" -Public
+# Initialize git and create a public GitHub repo under an org
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -InitGit -GitHubRepo "my-project" -GitHubOwner "my-org" -Public
 
 # Everything -- scaffold, PS, CGR, git, and GitHub
-pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -IncludePS -IncludeCGR -InitGit -GitHubRepo "my-project"
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -IncludePS -IncludeCGR -InitGit -GitHubRepo "my-project" -GitHubOwner "myusername"
 
 # Preview without copying
-pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -IncludePS -IncludeCGR -InitGit -WhatIf
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -IncludePS -IncludeCGR -InitGit -WhatIf
 
 # Overwrite existing files
-pwsh -File .\ntelio_ai\ntelio_ai.ps1 -IncludeScaffold -IncludePS -IncludeCGR -Force
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -IncludePS -IncludeCGR -Force
 ```
 
 Chat shortcut: in AI chat, you can say `newproject` and the agent should execute the same non-interactive installer flow.
 
-`-OrganizeExisting` reviews existing non-code artifacts in the target root and moves matched files into `docs/agile`, `docs/projects`, `docs/reference`, `scripts`, or `archive` using filename and extension heuristics. Startup-oriented files such as `todo`, `seed`, `startup`, `kickoff`, and `project-start` are treated as reference inputs and moved to `docs/reference`. It does not reorganize the seed folder itself. `-InitGit` copies the `.gitignore` from the kit, runs `git init` (if needed), and makes an initial commit with project artifacts only. `-GitHubRepo` creates a GitHub repository using the `gh` CLI (defaults to private, add `-Public` for public). `-GitHubRepo` implies `-InitGit`.
+`-OrganizeExisting` reviews existing non-code artifacts in the target root and moves matched files into `docs/agile`, `docs/projects`, `docs/reference`, `scripts`, or `archive` using filename and extension heuristics. Startup-oriented files such as `todo`, `seed`, `startup`, `kickoff`, and `project-start` are treated as reference inputs and moved to `docs/reference`. It does not reorganize the seed folder itself. `-InitGit` copies the `.gitignore` from the kit, runs `git init` (if needed), and makes an initial commit with project artifacts only. `-GitHubRepo` creates a GitHub repository using the `gh` CLI (defaults to private, add `-Public` for public). Use `-GitHubOwner` to specify the GitHub account or org. If not logged in, the script runs `gh auth login` automatically. `-GitHubRepo` implies `-InitGit`.
 
-Prerequisites: `git` must be on PATH. For `-GitHubRepo`, install the [GitHub CLI](https://cli.github.com/) and run `gh auth login` first.
+Prerequisites: `git` must be on PATH. For `-GitHubRepo`, install the [GitHub CLI](https://cli.github.com/). Login is handled automatically if needed.
 
-Or manually copy the files you want from `ntelio_ai/` to the repository root:
+Or manually copy the files you want from `atlas_ai/` to the repository root:
 - `.github/copilot-instructions.md` -- always
 - `.github/prompts/atlas-realign.prompt.md` -- recommended
 - `.github/prompts/atlas-closeout.prompt.md` -- recommended
@@ -305,35 +305,35 @@ Or manually copy the files you want from `ntelio_ai/` to the repository root:
 
 ### Using a symlink or junction instead of copying
 
-You can keep one master copy of ntelio_ai and link it into any project instead of copying the folder each time:
+You can keep one master copy of atlas_ai and link it into any project instead of copying the folder each time:
 
 ```powershell
 # From your project root
-New-Item -ItemType SymbolicLink -Path .\ntelio_ai -Target "C:\path\to\your\master\ntelio_ai"
+New-Item -ItemType SymbolicLink -Path .\atlas_ai -Target "C:\path\to\your\master\atlas_ai"
 ```
 
 If symbolic links are restricted on your machine, a junction also works:
 
 ```powershell
 # From your project root
-New-Item -ItemType Junction -Path .\ntelio_ai -Target "C:\path\to\your\master\ntelio_ai"
+New-Item -ItemType Junction -Path .\atlas_ai -Target "C:\path\to\your\master\atlas_ai"
 ```
 
 The installer resolves paths through symlinks and junctions, so it works the same as a real copy. Files get installed into the project root, not into the link target.
 
-### Deleting ntelio_ai after install
+### Deleting atlas_ai after install
 
-The installer copies all selected files out of `ntelio_ai/` into the repository root. After that, the `ntelio_ai/` folder is no longer needed for the project to function.
+The installer copies all selected files out of `atlas_ai/` into the repository root. After that, the `atlas_ai/` folder is no longer needed for the project to function.
 
-`NewProject.bat` treats `ntelio_ai/` as a one-shot seed. During git initialization, the seed path is excluded from staging so commits contain only installed project artifacts.
+`NewProject.bat` treats `atlas_ai/` as a one-shot seed. During git initialization, the seed path is excluded from staging so commits contain only installed project artifacts.
 
 After a successful run, it schedules removal of the seed path it ran from, unless that seed path is currently tracked by git.
 
 If startup-oriented files were moved into `docs/reference`, decide whether to generate the initial `docs/agile/devcycle.md` from those reference files only after seed cleanup is complete.
 
-If that path is a symlink or junction, only the link is removed. The master ntelio_ai folder that the link points to is left untouched.
+If that path is a symlink or junction, only the link is removed. The master atlas_ai folder that the link points to is left untouched.
 
-If you want to keep the seed folder or link around so you can re-run installs later, use `ntelio_ai.ps1` directly instead of `NewProject.bat`.
+If you want to keep the seed folder or link around so you can re-run installs later, use `atlas_ai.ps1` directly instead of `NewProject.bat`.
 
 ## Auto-Loading Notes
 
@@ -357,11 +357,11 @@ If this kit remains nested and you do not copy the files to the repository root,
 
 If the repository has an agreed stack baseline, create `docs/reference/stack-patterns/active-stack-pattern.md` and keep it current.
 
-The ntelio_ai instruction files and prompts treat that file as the source of truth for stack-sensitive work, such as architecture, hosting, deployment, infrastructure, and platform-selection changes.
+The atlas_ai instruction files and prompts treat that file as the source of truth for stack-sensitive work, such as architecture, hosting, deployment, infrastructure, and platform-selection changes.
 
 ## Existing Repo Adoption
 
-Use the Quick Start prompts above. The "Full agent-driven adoption" prompt handles repos with existing docs, plans, and scripts. The agent will sort existing content into the ntelio_ai structure without erasing it.
+Use the Quick Start prompts above. The "Full agent-driven adoption" prompt handles repos with existing docs, plans, and scripts. The agent will sort existing content into the atlas_ai structure without erasing it.
 
 ## How To Customize For A New Project
 

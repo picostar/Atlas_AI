@@ -1,6 +1,6 @@
-# ntelio_ai -- ATLAS Alignment Todo
+# atlas_ai -- ATLAS Alignment Todo
 
-Gap analysis from reviewing ntelio_ai against the ATLAS (AI Task Lifecycle Automation System) vision.
+Gap analysis from reviewing atlas_ai against the ATLAS (AI Task Lifecycle Automation System) vision.
 ATLAS requires: development process, skills layer, compliance governance, API-first architecture,
 domain-expert-led development, and operational sustainability.
 
@@ -23,7 +23,7 @@ These are required in every ATLAS installation. None exist yet.
 - [ ] **Add security review gate to ATLAS.md** -- Reference security-patterns skill, integrate with CGR Rule 9 timing.
 - [ ] **Add requirements gate to ATLAS.md** -- Reference requirements-writing skill, clarify when MRD/PRD must be complete.
 - [ ] **Expand MRD/PRD/ESD templates with examples** -- Fill in at least one complete fictional example per template. Show mapping to CGR rules.
-- [ ] **Add "Extending ntelio_ai" section to README.md** -- Explain how to create custom skills, organize by tier, contribute back.
+- [ ] **Add "Extending atlas_ai" section to README.md** -- Explain how to create custom skills, organize by tier, contribute back.
 
 ## P3 -- Medium: Create Tier 2 Stack Skills
 
@@ -52,6 +52,6 @@ These are project-specific but the kit should ship guidance for creating them.
 ## Resolved
 
 - [x] CLAUDE.md and AGENTS.md duplicate response guidelines -- removed, point to source of truth only
-- [x] NewProject.bat missing pre-flight check for ntelio_ai.ps1 -- added verification
-- [x] No post-install verification -- added -Verify flag to ntelio_ai.ps1
+- [x] NewProject.bat missing pre-flight check for atlas_ai.ps1 -- added verification
+- [x] No post-install verification -- added -Verify flag to atlas_ai.ps1
 - [x] Scaffold docs example content not marked as placeholder -- added banners
