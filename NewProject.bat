@@ -118,6 +118,35 @@ if "%DO_SKILLS%"=="1" (
 if "%DO_SKILLS%"=="3" if defined SKILLS_PATH set "SKILLS_SRC_FLAG=-SkillsSource "!SKILLS_PATH!""
 if "%DO_SKILLS%"=="3" if not defined SKILLS_PATH echo  No path entered, skipping skills.
 
+echo.
+echo  -- Stack Pattern --
+echo.
+echo  Choose an initial stack pattern baseline for docs\reference\stack-patterns\active-stack-pattern.md.
+echo  You can change this later by editing stack pattern docs.
+echo.
+echo  Options:
+echo    0) None
+echo    1) Functions + Tables + SWA + Key Vault
+echo    2) Functions + Tables + SQL Serverless + SWA + Key Vault
+echo    3) Functions + Service Bus + Cosmos DB + SWA + Key Vault
+echo    4) App Service + Azure SQL + Redis + Front Door + Key Vault
+echo.
+set /p STACK_PATTERN_CHOICE=Choose [0/1/2/3/4, default 0]: 
+if not defined STACK_PATTERN_CHOICE set "STACK_PATTERN_CHOICE=0"
+
+set "STACK_PATTERN_FLAG="
+if "%STACK_PATTERN_CHOICE%"=="1" (
+    set "STACK_PATTERN_FLAG=-StackPattern sp-01-functions-tables-swa-keyvault.md"
+) else if "%STACK_PATTERN_CHOICE%"=="2" (
+    set "STACK_PATTERN_FLAG=-StackPattern sp-02-functions-tables-sqlserverless-swa-keyvault.md"
+) else if "%STACK_PATTERN_CHOICE%"=="3" (
+    set "STACK_PATTERN_FLAG=-StackPattern sp-03-functions-servicebus-cosmos-swa-keyvault.md"
+) else if "%STACK_PATTERN_CHOICE%"=="4" (
+    set "STACK_PATTERN_FLAG=-StackPattern sp-04-appservice-sql-redis-frontdoor-keyvault.md"
+) else if not "%STACK_PATTERN_CHOICE%"=="0" (
+    echo  Invalid stack pattern choice, defaulting to none.
+)
+
 set "GITHUB_FLAG="
 set "GITHUB_OWNER_FLAG="
 if /i "%DO_GITHUB%"=="y" set "GITHUB_FLAG=-GitHubRepo "%PROJECT_NAME%""
@@ -168,7 +197,7 @@ if not defined PSCMD (
     exit /b 1
 )
 
-%PSCMD% -ExecutionPolicy Bypass -File "%DOIT_DIR%\atlas_ai.ps1" -IncludeScaffold -InitGit -SeedPath "%DOIT_DIR%" -RemoveSeed %PS_FLAG% %CGR_FLAG% %ORG_FLAG% %SKILLS_FLAG% %SKILLS_SRC_FLAG% %GITHUB_FLAG% %GITHUB_OWNER_FLAG% %PUBLIC_FLAG%
+%PSCMD% -ExecutionPolicy Bypass -File "%DOIT_DIR%\atlas_ai.ps1" -IncludeScaffold -InitGit -SeedPath "%DOIT_DIR%" -RemoveSeed %PS_FLAG% %CGR_FLAG% %ORG_FLAG% %SKILLS_FLAG% %SKILLS_SRC_FLAG% %STACK_PATTERN_FLAG% %GITHUB_FLAG% %GITHUB_OWNER_FLAG% %PUBLIC_FLAG%
 
 if errorlevel 1 (
     echo.

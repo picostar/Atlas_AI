@@ -13,6 +13,12 @@ Use it to describe project intent and first-cycle priorities before generating a
 pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -OrganizeExisting -InitGit -SeedPath .\atlas_ai -RemoveSeed
 ```
 
+Optional stack pattern selection:
+
+```powershell
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -OrganizeExisting -InitGit -SeedPath .\atlas_ai -RemoveSeed -StackPattern "sp-01-functions-tables-swa-keyvault.md"
+```
+
 You can also just say `newproject` in AI chat and the agent should run this same command flow.
 
 4. With -OrganizeExisting, startup files like this one are moved to docs/reference.

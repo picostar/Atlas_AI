@@ -7,6 +7,7 @@ param(
     [switch]$OrganizeExisting,
     [switch]$IncludeSkills,
     [string]$SkillsSource,
+    [string]$StackPattern,
     [switch]$InitGit,
     [string]$GitHubRepo,
     [string]$GitHubOwner,
@@ -202,6 +203,7 @@ function Get-UniqueDestinationPath {
 }
 
 function Move-ExistingArtifacts {
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
         [Parameter(Mandatory = $true)]
         [string]$RootPath,
@@ -346,7 +348,7 @@ function Get-PathsUnderTopLevelSegment {
         [string]$TopLevelSegment
     )
 
-    $matches = @()
+    $matchingPaths = @()
     foreach ($path in $Paths) {
         if ([string]::IsNullOrWhiteSpace($path)) {
             continue
@@ -359,11 +361,46 @@ function Get-PathsUnderTopLevelSegment {
 
         $firstSegment = ($normalizedPath -split '/')[0]
         if ($firstSegment.Equals($TopLevelSegment, [System.StringComparison]::OrdinalIgnoreCase)) {
-            $matches += $path
+            $matchingPaths += $path
         }
     }
 
-    return $matches
+    return $matchingPaths
+}
+
+function Resolve-StackPatternRelativePath {
+    param(
+        [string]$PatternValue
+    )
+
+    if ([string]::IsNullOrWhiteSpace($PatternValue)) {
+        return $null
+    }
+
+    $normalizedValue = ($PatternValue.Trim() -replace '\\', '/').Trim('/')
+    if ([string]::IsNullOrWhiteSpace($normalizedValue)) {
+        return $null
+    }
+
+    if ($normalizedValue -match '^(none|no|null|skip)$') {
+        return $null
+    }
+
+    $candidates = [System.Collections.Generic.List[string]]::new()
+    $candidates.Add($normalizedValue)
+    if (-not $normalizedValue.StartsWith("docs/reference/stack-patterns/stack-pattern-templates/", [System.StringComparison]::OrdinalIgnoreCase)) {
+        $candidates.Add("docs/reference/stack-patterns/stack-pattern-templates/$normalizedValue")
+    }
+
+    foreach ($candidate in ($candidates | Select-Object -Unique)) {
+        $candidatePath = Join-Path $templateRoot $candidate
+        if (Test-Path -LiteralPath $candidatePath) {
+            return $candidate
+        }
+    }
+
+    Write-Warning "Stack pattern template not found: $PatternValue"
+    return $null
 }
 
 function Remove-SeedChangesFromIndex {
@@ -438,6 +475,14 @@ $scaffoldFiles = @(
     "archive/README.md"
 )
 
+$stackPatternTemplateRoot = Join-Path $templateRoot "docs/reference/stack-patterns/stack-pattern-templates"
+if (Test-Path $stackPatternTemplateRoot) {
+    $stackPatternTemplateFiles = Get-ChildItem -Path $stackPatternTemplateRoot -Recurse -File | ForEach-Object {
+        $_.FullName.Substring($templateRoot.Length + 1) -replace '\\', '/'
+    }
+    $scaffoldFiles += $stackPatternTemplateFiles
+}
+
 # Discover skill folders and add all files within them
 $skillsRoot = Join-Path $templateRoot ".github/skills"
 if ($IncludeSkills -and -not $SkillsSource) {
@@ -485,6 +530,8 @@ if ($IncludeScaffold) {
     $filesToCopy += $scaffoldFiles
 }
 
+$resolvedStackPatternTemplate = Resolve-StackPatternRelativePath -PatternValue $StackPattern
+
 $organizeResult = $null
 if ($OrganizeExisting) {
     $organizeResult = Move-ExistingArtifacts -RootPath $resolvedTargetRoot -SeedPath $resolvedSeedPath
@@ -512,6 +559,25 @@ foreach ($relativePath in $filesToCopy) {
     if ($PSCmdlet.ShouldProcess($destinationPath, "Copy atlas_ai file")) {
         Copy-Item -Path $sourcePath -Destination $destinationPath -Force:$Force
         Write-Host "Copied $relativePath"
+    }
+}
+
+if ($resolvedStackPatternTemplate) {
+    $selectedStackPatternSource = Join-Path $templateRoot $resolvedStackPatternTemplate
+    $activeStackPatternPath = Join-Path $resolvedTargetRoot "docs/reference/stack-patterns/active-stack-pattern.md"
+    $activeStackPatternDirectory = Split-Path -Parent $activeStackPatternPath
+
+    if (-not (Test-Path $activeStackPatternDirectory)) {
+        New-Item -ItemType Directory -Path $activeStackPatternDirectory -Force | Out-Null
+    }
+
+    if ((Test-Path $activeStackPatternPath) -and -not $Force) {
+        Write-Warning "Skipping existing file: $activeStackPatternPath. Use -Force to overwrite."
+    } else {
+        if ($PSCmdlet.ShouldProcess($activeStackPatternPath, "Set active stack pattern from $resolvedStackPatternTemplate")) {
+            Copy-Item -Path $selectedStackPatternSource -Destination $activeStackPatternPath -Force:$Force
+            Write-Host "Set active stack pattern from $resolvedStackPatternTemplate"
+        }
     }
 }
 
@@ -578,7 +644,7 @@ if ($GitHubRepo) {
     }
 
     # Ensure the user is authenticated -- prompt for login if not
-    $authStatus = gh auth status 2>&1
+    gh auth status 2>&1 | Out-Null
     if ($LASTEXITCODE -ne 0) {
         Write-Host "GitHub CLI is not authenticated. Launching login flow..."
         gh auth login

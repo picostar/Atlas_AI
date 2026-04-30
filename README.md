@@ -58,6 +58,7 @@ This `README.md` is for the kit itself. It is not copied into the target reposit
 - `docs/agile/retro.md` -- completed work log
 - `docs/reference/README.md` -- reference docs guidance
 - `docs/reference/stack-patterns/README.md` -- stack baseline guidance
+- `docs/reference/stack-patterns/stack-pattern-templates/` -- reusable Azure stack pattern templates
 - `scripts/README.md` -- scripts guidance
 - `archive/README.md` -- archive guidance
 
@@ -76,6 +77,9 @@ Skills reference existing kit files (ATLAS.md, copilot-instructions.md) rather t
 If a repository has an agreed architecture, hosting, deployment, infrastructure, or platform baseline, capture it in `docs/reference/stack-patterns/active-stack-pattern.md`.
 
 When that file exists, the atlas_ai instruction stack reads it before stack-sensitive work so architecture changes stay consistent with the repo's approved baseline.
+
+`NewProject.bat` now prompts for a stack pattern choice during setup. You can choose a template or none.
+If a template is selected, setup creates `docs/reference/stack-patterns/active-stack-pattern.md` from that template.
 
 ### Project document templates (installed with -IncludePS or -IncludeCGR)
 - `docs/projects/MRD_TEMPLATE.md` -- market or business requirements template
@@ -262,6 +266,12 @@ pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -IncludeCGR
 # Everything
 pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -IncludePS -IncludeCGR
 
+# Include scaffold and set active stack pattern from template by filename
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -StackPattern "sp-01-functions-tables-swa-keyvault.md"
+
+# Include scaffold and set active stack pattern using full template-relative path
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -StackPattern "docs/reference/stack-patterns/stack-pattern-templates/sp-02-functions-tables-sqlserverless-swa-keyvault.md"
+
 # Reorganize existing docs and scripts into project folders before install copy
 pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -OrganizeExisting
 
@@ -286,7 +296,7 @@ pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -IncludePS -IncludeCGR -Forc
 
 Chat shortcut: in AI chat, you can say `newproject` and the agent should execute the same non-interactive installer flow.
 
-`-OrganizeExisting` reviews existing non-code artifacts in the target root and moves matched files into `docs/agile`, `docs/projects`, `docs/reference`, `scripts`, or `archive` using filename and extension heuristics. Startup-oriented files such as `todo`, `seed`, `startup`, `kickoff`, and `project-start` are treated as reference inputs and moved to `docs/reference`. It does not reorganize the seed folder itself. `-InitGit` copies the `.gitignore` from the kit, runs `git init` (if needed), and makes an initial commit with project artifacts only. `-GitHubRepo` creates a GitHub repository using the `gh` CLI (defaults to private, add `-Public` for public). Use `-GitHubOwner` to specify the GitHub account or org. If not logged in, the script runs `gh auth login` automatically. `-GitHubRepo` implies `-InitGit`.
+`-OrganizeExisting` reviews existing non-code artifacts in the target root and moves matched files into `docs/agile`, `docs/projects`, `docs/reference`, `scripts`, or `archive` using filename and extension heuristics. Startup-oriented files such as `todo`, `seed`, `startup`, `kickoff`, and `project-start` are treated as reference inputs and moved to `docs/reference`. It does not reorganize the seed folder itself. `-StackPattern` accepts a stack pattern template filename or template-relative path and sets `docs/reference/stack-patterns/active-stack-pattern.md` from that template. `-InitGit` copies the `.gitignore` from the kit, runs `git init` (if needed), and makes an initial commit with project artifacts only. `-GitHubRepo` creates a GitHub repository using the `gh` CLI (defaults to private, add `-Public` for public). Use `-GitHubOwner` to specify the GitHub account or org. If not logged in, the script runs `gh auth login` automatically. `-GitHubRepo` implies `-InitGit`.
 
 Prerequisites: `git` must be on PATH. For `-GitHubRepo`, install the [GitHub CLI](https://cli.github.com/). Login is handled automatically if needed.
 
