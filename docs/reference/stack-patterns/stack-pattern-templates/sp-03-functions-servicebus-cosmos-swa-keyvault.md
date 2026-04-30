@@ -37,6 +37,9 @@ Functions remain atomic and single-purpose.
 ## Reliability and Operations
 - Dead-letter queues and replay procedures
 - Idempotent message handling and duplicate detection
+- Consumption plan boundary: default 5 minutes, maximum 10 minutes per function execution
+- Premium and Dedicated boundary: default 30 minutes, configurable much longer, including unbounded
+- HTTP-triggered caveat: avoid synchronous long-running requests, front-end paths can time out after about 230 seconds
 - Alerting on queue depth, dead-letter growth, and consumer lag
 - Partition key strategy validated against hot partition risk
 

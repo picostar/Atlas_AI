@@ -47,6 +47,9 @@ Use Azure SQL serverless for:
 ## Reliability and Operations
 - Add idempotency keys for write endpoints
 - Add retry and circuit breaker strategy for SQL and storage dependencies
+- Consumption plan boundary: default 5 minutes, maximum 10 minutes per function execution
+- Premium and Dedicated boundary: default 30 minutes, configurable much longer, including unbounded
+- HTTP-triggered caveat: avoid synchronous long-running requests, front-end paths can time out after about 230 seconds
 - Monitor SQL auto-pause and resume behavior for latency-sensitive paths
 - Alert on DTU or vCore usage, function failures, and storage throttling
 

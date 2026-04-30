@@ -5,6 +5,12 @@ This folder contains editable Azure architecture templates. Each template is a s
 ## What these templates are for
 Use these templates to accelerate architecture selection and keep design reviews consistent. They help teams evaluate fit, risks, and tradeoffs before implementation.
 
+## Azure Functions timeout boundaries
+Use this quick reference when selecting or reviewing function-based patterns:
+- Consumption plan: default timeout 5 minutes, maximum 10 minutes per execution.
+- Premium and Dedicated plans: default timeout 30 minutes, configurable much longer, including unbounded.
+- HTTP-triggered caveat: long synchronous requests can still fail at the front end after about 230 seconds. Use async patterns for long jobs.
+
 ## Template catalog
 - [sp-01-functions-tables-swa-keyvault.md](sp-01-functions-tables-swa-keyvault.md)
 	- Default serverless web pattern.
@@ -47,6 +53,7 @@ Use these templates to accelerate architecture selection and keep design reviews
 - Confirm security controls, identity model, and secret handling.
 - Confirm reliability targets, observability signals, and operational ownership.
 - Confirm cost expectations and known cost risks.
+- Confirm serverless timeout boundaries and whether long-running work is asynchronous.
 
 ## Definition of done for pattern adoption
 A pattern is adoption-ready when:

@@ -44,3 +44,4 @@ Update or re-review stack patterns when one or more of these occur:
 - Keep secrets, credentials, tenant identifiers, and environment-specific tokens out of these files.
 - Keep decisions at architectural level, not one-off implementation details.
 - Record rationale and constraints, not just chosen services.
+- For function-based patterns, document timeout boundaries by hosting plan and long-request behavior.

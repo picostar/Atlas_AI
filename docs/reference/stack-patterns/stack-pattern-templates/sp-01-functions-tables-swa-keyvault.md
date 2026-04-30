@@ -37,6 +37,9 @@ Functions must be atomic and follow Single Responsibility Principle.
 ## Reliability and Operations
 - Use retry policies for transient storage errors
 - Set clear timeout and poison message behavior for async functions
+- Consumption plan boundary: default 5 minutes, maximum 10 minutes per function execution
+- Premium and Dedicated boundary: default 30 minutes, configurable much longer, including unbounded
+- HTTP-triggered caveat: avoid synchronous long-running requests, front-end paths can time out after about 230 seconds
 - Track p95 latency, error rate, and failed dependency calls
 - Configure alerts for function failures and storage throttling
 
@@ -52,7 +55,7 @@ Functions must be atomic and follow Single Responsibility Principle.
 
 ## Weak Fit
 - Heavy relational workloads with complex joins
-- Long-running workflows that exceed serverless execution windows
+- Long-running workflows that exceed serverless execution windows or require long synchronous HTTP waits
 
 ## Review History
 - YYYY-MM-DD | Reviewer | Notes | Decision
