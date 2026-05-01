@@ -17,6 +17,11 @@
 - Keep environment URLs, credentials, tokens, tenant IDs, and deployment targets out of committed instruction files.
 - Keep reusable stack-pattern choices in `docs/reference/stack-patterns/`, not in `ATLAS.md` or the thin agent pointer files.
 
+## Local Secrets File
+- Use `accounts.txt` at the repository root for local secure secrets, credentials, and keys.
+- Keep `accounts.txt` gitignored and local-only.
+- Before asking the user for credentials, tokens, keys, or other secret values, check `accounts.txt` first if it exists.
+
 ## Split Repo Layout Handling
 - Some repositories keep control docs and AI instruction files at the repo root while the runnable application lives in a child directory one level down.
 - In that layout, treat the directory that contains `.github/copilot-instructions.md`, `ATLAS.md`, and `docs/` as the control root.

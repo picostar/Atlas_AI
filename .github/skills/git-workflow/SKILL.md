@@ -50,6 +50,7 @@ Examples:
 - Do not amend published commits without user approval
 - Include the DT or RDT identifier in the commit message when working from a devcycle task
 - Stage and review changes before committing -- no blind `git add -A` on large repos
+- Before asking the user for credentials, tokens, keys, or other secret values, check `accounts.txt` at the repository root first if it exists
 
 ## Common Commands
 

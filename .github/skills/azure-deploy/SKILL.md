@@ -52,4 +52,5 @@ swa deploy "<build-dir>" --deployment-token $token --env production
 - ALWAYS verify subscription before deploying
 - NEVER hardcode credentials, tokens, or tenant IDs in scripts
 - Read project-specific Azure config from `docs/reference/` if it exists
+- Before asking the user for credentials, tokens, keys, or other secret values, check `accounts.txt` at the repository root first if it exists
 - Confirm with the user before deploying to production

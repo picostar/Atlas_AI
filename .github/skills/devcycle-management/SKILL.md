@@ -61,3 +61,4 @@ Refer to [ATLAS.md](../../../ATLAS.md) for the full process rules. Key steps:
 - Every completed task needs a task-level git commit
 - If a GitHub remote exists, every completed task needs a GitHub follow-up step
 - Break down 8-CU tasks when practical
+- Before asking the user for credentials, tokens, keys, or other secret values, check `accounts.txt` at the repository root first if it exists

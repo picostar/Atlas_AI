@@ -7,6 +7,8 @@ agent: "agent"
 
 Review this repository for ATLAS alignment and drift.
 
+Before asking the user for credentials, tokens, keys, or other secret values, check `accounts.txt` at the repository root first if it exists.
+
 Use these files as the baseline:
 - [Source of truth](../copilot-instructions.md)
 - [ATLAS process](../../ATLAS.md)

@@ -38,3 +38,4 @@ argument-hint: 'Describe the skill you want to create'
 - Keep SKILL.md under 500 lines; offload detail to `./references/`
 - Use relative paths (`./scripts/run.ps1`) for all skill resources
 - Make the description keyword-rich so the agent finds it automatically
+- Before asking the user for credentials, tokens, keys, or other secret values, check `accounts.txt` at the repository root first if it exists
