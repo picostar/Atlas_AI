@@ -49,6 +49,8 @@ In that layout:
 ### Workflow prompts (installed by default)
 - `.github/prompts/atlas-realign.prompt.md` -- ATLAS health check and realignment prompt
 - `.github/prompts/atlas-closeout.prompt.md` -- ATLAS closeout readiness prompt
+- `.github/prompts/cgr-seed-to-cgr.prompt.md` -- generate draft MRD PRD ESD from seed and reference material, then run CGR outputs
+- `.github/prompts/cgr-iterate.prompt.md` -- iterate and improve governance docs using CGR-results and score
 
 ### Installer
 - `atlas_ai.ps1` -- copies kit files into the target repository root
@@ -112,6 +114,8 @@ These are bootstrap files only. On the first CGR run, remove `MRD_TEMPLATE.md` a
 When a governance review runs, save the output as `docs/cgr/CGR-results.md`.
 
 Optional scoring extension: teams that want numeric governance tracking can derive a scorecard from `docs/cgr/CGR-results.md` and save it as `docs/cgr/score.md`.
+
+For seeded projects, teams can bootstrap governance drafts from `seed.md` and `docs/reference/` using `.github/prompts/cgr-seed-to-cgr.prompt.md`, then iteratively improve with `.github/prompts/cgr-iterate.prompt.md` using `docs/cgr/CGR-results.md` and `docs/cgr/score.md`.
 
 ### What CGR Means And Why It Matters
 

@@ -327,6 +327,51 @@ Save the derived score output as `docs/cgr/score.md` using a concise scorecard f
 
 ---
 
+## Optional Seed And Reference Bootstrap Extension
+
+This extension is optional and does not replace baseline CGR requirements.
+
+Use this when live MRD, PRD, and ESD artifacts are missing and draft governance docs must be created first.
+
+Bootstrap flow:
+1. Read `seed.md` if present.
+2. Read relevant source material in `docs/reference/`.
+3. Generate drafts in `docs/cgr/` using template structure:
+   - `MRD_<PROJECT>_v0-draft.md`
+   - `PRD_<PROJECT>_v0-draft.md`
+   - `ESD_<PROJECT>_v0-draft.md`
+4. Record source traceability in `docs/cgr/seed-to-docs-mapping.md`.
+5. Run baseline CGR review and produce `docs/cgr/CGR-results.md`.
+6. If scoring is enabled, derive `docs/cgr/score.md` from the latest results.
+
+When source evidence is missing, mark it explicitly as `TBD` and list open questions. Do not invent approvals or operational claims.
+
+---
+
+## Optional Iteration Loop Using Results And Score
+
+This extension is optional and does not replace baseline CGR requirements.
+
+Use this for repeated governance improvement cycles after initial outputs exist.
+
+Iteration loop:
+1. Read current MRD, PRD, ESD artifacts plus `docs/cgr/CGR-results.md`.
+2. If present, read `docs/cgr/score.md` and identify score-impacting gaps.
+3. Prioritize unresolved Critical and High gaps first.
+4. Apply targeted document improvements.
+5. Re-run baseline CGR review and refresh `docs/cgr/CGR-results.md`.
+6. Refresh `docs/cgr/score.md` and compare score delta.
+7. Update `docs/cgr/remediation-tracking.md` with owner, status, and target dates.
+8. Repeat until target stage gate conditions are satisfied.
+
+Recommended rerun triggers:
+- Before DVT gate decision.
+- Before PVT gate decision.
+- After significant architecture, ownership, security, or rollout-plan changes.
+- After exception expiry dates.
+
+---
+
 ## Constraints
 
 - Be direct and practical.

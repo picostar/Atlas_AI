@@ -21,6 +21,8 @@ Recommended files:
 - `ESD_<PROJECT>_v1.md`
 - `CGR-results.md`
 - `score.md` (optional, derived from `CGR-results.md` scoring extension)
+- `seed-to-docs-mapping.md` (optional, maps seed and reference sources to MRD PRD ESD sections)
+- `remediation-tracking.md` (optional, tracks rule-level remediation across iterations)
 - ADRs, roadmaps, decision logs, or governance records as needed
 
 Starter docs are included in this folder to help bootstrap a new project. On the first CGR run, remove `MRD_TEMPLATE.md` and `PRD_TEMPLATE.md` if they are still present. In all cases, once a live MRD, PRD, or ESD artifact exists, remove the matching `*_TEMPLATE.md` file so this folder contains live project artifacts only.
@@ -28,3 +30,25 @@ Starter docs are included in this folder to help bootstrap a new project. On the
 Keep `CGR-results.md` in this folder alongside the live MRD, PRD, and ESD artifacts for the project being reviewed.
 
 If your team uses numeric governance scoring, keep `score.md` in this folder as a derived artifact that references the latest `CGR-results.md`.
+
+## Bootstrap Workflow From Seed And Reference Inputs
+
+Use this when live MRD, PRD, and ESD docs do not exist yet.
+
+1. Use prompt `.github/prompts/cgr-seed-to-cgr.prompt.md`.
+2. Read `seed.md` and relevant files under `docs/reference/`.
+3. Generate draft docs in `docs/cgr/`.
+4. Update `seed-to-docs-mapping.md` to show evidence sources and missing inputs.
+5. Run CGR and produce `CGR-results.md`.
+6. If scoring is enabled, refresh `score.md`.
+
+## Iteration Workflow Using CGR Results And Score
+
+Use this after the first CGR output exists.
+
+1. Use prompt `.github/prompts/cgr-iterate.prompt.md`.
+2. Read current MRD, PRD, ESD plus `CGR-results.md` and `score.md`.
+3. Prioritize unresolved Critical and High gaps.
+4. Update docs and rerun CGR.
+5. Refresh `score.md` and `remediation-tracking.md`.
+6. Repeat until gate targets are met for the intended stage.
