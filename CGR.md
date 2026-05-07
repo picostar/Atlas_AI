@@ -17,7 +17,13 @@
 
 Point an LLM at this file and say: "Read this prompt, then review the live project documents in docs/cgr/ and save the governance review to docs/cgr/CGR-results.md."
 
+Chat shortcut: in AI chat, you can type `CGR` to run this workflow.
+
 The LLM will scan live MRD, PRD, and ESD artifacts in `docs/cgr/`, ignore starter templates and housekeeping files during evaluation, perform post-review template cleanup, and produce a single results file.
+
+If live MRD, PRD, and ESD artifacts do not exist yet, the workflow first bootstraps draft governance docs from `seed.md` and `docs/reference/`, then runs CGR.
+
+If live MRD, PRD, or ESD artifacts already exist, the workflow uses them as the base and improves them using current user instructions plus any new material found in `seed.md` and `docs/reference/`.
 
 Treat the directory containing this file as the repository control root. If the runnable application lives in a child directory one level down, keep the governance review anchored to the existing `docs/cgr/` directory at the control root.
 
@@ -51,17 +57,36 @@ You are reviewing the live solution documents for this repository for governance
 2. Use `docs/cgr/` under that control root as the authoritative location for MRD, PRD, ESD, and CGR artifacts.
 3. If the repo root does not contain `docs/cgr/`, look one level down for a child directory that does. If exactly one child directory qualifies, use that child as the effective project root for this review. If multiple child directories qualify, stop and ask the user which one to use.
 4. If the runnable application lives in a child directory one level down, keep the review output in the selected `docs/cgr/` directory instead of placing it inside the nested application folder.
-5. Read every live project `.md` file in the selected `docs/cgr/` directory, except `README.md`, any results file, and any `*_TEMPLATE.md` file unless the user explicitly asks to review templates.
-6. Ignore `README.md` and any `*_TEMPLATE.md` file unless the user explicitly asks to review the template itself.
-7. Classify each live artifact by type based on its filename prefix: MRD, PRD, or ESD.
-8. Determine the current stage based on which live documents exist:
+5. Read source materials used for authoring and improvement:
+   - `seed.md` at repo root, if present.
+   - relevant markdown files under `docs/reference/`, if present.
+   - any raw MRD, PRD, or ESD-like artifacts found in `docs/reference/` that can be refactored into `docs/cgr/`.
+6. Determine workflow mode:
+   - Bootstrap mode: no live MRD, PRD, or ESD exists in `docs/cgr/`.
+   - Improve mode: one or more live MRD, PRD, or ESD artifacts already exist in `docs/cgr/`.
+7. In Bootstrap mode, generate best-practice draft artifacts in `docs/cgr/` before running evaluation:
+   - Prefer existing naming conventions if obvious.
+   - If naming is unknown, create draft files as:
+     - `MRD_<PROJECT>_v0-draft.md`
+     - `PRD_<PROJECT>_v0-draft.md`
+     - `ESD_<PROJECT>_v0-draft.md`
+   - Use `seed.md`, `docs/reference/`, and template structure when present.
+   - If core marketing or product best-practice structure is missing from repository sources, augment with reputable external public sources and clearly mark externally-derived assumptions.
+8. In Improve mode, treat existing MRD, PRD, and ESD artifacts as the base and improve them using:
+   - current user instructions in chat,
+   - new or changed materials in `docs/reference/`,
+   - updates from `seed.md` when relevant.
+9. Read every live project `.md` file in the selected `docs/cgr/` directory, except `README.md`, any results file, and any `*_TEMPLATE.md` file unless the user explicitly asks to review templates.
+10. Ignore `README.md` and any `*_TEMPLATE.md` file unless the user explicitly asks to review the template itself.
+11. Classify each live artifact by type based on its filename prefix: MRD, PRD, or ESD.
+12. Determine the current stage based on which live documents exist:
    - MRD + PRD only (no ESD) = project is in EVT
    - MRD + PRD + ESD = project is at DVT gate or beyond
-9. Evaluate each live document against the applicable rules for its type (see sections below).
-10. In the Executive Summary, state which stage the project appears to be in and what's needed to advance.
-11. Before writing results, detect whether this is the first CGR run by checking whether `docs/cgr/CGR-results.md` already exists under the selected project root.
-12. Produce a single results file: `docs/cgr/CGR-results.md` under the selected project root.
-13. After the review:
+13. Evaluate each live document against the applicable rules for its type (see sections below).
+14. In the Executive Summary, state which stage the project appears to be in and what's needed to advance.
+15. Before writing results, detect whether this is the first CGR run by checking whether `docs/cgr/CGR-results.md` already exists under the selected project root.
+16. Produce a single results file: `docs/cgr/CGR-results.md` under the selected project root.
+17. After the review:
    - If this is the first CGR run, remove `docs/cgr/MRD_TEMPLATE.md` and `docs/cgr/PRD_TEMPLATE.md` if they are still present
    - If a live ESD artifact exists and `docs/cgr/ESD_TEMPLATE.md` is still present, remove it as post-review cleanup
    - If operating read-only, call out each stale template explicitly instead of deleting it
@@ -265,6 +290,10 @@ vendor selection not covered anywhere, no document addresses rollback]
 ## Assumptions and Open Questions
 
 [Only if documents truly lack needed info]
+
+## External Source Notes
+
+[Only if external public sources were used for bootstrap or improvement. List source names or URLs and what was used.]
 ```
 
 ---
@@ -376,6 +405,7 @@ Recommended rerun triggers:
 
 - Be direct and practical.
 - Do not invent approvals or processes that are not present in the documents. If missing, mark as missing.
+- If external sources are used, do not treat them as project-specific facts. Mark them as best-practice guidance and call out assumptions.
 - Use each document's terminology where possible.
 - Plain language, no filler.
 - Mark rules as N/A when they genuinely do not apply to the document type.

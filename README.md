@@ -113,6 +113,8 @@ These are bootstrap files only. On the first CGR run, remove `MRD_TEMPLATE.md` a
 
 When a governance review runs, save the output as `docs/cgr/CGR-results.md`.
 
+Chat shortcut: in AI chat, type `CGR` to run the CGR workflow from `CGR.md`.
+
 Optional scoring extension: teams that want numeric governance tracking can derive a scorecard from `docs/cgr/CGR-results.md` and save it as `docs/cgr/score.md`.
 
 For seeded projects, teams can bootstrap governance drafts from `seed.md` and `docs/reference/` using `.github/prompts/cgr-seed-to-cgr.prompt.md`, then iteratively improve with `.github/prompts/cgr-iterate.prompt.md` using `docs/cgr/CGR-results.md` and `docs/cgr/score.md`.
