@@ -304,6 +304,12 @@ If you do not want to use an agent prompt, run the installer directly:
 # Chat-only equivalent of NewProject.bat (run from project root)
 pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -ApiFirst -OrganizeExisting -InitGit -SeedPath .\atlas_ai -RemoveSeed
 
+# Update an older atlas project to the latest kit (safe refresh + verification + self-delete)
+pwsh -File .\atlas_ai\updateatlas.ps1 -ProjectRoot .
+
+# Batch wrapper for the updater
+.\atlas_ai\UpdateAtlas.bat
+
 # Basic -- core workflow and scaffold only
 pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold
 
@@ -377,6 +383,111 @@ pwsh -File .\scripts\migrate-layout-v2.ps1 -RepoRoot . -WhatIf
 ```
 
 This migration is idempotent and safe to re-run.
+
+### One-step updater for older atlas projects
+
+If your repository was created with an older atlas kit, run:
+
+```powershell
+pwsh -File .\atlas_ai\updateatlas.ps1 -ProjectRoot .
+```
+
+What it does:
+- reviews the current project structure and detects optional components already in use (`PS.md`, `CGR.md`, `.github/skills`)
+- runs git safety preflight in git repos (clean working tree, fetch and sync check against upstream when available)
+- creates a rollback tag before making changes (default behavior)
+- refreshes core instruction files with `-Force` so old kit logic is updated
+- runs a non-destructive scaffold pass (no `-Force`) plus installer verification
+- runs legacy layout migration when needed (`docs/projects` and `docs/reference/*-patterns`)
+- performs post-update checks for required files and migration completion
+- removes updater seed artifacts after a successful run by default
+
+Useful options:
+- `-SourcePath "C:\path\to\atlas_ai"` to use a local kit instead of downloading from GitHub
+- `-SkipLayoutMigration` to skip path migration even if legacy paths are detected
+- `-SkipGitSafetyChecks` to bypass clean-tree and upstream sync preflight (not recommended)
+- `-SkipGitFetch` to skip `git fetch --prune origin` during preflight
+- `-NoRollbackTag` to skip creating the pre-update rollback tag
+- `-PushRollbackTag` to push the rollback tag to `origin` for team-visible rollback
+- `-KeepSeedArtifacts` to keep the copied `atlas_ai` folder after success
+- `-NoSelfDelete` to keep the updater script after success
+- `-WhatIf` to preview actions
+
+Windows batch wrapper:
+
+```bat
+.\atlas_ai\UpdateAtlas.bat
+```
+
+`UpdateAtlas.bat` auto-selects `ProjectRoot` by location:
+- if the wrapper is inside an `atlas_ai` folder, it targets the parent folder
+- otherwise it targets the wrapper's current folder
+
+The wrapper forwards any arguments to the PowerShell updater, for example:
+
+```bat
+.\atlas_ai\UpdateAtlas.bat -WhatIf -NoSelfDelete
+```
+
+Quick checklist:
+1. Put `atlas_ai` in the old project root (copy, symlink, or junction).
+2. Clean your git working tree (`git status` should be clean).
+3. Preview: `.\atlas_ai\UpdateAtlas.bat -WhatIf`
+4. Run update: `.\atlas_ai\UpdateAtlas.bat`
+5. Optional team rollback tag: `.\atlas_ai\UpdateAtlas.bat -PushRollbackTag`
+6. Review diff and commit.
+
+### UpdateAtlas.bat step by step
+
+Prerequisite:
+- This flow assumes your old project has an `atlas_ai` folder at project root (copied kit or symlink/junction).
+
+1. Copy or link `atlas_ai` into your old project root if it is not already present.
+2. Commit or stash your current work so the repository is clean.
+3. Open a terminal in the project root (the folder that contains `atlas_ai`).
+4. Run a preview first:
+
+```bat
+.\atlas_ai\UpdateAtlas.bat -WhatIf
+```
+
+5. Run the real update:
+
+```bat
+.\atlas_ai\UpdateAtlas.bat
+```
+
+6. Optional, create and push a team-visible rollback tag before update:
+
+```bat
+.\atlas_ai\UpdateAtlas.bat -PushRollbackTag
+```
+
+7. Review changes:
+
+```powershell
+git status
+git diff
+```
+
+8. If you need rollback:
+
+```powershell
+git tag --list "pre-updateatlas-*"
+git reset --hard <tag-name>
+```
+
+Cleanup behavior after success:
+- By default, `updateatlas` removes seed artifacts used only for update, including the copied `atlas_ai` folder it ran from, when that path is not tracked by git.
+- If that seed path appears tracked by git, cleanup is skipped for safety and a warning is printed.
+- Use `-KeepSeedArtifacts` to always keep the copied `atlas_ai` folder.
+- Use `-NoSelfDelete` to keep updater artifacts for debugging, which also skips automatic seed artifact cleanup.
+
+Placement guidance:
+- `atlas_ai.ps1` stays at the kit root because existing setup flows and docs call it there.
+- `updateatlas.ps1` can live at kit root or under `scripts/`. `UpdateAtlas.bat` checks both locations.
+- `updateatlas.ps1` is intended as a one-shot updater and self-deletes by default on success.
+- `scripts/migrate-layout-v2.ps1` is a reusable migration utility and should remain in `scripts/`.
 
 Or manually copy the files you want from `atlas_ai/` to the repository root:
 - `.github/copilot-instructions.md` -- always
