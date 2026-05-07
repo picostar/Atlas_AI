@@ -52,4 +52,5 @@ description: 'PowerShell coding conventions. Use when writing or reviewing Power
 - Do not use aliases in scripts (`ls`, `dir`, `%`, `?`) -- use full cmdlet names
 - Do not use `Write-Output` for status messages -- it pollutes the pipeline
 - Do not suppress all errors with `-ErrorAction SilentlyContinue` unless you handle the error case
-- Before asking the user for credentials, tokens, keys, or other secret values, check `accounts.txt` at the repository root first if it exists
+- Before asking the user for credentials, tokens, keys, or other secret values, check `secrets.md` at the repository root first if it exists
+- Do not place secrets in any other file by default; if the user requests an override, warn first and proceed only after confirmation

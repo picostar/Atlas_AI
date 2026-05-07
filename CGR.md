@@ -61,6 +61,7 @@ You are reviewing the live solution documents for this repository for governance
    - `seed.md` at repo root, if present.
    - relevant markdown files under `docs/reference/`, if present.
    - any raw MRD, PRD, or ESD-like artifacts found in `docs/reference/` that can be refactored into `docs/cgr/`.
+   - for local secrets, check `secrets.md` at repo root if needed, and do not place secrets in governance artifacts.
 6. Determine workflow mode:
    - Bootstrap mode: no live MRD, PRD, or ESD exists in `docs/cgr/`.
    - Improve mode: one or more live MRD, PRD, or ESD artifacts already exist in `docs/cgr/`.

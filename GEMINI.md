@@ -2,6 +2,8 @@
 
 Read `.github/copilot-instructions.md` first. That file is the source of truth.
 
+For local secrets, use `secrets.md` at repo root only. Do not place secrets in any other file by default, and only use an alternate location after explicit user override plus warning.
+
 Then read `ATLAS.md` for the default development process.
 
 If `patterns/stack-patterns/active-stack-pattern.md` exists and the task affects architecture, hosting, deployment, infrastructure, or platform selection, treat it as the current stack baseline.

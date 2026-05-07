@@ -57,8 +57,10 @@ Refer to [ATLAS.md](../../../ATLAS.md) for the full process rules. Key steps:
 - Completed work goes to retro.md only
 - Use DT for planned tasks, RDT for unplanned interrupts
 - Every task needs both a `Smoketest:` section and a `UAT:` section before it can be closed
+- In API-first mode, every task should include an API result when feasible, and smoketest should verify endpoints plus OpenAPI or Swagger docs when feasible
 - For non-user-facing work, the `UAT:` section should explicitly say `Not UAT-eligible` and describe the internal validation
 - Every completed task needs a task-level git commit
 - If a GitHub remote exists, every completed task needs a GitHub follow-up step
 - Break down 8-CU tasks when practical
-- Before asking the user for credentials, tokens, keys, or other secret values, check `accounts.txt` at the repository root first if it exists
+- Before asking the user for credentials, tokens, keys, or other secret values, check `secrets.md` at the repository root first if it exists
+- Do not place secrets in any other file by default; if the user requests an override, warn first and proceed only after confirmation

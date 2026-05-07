@@ -167,6 +167,19 @@ if "%UX_PATTERN_CHOICE%"=="1" (
     echo  Invalid UX pattern choice, defaulting to none.
 )
 
+echo.
+echo  -- API First --
+echo.
+echo  API-first means each DT should produce an API result when feasible,
+echo  and smoketests should verify API endpoints plus OpenAPI or Swagger docs.
+echo  This is enabled by default.
+echo.
+set /p DO_API_FIRST=Enable API-first defaults? [y/n, default y]: 
+if not defined DO_API_FIRST set "DO_API_FIRST=y"
+
+set "API_FIRST_FLAG=-ApiFirst"
+if /i "%DO_API_FIRST%"=="n" set "API_FIRST_FLAG=-NoApiFirst"
+
 set "GITHUB_FLAG="
 set "GITHUB_OWNER_FLAG="
 if /i "%DO_GITHUB%"=="y" set "GITHUB_FLAG=-GitHubRepo "%PROJECT_NAME%""
@@ -217,7 +230,7 @@ if not defined PSCMD (
     exit /b 1
 )
 
-%PSCMD% -ExecutionPolicy Bypass -File "%DOIT_DIR%\atlas_ai.ps1" -IncludeScaffold -InitGit -SeedPath "%DOIT_DIR%" -RemoveSeed %PS_FLAG% %CGR_FLAG% %ORG_FLAG% %SKILLS_FLAG% %SKILLS_SRC_FLAG% %STACK_PATTERN_FLAG% %UX_PATTERN_FLAG% %GITHUB_FLAG% %GITHUB_OWNER_FLAG% %PUBLIC_FLAG%
+%PSCMD% -ExecutionPolicy Bypass -File "%DOIT_DIR%\atlas_ai.ps1" -IncludeScaffold %API_FIRST_FLAG% -InitGit -SeedPath "%DOIT_DIR%" -RemoveSeed %PS_FLAG% %CGR_FLAG% %ORG_FLAG% %SKILLS_FLAG% %SKILLS_SRC_FLAG% %STACK_PATTERN_FLAG% %UX_PATTERN_FLAG% %GITHUB_FLAG% %GITHUB_OWNER_FLAG% %PUBLIC_FLAG%
 
 if errorlevel 1 (
     echo.

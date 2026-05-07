@@ -7,7 +7,7 @@ agent: "agent"
 
 Review this repository for ATLAS alignment and drift.
 
-Before asking the user for credentials, tokens, keys, or other secret values, check `accounts.txt` at the repository root first if it exists.
+Before asking the user for credentials, tokens, keys, or other secret values, check `secrets.md` at the repository root first if it exists. Do not place secrets in any other file by default. If the user explicitly requests an override, warn about commit and leakage risk first, then proceed only after confirmation.
 
 Use these files as the baseline:
 - [Source of truth](../copilot-instructions.md)
@@ -48,6 +48,7 @@ Perform this review in order:
 - `backlog.md` should hold future work, not current execution detail.
 - Smoketest expectations should use CLI commands or scripts.
 - Every task should have a `UAT:` section. If user validation is not needed, it should explicitly say `Not UAT-eligible` and name the internal validation.
+- If `docs/reference/api-first-policy.md` exists and API-first mode is enabled, every DT or RDT should include an API result when feasible and a smoketest that verifies API endpoints plus OpenAPI or Swagger docs when feasible.
 
 4. Check current readiness against ATLAS.
 - Are we ready to begin the next task?

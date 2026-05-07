@@ -7,7 +7,7 @@ agent: "agent"
 
 Review this repository for end-of-session ATLAS closeout readiness.
 
-Before asking the user for credentials, tokens, keys, or other secret values, check `accounts.txt` at the repository root first if it exists.
+Before asking the user for credentials, tokens, keys, or other secret values, check `secrets.md` at the repository root first if it exists. Do not place secrets in any other file by default. If the user explicitly requests an override, warn about commit and leakage risk first, then proceed only after confirmation.
 
 Use these files as the baseline:
 - [Source of truth](../copilot-instructions.md)
@@ -32,6 +32,7 @@ Perform this review in order:
 - Look for missing required DT or RDT commits when work appears completed.
 - Look for missing `UAT:` sections, missing UAT handoff for user-facing work, or missing explicit `Not UAT-eligible` notes for internal work.
 - Look for missing required GitHub follow-up when a remote exists.
+- If `docs/reference/api-first-policy.md` exists and API-first mode is enabled, verify each completed DT or RDT includes an API result when feasible and a smoketest that verifies API endpoints and OpenAPI or Swagger docs when feasible.
 - Look for completed work still left in `devcycle.md`.
 - Look for work that should have been recorded in `retro.md`.
 - Look for shipped or current-state changes that should be reflected in `status.md`.

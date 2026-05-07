@@ -21,9 +21,11 @@
 - Keep reusable UX-pattern choices in `patterns/ux-patterns/`, not in `ATLAS.md` or the thin agent pointer files.
 
 ## Local Secrets File
-- Use `accounts.txt` at the repository root for local secure secrets, credentials, and keys.
-- Keep `accounts.txt` gitignored and local-only.
-- Before asking the user for credentials, tokens, keys, or other secret values, check `accounts.txt` first if it exists.
+- Use `secrets.md` at the repository root for local secure secrets, credentials, and keys.
+- Keep `secrets.md` gitignored and local-only.
+- Do not place secrets in any other file by default.
+- If the user explicitly asks for a different location, warn about commit and leakage risk first, then proceed only after confirmation.
+- Before asking the user for credentials, tokens, keys, or other secret values, check `secrets.md` first if it exists.
 
 ## Split Repo Layout Handling
 - Some repositories keep control docs and AI instruction files at the repo root while the runnable application lives in a child directory one level down.
@@ -74,7 +76,7 @@
 - If the user says `CGR`, treat it as a request to run the governance workflow defined in `CGR.md`.
 - For `CGR`: if live MRD, PRD, and ESD artifacts do not exist in `docs/cgr/`, bootstrap draft docs from `seed.md` and `docs/reference/` first, then run CGR and write `docs/cgr/CGR-results.md`.
 - For `CGR`: if live MRD, PRD, or ESD artifacts already exist in `docs/cgr/`, use them as the base and improve them using user instructions plus any new materials in `seed.md` or `docs/reference/`.
-- If the user says `newproject`, treat it as a request to run the non-interactive atlas_ai installer flow from the repository root using: `pwsh -File ./atlas_ai/atlas_ai.ps1 -IncludeScaffold -OrganizeExisting -InitGit -SeedPath ./atlas_ai -RemoveSeed`.
+- If the user says `newproject`, treat it as a request to run the non-interactive atlas_ai installer flow from the repository root using: `pwsh -File ./atlas_ai/atlas_ai.ps1 -IncludeScaffold -ApiFirst -OrganizeExisting -InitGit -SeedPath ./atlas_ai -RemoveSeed`.
 - Before acting, perform a brief ATLAS readiness check. Review the current state, confirm the next task is clear, and look for obvious blockers or missing planning context.
 - Use `docs/agile/status.md` for current state, `docs/agile/devcycle.md` for the active task, and `docs/agile/backlog.md` if the active cycle is empty or unclear.
 - If the repository appears to be a scaffold or template, use the next clear maintenance or adoption task rather than expecting an active live-project devcycle.
@@ -96,6 +98,7 @@
 - Work on one dev task at a time.
 - Smoke test each task with CLI commands or a script before considering it complete.
 - Every devtask and reset devtask must include both a `Smoketest:` section and a `UAT:` section. If a task is not user-facing, the `UAT:` section must explicitly say that it is not UAT-eligible and state the required internal validation.
+- In API-first mode, every devtask and reset devtask should include an API result when feasible, and `Smoketest:` should include API endpoint verification plus OpenAPI or Swagger documentation verification when feasible.
 - After each completed devtask, create a task-level git commit.
 - After each completed devtask, if a GitHub remote exists, push the branch and perform the repo's GitHub follow-up step, typically creating or updating a pull request. If no remote exists, record that blocker clearly.
 - Keep completed work out of the active task list. The active list is a burn-down, not a historical log.

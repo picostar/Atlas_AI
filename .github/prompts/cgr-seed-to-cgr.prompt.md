@@ -7,7 +7,7 @@ agent: "agent"
 
 Create or refresh governance drafts from startup inputs, then run CGR review outputs.
 
-Before asking the user for credentials, tokens, keys, or other secret values, check `accounts.txt` at the repository root first if it exists.
+Before asking the user for credentials, tokens, keys, or other secret values, check `secrets.md` at the repository root first if it exists. Do not place secrets in any other file by default. If the user explicitly requests an override, warn about commit and leakage risk first, then proceed only after confirmation.
 
 Use these files as the baseline:
 - [Source of truth](../copilot-instructions.md)

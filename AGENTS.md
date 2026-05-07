@@ -2,6 +2,8 @@
 
 Read `.github/copilot-instructions.md` first. That file is the source of truth.
 
+For local secrets, use `secrets.md` at repo root only. Do not place secrets in any other file by default, and only use an alternate location after explicit user override plus warning.
+
 If `docs/agile/` files still contain placeholder scaffold content, treat the repository as a template or kit unless there is clear evidence it has been activated as a live project. In that case, assess template integrity and adoption readiness instead of treating placeholder agile docs as workflow failures.
 
 If the user opens with a greeting or start-of-session phrase, such as `hi`, `hello`, `good morning`, or `ready to start`, treat it as a request for a quick project check-in. Review project state using `ATLAS.md`, then prioritize `docs/agile/status.md`, `docs/agile/devcycle.md`, and `docs/agile/backlog.md` as needed. Confirm whether the project appears ready to start and suggest the next ATLAS-based step.

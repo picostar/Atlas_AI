@@ -14,7 +14,8 @@ Goal: TBD
 ### DT1 -- Example Devtask
 - Goal: Replace this with the real task goal.
 - eMOE: 2 CU
-- Smoketest: Exact CLI command or script path, plus the expected pass result.
+- API Result: If feasible, describe API endpoints or contract changes. If not feasible, say No API change.
+- Smoketest: Exact CLI command or script path, plus the expected pass result. When API Result is in scope, include endpoint verification and OpenAPI or Swagger documentation verification.
 - UAT: Either state what the user should test, or say `Not UAT-eligible` and name the required internal validation.
 
 ## Reset
@@ -26,7 +27,8 @@ Reset devtasks use the `RDT` prefix and are inserted ahead of the remaining unfi
 ### RDT1 -- Example Reset Devtask
 - Goal: Replace or remove.
 - eMOE: 1 CU
-- Smoketest: Exact CLI command or script path, plus the expected pass result.
+- API Result: If feasible, describe API endpoints or contract changes. If not feasible, say No API change.
+- Smoketest: Exact CLI command or script path, plus the expected pass result. When API Result is in scope, include endpoint verification and OpenAPI or Swagger documentation verification.
 - UAT: Either state what the user should test, or say `Not UAT-eligible` and name the required internal validation.
 
 ## Notes

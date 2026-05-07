@@ -11,6 +11,7 @@ Desktop.ini
 .env
 .env.local
 .env.*.local
+secrets.md
 accounts.txt
 
 # Local scratch notes

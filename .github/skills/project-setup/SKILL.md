@@ -42,4 +42,5 @@ Refer to [ATLAS.md](../../../ATLAS.md) for the full doc structure table. Key rul
 - Live state in `docs/agile/status.md`
 - Keep reusable instruction files generic -- no project-specific values
 - No secrets in committed files
-- Before asking the user for credentials, tokens, keys, or other secret values, check `accounts.txt` at the repository root first if it exists
+- Before asking the user for credentials, tokens, keys, or other secret values, check `secrets.md` at the repository root first if it exists
+- Do not place secrets in any other file by default; if the user requests an override, warn first and proceed only after confirmation

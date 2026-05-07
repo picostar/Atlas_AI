@@ -58,6 +58,7 @@ In that layout:
 
 ### Startup seed file
 - `seed.md` -- optional startup brief and usage notes for adoption runs. Keep high-level project intent here, then move it to `docs/reference/` during `-OrganizeExisting`.
+- `secrets.md` -- local-only secrets note file stored at repo root and ignored by git. Keep credentials and keys here, not in committed files.
 
 This `README.md` is for the kit itself. It is not copied into the target repository by the installer.
 
@@ -103,6 +104,14 @@ When that file exists, the atlas_ai instruction stack reads it before UX-sensiti
 
 `NewProject.bat` now prompts for a UX pattern choice during setup. You can choose a template or none.
 If a template is selected, setup creates `patterns/ux-patterns/active-ux-pattern.md` from that template.
+
+### API-first policy support
+
+`NewProject.bat` prompts for API-first defaults and uses Yes as the default.
+
+The installer writes `docs/reference/api-first-policy.md` to record the selected mode.
+
+When API-first mode is enabled, each DT or RDT should produce an API result when feasible, and smoketests should verify API endpoints plus OpenAPI or Swagger docs when feasible.
 
 ### Project document templates (installed with -IncludePS or -IncludeCGR)
 - `docs/cgr/MRD_TEMPLATE.md` -- market or business requirements template
@@ -292,10 +301,16 @@ If you do not want to use an agent prompt, run the installer directly:
 
 ```powershell
 # Chat-only equivalent of NewProject.bat (run from project root)
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -OrganizeExisting -InitGit -SeedPath .\atlas_ai -RemoveSeed
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -ApiFirst -OrganizeExisting -InitGit -SeedPath .\atlas_ai -RemoveSeed
 
 # Basic -- core workflow and scaffold only
 pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold
+
+# Include scaffold with API-first defaults explicitly enabled
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -ApiFirst
+
+# Include scaffold and explicitly disable API-first defaults
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -NoApiFirst
 
 # Add project stages
 pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -IncludePS

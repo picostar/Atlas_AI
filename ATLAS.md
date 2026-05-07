@@ -46,6 +46,7 @@ Every dev task needs a repeatable smoketest before it can be treated as complete
 - CLI or script only: manual-only validation does not count as a smoketest
 - Script preferred: when practical, add a reusable script under `scripts/`
 - Separation of concerns: manual user validation belongs in `UAT:`, not `Smoketest:`
+- In API-first mode, include API endpoint verification and OpenAPI or Swagger documentation verification when feasible
 - Pass/fail: the smoketest must have a clear outcome that can be recorded in the retrospective log
 - No skip: if the smoketest fails, the task is still open unless the failure is captured as an explicit blocker
 - Every DT and RDT entry must include a `Smoketest:` section
@@ -87,6 +88,7 @@ atlas_ai includes a starter scaffold for these locations. Use it as a bootstrap,
 | `PRD_*.md` | `docs/cgr/` | Product requirements and acceptance criteria (optional, see `PS.md`) | Before EVT, when scope changes |
 | `ESD_*.md` | `docs/cgr/` | Engineering design and operations model (optional, see `PS.md`) | Draft in EVT, complete before DVT |
 | `CGR-results.md` | `docs/cgr/` | Governance review output and tracked remediation gaps | After each CGR run |
+| `api-first-policy.md` | `docs/reference/` | API-first mode intent and validation expectations | At setup and when policy changes |
 
 `devcycle.md` must stay clean. Completed items belong in `retro.md`, not in the active list.
 
@@ -142,6 +144,7 @@ Use Complexity Units, or CU, to estimate decision complexity, unknowns, and depe
 - Record completed work in `retro.md`.
 - Smoke test with CLI commands or a script before moving on.
 - Every DT and RDT must include both `Smoketest:` and `UAT:` sections.
+- In API-first mode, every DT and RDT should include an API result when feasible.
 - Create one small, descriptive commit per completed devtask when the repo uses git.
 - If the repository has a GitHub remote, push the branch and complete the corresponding GitHub follow-up after each completed devtask.
 
@@ -176,6 +179,7 @@ Reset devtasks are short, unplanned tasks that unblock or redirect the current d
 
 - Store non-secret configuration in a repo config file such as `project-config.json`.
 - Store secrets in environment variables or a secrets manager, never in committed files.
+- If local secret notes are needed, use `secrets.md` at repo root and keep it gitignored.
 - Scripts should read from config at runtime instead of hardcoding environments, URLs, repo names, or tenant values.
 
 ### CI/CD Toolchain
@@ -226,6 +230,7 @@ Lessons learned: ...
 ### Repo Secrets And `.gitignore`
 
 - Ignore `.env`, local overrides, generated secrets, and `archive/`.
+- Ignore `secrets.md` for local-only secret notes and keep it out of commits.
 - Keep local override patterns explicit, such as `project-config.local.json`.
 - Store CI/CD secrets in the platform secret store, not in committed files.
 
