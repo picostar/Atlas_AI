@@ -57,6 +57,11 @@ Findings:
 Required Before Pause:
 - List only the items that should be completed before the session ends.
 
+API Result Coverage:
+- State one of: Pass, Partial, Not Applicable.
+- If Pass or Partial, list which DT or RDT entries had API results and whether smoketests verified endpoints plus OpenAPI or Swagger docs when feasible.
+- If Not Applicable, state why no API result was feasible.
+
 GitHub Follow-Up:
 - State whether a required push or pull request update is still pending. If no remote exists or no GitHub step is required, say so.
 

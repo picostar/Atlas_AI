@@ -71,6 +71,11 @@ Findings:
 Recommended Fixes:
 - List the minimal changes needed to restore alignment.
 
+API Result Coverage:
+- State one of: Pass, Partial, Not Applicable.
+- If Pass or Partial, list which DT or RDT entries had API results and whether smoketests verified endpoints plus OpenAPI or Swagger docs when feasible.
+- If Not Applicable, state why no API result was feasible.
+
 Next Step:
 - State the single best next action using the ATLAS dev cycle.
 
