@@ -61,6 +61,9 @@
 ## Startup And Greeting Behavior
 - If the user opens with a greeting or start-of-session phrase, such as `hi`, `hello`, `good morning`, or `ready to start`, treat it as a request for a quick project check-in.
 - Review where the project stands before proposing work. Use the read order above, then prioritize `docs/agile/status.md` for current state, `docs/agile/devcycle.md` for active work, and `docs/agile/backlog.md` if the active cycle is empty or unclear.
+- If the user opens with `atlas`, treat it as the same startup check-in flow.
+- During startup check-in, if `CGR.md` is present and governance is enabled for this project, check whether live MRD, PRD, and ESD artifacts exist in `docs/cgr/`.
+- If governance is enabled and live MRD, PRD, or ESD artifacts are missing, ask a single yes or no question: "Do you want to run CGR bootstrap now to generate draft MRD, PRD, and ESD from seed and reference materials?"
 - If the repository appears to be a scaffold or template, review template integrity and adoption readiness instead of expecting live project status.
 - Confirm whether the project appears ready to begin the next task. Mention obvious blockers, missing planning artifacts, or stale status if they affect readiness.
 - Suggest the next step using the ATLAS dev cycle loop. Prefer the next active dev task, or if none is active, recommend pulling the next priority into a new cycle.
