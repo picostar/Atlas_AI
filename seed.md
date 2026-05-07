@@ -19,6 +19,12 @@ Optional stack pattern selection:
 pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -OrganizeExisting -InitGit -SeedPath .\atlas_ai -RemoveSeed -StackPattern "sp-01-functions-tables-swa-keyvault.md"
 ```
 
+Optional UX pattern selection:
+
+```powershell
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -OrganizeExisting -InitGit -SeedPath .\atlas_ai -RemoveSeed -UxPattern "uxp-01-modern-app-shell-layout.md"
+```
+
 You can also just say `newproject` in AI chat and the agent should run this same command flow.
 
 4. With -OrganizeExisting, startup files like this one are moved to docs/reference.
@@ -40,7 +46,7 @@ Primary outcomes:
 Current implementation scope:
 - Installer and setup flow (atlas_ai.ps1 and NewProject.bat).
 - Root instruction stack (.github/copilot-instructions.md, ATLAS.md, AGENTS.md, CLAUDE.md).
-- Docs scaffold under docs/agile, docs/projects, docs/reference, scripts, and archive.
+- Docs scaffold under docs/agile, docs/cgr, docs/reference, patterns, scripts, and archive.
 - Skill scaffolding under .github/skills.
 
 Near-term focus:

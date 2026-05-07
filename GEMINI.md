@@ -1,0 +1,17 @@
+# Gemini Instructions
+
+Read `.github/copilot-instructions.md` first. That file is the source of truth.
+
+Then read `ATLAS.md` for the default development process.
+
+If `patterns/stack-patterns/active-stack-pattern.md` exists and the task affects architecture, hosting, deployment, infrastructure, or platform selection, treat it as the current stack baseline.
+
+If `patterns/ux-patterns/active-ux-pattern.md` exists and the task affects layout, navigation, page hierarchy, interaction flow, or UI generation, treat it as the current UX baseline.
+
+Read `PS.md` only when the project uses formal release stages (EVT, DVT, PVT, GA) and document gates (MRD, PRD, ESD).
+
+Read `CGR.md` only when governance review or stage-gate compliance review is requested.
+
+If your Gemini environment does not auto-load repository instruction files, load this file, `.github/copilot-instructions.md`, and `ATLAS.md` manually at session start.
+
+Response guidelines are defined in `.github/copilot-instructions.md`. Do not duplicate them here.

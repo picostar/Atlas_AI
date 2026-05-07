@@ -12,7 +12,8 @@ Before asking the user for credentials, tokens, keys, or other secret values, ch
 Use these files as the baseline:
 - [Source of truth](../copilot-instructions.md)
 - [ATLAS process](../../ATLAS.md)
-- [Active stack pattern](../../docs/reference/stack-patterns/active-stack-pattern.md), only if the file exists and the review touches architecture, hosting, deployment, infrastructure, or platform selection
+- [Active stack pattern](../../patterns/stack-patterns/active-stack-pattern.md), only if the file exists and the review touches architecture, hosting, deployment, infrastructure, or platform selection
+- [Active UX pattern](../../patterns/ux-patterns/active-ux-pattern.md), only if the file exists and the review touches layout, navigation, page hierarchy, interaction flow, or UI generation
 - [Claude pointer](../../CLAUDE.md)
 - [Agents pointer](../../AGENTS.md)
 - [Current status](../../docs/agile/status.md)
@@ -28,13 +29,14 @@ Perform this review in order:
 - Verify `.github/copilot-instructions.md` is the source of truth.
 - Verify `CLAUDE.md` and `AGENTS.md` still point back to the source of truth and have not drifted materially.
 - Verify startup, launch, and sign-off behaviors are present and still match the intended workflow.
-- If the review touches architecture, hosting, deployment, infrastructure, or platform selection and `docs/reference/stack-patterns/active-stack-pattern.md` exists, treat it as the current stack baseline and call out drift from it.
+- If the review touches architecture, hosting, deployment, infrastructure, or platform selection and `patterns/stack-patterns/active-stack-pattern.md` exists, treat it as the current stack baseline and call out drift from it.
+- If the review touches layout, navigation, page hierarchy, interaction flow, or UI generation and `patterns/ux-patterns/active-ux-pattern.md` exists, treat it as the current UX baseline and call out drift from it.
 
 2. Confirm the repository structure still matches the intended ATLAS layout.
 - Check for the expected root files.
-- Check `docs/agile/`, `docs/projects/`, `docs/reference/`, `scripts/`, and `archive/`.
+- Check `docs/agile/`, `docs/cgr/`, `docs/reference/`, `patterns/`, `scripts/`, and `archive/`.
 - Check `.github/skills/<name>/SKILL.md` if workspace skills are in use.
-- Call out stale `*_TEMPLATE.md` files left in `docs/projects/` after live project artifacts exist.
+- Call out stale `*_TEMPLATE.md` files left in `docs/cgr/` after live project artifacts exist.
 - Call out anything missing, duplicated, misplaced, or stale.
 
 3. Confirm the active delivery documents are healthy.

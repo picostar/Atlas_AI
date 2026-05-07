@@ -134,5 +134,5 @@ Ownership grows with the project stage.
 - If the project uses governance review, run it before DVT and again before PVT.
 - Default naming convention: `MRD_<PROJECT>_v<X>.md`, `PRD_<PROJECT>_v<X>.md`, `ESD_<PROJECT>_v<X>.md`.
 - `*_TEMPLATE.md` files are bootstrap-only helpers, not live project artifacts.
-- On the first CGR run, remove `MRD_TEMPLATE.md` and `PRD_TEMPLATE.md` from `docs/projects/` if they are still present.
-- Once a live MRD, PRD, or ESD artifact exists, remove the matching `*_TEMPLATE.md` file from `docs/projects/`.
+- On the first CGR run, remove `MRD_TEMPLATE.md` and `PRD_TEMPLATE.md` from `docs/cgr/` if they are still present.
+- Once a live MRD, PRD, or ESD artifact exists, remove the matching `*_TEMPLATE.md` file from `docs/cgr/`.

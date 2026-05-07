@@ -12,7 +12,8 @@ Before asking the user for credentials, tokens, keys, or other secret values, ch
 Use these files as the baseline:
 - [Source of truth](../copilot-instructions.md)
 - [ATLAS process](../../ATLAS.md)
-- [Active stack pattern](../../docs/reference/stack-patterns/active-stack-pattern.md), only if the file exists and the session touched architecture, hosting, deployment, infrastructure, or platform selection
+- [Active stack pattern](../../patterns/stack-patterns/active-stack-pattern.md), only if the file exists and the session touched architecture, hosting, deployment, infrastructure, or platform selection
+- [Active UX pattern](../../patterns/ux-patterns/active-ux-pattern.md), only if the file exists and the session touched layout, navigation, page hierarchy, interaction flow, or UI generation
 - [Claude pointer](../../CLAUDE.md)
 - [Agents pointer](../../AGENTS.md)
 - [Current status](../../docs/agile/status.md)
@@ -25,7 +26,8 @@ Perform this review in order:
 1. Check whether the current work appears to follow ATLAS.
 - If the agile docs still contain placeholder scaffold content, treat the repository as a reusable kit or template unless there is clear evidence it is a live project.
 - In scaffold or template mode, do not treat placeholder agile docs as closeout failures by themselves.
-- If the session touched architecture, hosting, deployment, infrastructure, or platform selection and `docs/reference/stack-patterns/active-stack-pattern.md` exists, confirm the current repo state still matches it or call out the variance.
+- If the session touched architecture, hosting, deployment, infrastructure, or platform selection and `patterns/stack-patterns/active-stack-pattern.md` exists, confirm the current repo state still matches it or call out the variance.
+- If the session touched layout, navigation, page hierarchy, interaction flow, or UI generation and `patterns/ux-patterns/active-ux-pattern.md` exists, confirm the current repo state still matches it or call out the variance.
 - Look for missing CLI or script smoketest confirmation.
 - Look for missing required DT or RDT commits when work appears completed.
 - Look for missing `UAT:` sections, missing UAT handoff for user-facing work, or missing explicit `Not UAT-eligible` notes for internal work.

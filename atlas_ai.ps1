@@ -15,7 +15,8 @@ param(
     [switch]$Force,
     [switch]$Verify,
     [string]$SeedPath,
-    [switch]$RemoveSeed
+    [switch]$RemoveSeed,
+    [string]$UxPattern
 )
 
 $templateRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -147,7 +148,7 @@ function Get-NtelioDestinationRoot {
     }
 
     if ($firstSegment -match '^(project|projects|product|requirements|design|architecture|adr|spec|specs)$') {
-        return 'docs/projects'
+        return 'docs/cgr'
     }
 
     if ($normalizedName -match '(^|[_\-.])(backlog|devcycle|status|retro|sprint|kanban)([_\-.]|$)') {
@@ -155,7 +156,7 @@ function Get-NtelioDestinationRoot {
     }
 
     if ($normalizedName -match '(^|[_\-.])(mrd|prd|esd|adr|rfc|requirements?|spec|specification|design|architecture|roadmap|proposal)([_\-.]|$)') {
-        return 'docs/projects'
+        return 'docs/cgr'
     }
 
     if ($normalizedName -match '(^|[_\-.])(archive|archived|legacy|old|deprecated|backup)([_\-.]|$)') {
@@ -388,8 +389,8 @@ function Resolve-StackPatternRelativePath {
 
     $candidates = [System.Collections.Generic.List[string]]::new()
     $candidates.Add($normalizedValue)
-    if (-not $normalizedValue.StartsWith("docs/reference/stack-patterns/stack-pattern-templates/", [System.StringComparison]::OrdinalIgnoreCase)) {
-        $candidates.Add("docs/reference/stack-patterns/stack-pattern-templates/$normalizedValue")
+    if (-not $normalizedValue.StartsWith("patterns/stack-patterns/stack-pattern-templates/", [System.StringComparison]::OrdinalIgnoreCase)) {
+        $candidates.Add("patterns/stack-patterns/stack-pattern-templates/$normalizedValue")
     }
 
     foreach ($candidate in ($candidates | Select-Object -Unique)) {
@@ -400,6 +401,41 @@ function Resolve-StackPatternRelativePath {
     }
 
     Write-Warning "Stack pattern template not found: $PatternValue"
+    return $null
+}
+
+function Resolve-UxPatternRelativePath {
+    param(
+        [string]$PatternValue
+    )
+
+    if ([string]::IsNullOrWhiteSpace($PatternValue)) {
+        return $null
+    }
+
+    $normalizedValue = ($PatternValue.Trim() -replace '\\', '/').Trim('/')
+    if ([string]::IsNullOrWhiteSpace($normalizedValue)) {
+        return $null
+    }
+
+    if ($normalizedValue -match '^(none|no|null|skip)$') {
+        return $null
+    }
+
+    $candidates = [System.Collections.Generic.List[string]]::new()
+    $candidates.Add($normalizedValue)
+    if (-not $normalizedValue.StartsWith("patterns/ux-patterns/ux-pattern-templates/", [System.StringComparison]::OrdinalIgnoreCase)) {
+        $candidates.Add("patterns/ux-patterns/ux-pattern-templates/$normalizedValue")
+    }
+
+    foreach ($candidate in ($candidates | Select-Object -Unique)) {
+        $candidatePath = Join-Path $templateRoot $candidate
+        if (Test-Path -LiteralPath $candidatePath) {
+            return $candidate
+        }
+    }
+
+    Write-Warning "UX pattern template not found: $PatternValue"
     return $null
 }
 
@@ -450,7 +486,13 @@ function Test-SeedTrackedInIndex {
 
 $filesToCopy = @(
     ".github/copilot-instructions.md",
+    ".github/TOOLING-ASSUMPTIONS.md",
+    ".github/TOOL-CAPABILITY-MATRIX.md",
+    ".github/FRONTMATTER-SCHEMA.md",
+    ".github/INSTRUCTION-MAINTENANCE.md",
     "CLAUDE.md",
+    "CHATGPT.md",
+    "GEMINI.md",
     "AGENTS.md",
     "ATLAS.md"
 )
@@ -468,19 +510,29 @@ $scaffoldFiles = @(
     "docs/agile/backlog.md",
     "docs/agile/status.md",
     "docs/agile/retro.md",
-    "docs/projects/README.md",
+    "docs/cgr/README.md",
     "docs/reference/README.md",
-    "docs/reference/stack-patterns/README.md",
+    "patterns/README.md",
+    "patterns/stack-patterns/README.md",
+    "patterns/ux-patterns/README.md",
     "scripts/README.md",
     "archive/README.md"
 )
 
-$stackPatternTemplateRoot = Join-Path $templateRoot "docs/reference/stack-patterns/stack-pattern-templates"
+$stackPatternTemplateRoot = Join-Path $templateRoot "patterns/stack-patterns/stack-pattern-templates"
 if (Test-Path $stackPatternTemplateRoot) {
     $stackPatternTemplateFiles = Get-ChildItem -Path $stackPatternTemplateRoot -Recurse -File | ForEach-Object {
         $_.FullName.Substring($templateRoot.Length + 1) -replace '\\', '/'
     }
     $scaffoldFiles += $stackPatternTemplateFiles
+}
+
+$uxPatternTemplateRoot = Join-Path $templateRoot "patterns/ux-patterns/ux-pattern-templates"
+if (Test-Path $uxPatternTemplateRoot) {
+    $uxPatternTemplateFiles = Get-ChildItem -Path $uxPatternTemplateRoot -Recurse -File | ForEach-Object {
+        $_.FullName.Substring($templateRoot.Length + 1) -replace '\\', '/'
+    }
+    $scaffoldFiles += $uxPatternTemplateFiles
 }
 
 # Discover skill folders and add all files within them
@@ -520,9 +572,9 @@ if ($IncludePS) {
 
 if ($IncludePS -or $IncludeCGR) {
     $filesToCopy += @(
-        "docs/projects/MRD_TEMPLATE.md",
-        "docs/projects/PRD_TEMPLATE.md",
-        "docs/projects/ESD_TEMPLATE.md"
+        "docs/cgr/MRD_TEMPLATE.md",
+        "docs/cgr/PRD_TEMPLATE.md",
+        "docs/cgr/ESD_TEMPLATE.md"
     )
 }
 
@@ -531,6 +583,7 @@ if ($IncludeScaffold) {
 }
 
 $resolvedStackPatternTemplate = Resolve-StackPatternRelativePath -PatternValue $StackPattern
+$resolvedUxPatternTemplate = Resolve-UxPatternRelativePath -PatternValue $UxPattern
 
 $organizeResult = $null
 if ($OrganizeExisting) {
@@ -564,7 +617,7 @@ foreach ($relativePath in $filesToCopy) {
 
 if ($resolvedStackPatternTemplate) {
     $selectedStackPatternSource = Join-Path $templateRoot $resolvedStackPatternTemplate
-    $activeStackPatternPath = Join-Path $resolvedTargetRoot "docs/reference/stack-patterns/active-stack-pattern.md"
+    $activeStackPatternPath = Join-Path $resolvedTargetRoot "patterns/stack-patterns/active-stack-pattern.md"
     $activeStackPatternDirectory = Split-Path -Parent $activeStackPatternPath
 
     if (-not (Test-Path $activeStackPatternDirectory)) {
@@ -577,6 +630,25 @@ if ($resolvedStackPatternTemplate) {
         if ($PSCmdlet.ShouldProcess($activeStackPatternPath, "Set active stack pattern from $resolvedStackPatternTemplate")) {
             Copy-Item -Path $selectedStackPatternSource -Destination $activeStackPatternPath -Force:$Force
             Write-Host "Set active stack pattern from $resolvedStackPatternTemplate"
+        }
+    }
+}
+
+if ($resolvedUxPatternTemplate) {
+    $selectedUxPatternSource = Join-Path $templateRoot $resolvedUxPatternTemplate
+    $activeUxPatternPath = Join-Path $resolvedTargetRoot "patterns/ux-patterns/active-ux-pattern.md"
+    $activeUxPatternDirectory = Split-Path -Parent $activeUxPatternPath
+
+    if (-not (Test-Path $activeUxPatternDirectory)) {
+        New-Item -ItemType Directory -Path $activeUxPatternDirectory -Force | Out-Null
+    }
+
+    if ((Test-Path $activeUxPatternPath) -and -not $Force) {
+        Write-Warning "Skipping existing file: $activeUxPatternPath. Use -Force to overwrite."
+    } else {
+        if ($PSCmdlet.ShouldProcess($activeUxPatternPath, "Set active UX pattern from $resolvedUxPatternTemplate")) {
+            Copy-Item -Path $selectedUxPatternSource -Destination $activeUxPatternPath -Force:$Force
+            Write-Host "Set active UX pattern from $resolvedUxPatternTemplate"
         }
     }
 }

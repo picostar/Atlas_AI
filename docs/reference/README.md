@@ -8,6 +8,7 @@ Examples:
 - service integration references
 - operating procedures
 - incident follow-up material
-- `stack-patterns/active-stack-pattern.md` for the current approved stack baseline when the repo has one
 
-If the repository has an agreed architecture, hosting, deployment, infrastructure, or platform baseline, store it under `docs/reference/stack-patterns/`.
+Use top-level `patterns/` for reusable stack and UX baseline definitions.
+
+Keep this folder user-reference oriented. Avoid storing reusable pattern baselines here.

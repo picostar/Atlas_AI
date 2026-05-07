@@ -83,10 +83,10 @@ atlas_ai includes a starter scaffold for these locations. Use it as a bootstrap,
 | `ATLAS.md` | repo root | Development process rules | When process changes |
 | `PS.md` | repo root | Optional project stages and document gates | When the project adopts formal release gates |
 | `project-config.json` | repo root | Non-secret project configuration | When infrastructure changes |
-| `MRD_*.md` | `docs/projects/` | Market or business requirements (optional, see `PS.md`) | Before PRD, when context changes |
-| `PRD_*.md` | `docs/projects/` | Product requirements and acceptance criteria (optional, see `PS.md`) | Before EVT, when scope changes |
-| `ESD_*.md` | `docs/projects/` | Engineering design and operations model (optional, see `PS.md`) | Draft in EVT, complete before DVT |
-| `CGR-results.md` | `docs/projects/` | Governance review output and tracked remediation gaps | After each CGR run |
+| `MRD_*.md` | `docs/cgr/` | Market or business requirements (optional, see `PS.md`) | Before PRD, when context changes |
+| `PRD_*.md` | `docs/cgr/` | Product requirements and acceptance criteria (optional, see `PS.md`) | Before EVT, when scope changes |
+| `ESD_*.md` | `docs/cgr/` | Engineering design and operations model (optional, see `PS.md`) | Draft in EVT, complete before DVT |
+| `CGR-results.md` | `docs/cgr/` | Governance review output and tracked remediation gaps | After each CGR run |
 
 `devcycle.md` must stay clean. Completed items belong in `retro.md`, not in the active list.
 
@@ -96,7 +96,8 @@ atlas_ai includes a starter scaffold for these locations. Use it as a bootstrap,
 |---|---|
 | `docs/agile/` | Active planning and delivery tracking |
 | `docs/reference/` | Setup notes, runbooks, external constraints, technical references |
-| `docs/projects/` | MRDs, PRDs, ESDs, ADRs, governance records |
+| `docs/cgr/` | MRDs, PRDs, ESDs, ADRs, governance records |
+| `patterns/` | Reusable stack and UX baselines, active patterns, template catalogs |
 | `scripts/` | Reusable operational and verification scripts |
 | `archive/` | Superseded artifacts and one-off outputs, usually gitignored |
 

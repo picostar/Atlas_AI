@@ -15,11 +15,11 @@
 
 ## How to Use
 
-Point an LLM at this file and say: "Read this prompt, then review the live project documents in docs/projects/ and save the governance review to docs/projects/CGR-results.md."
+Point an LLM at this file and say: "Read this prompt, then review the live project documents in docs/cgr/ and save the governance review to docs/cgr/CGR-results.md."
 
-The LLM will scan live MRD, PRD, and ESD artifacts in `docs/projects/`, ignore starter templates and housekeeping files during evaluation, perform post-review template cleanup, and produce a single results file.
+The LLM will scan live MRD, PRD, and ESD artifacts in `docs/cgr/`, ignore starter templates and housekeeping files during evaluation, perform post-review template cleanup, and produce a single results file.
 
-Treat the directory containing this file as the repository control root. If the runnable application lives in a child directory one level down, keep the governance review anchored to the existing `docs/projects/` directory at the control root.
+Treat the directory containing this file as the repository control root. If the runnable application lives in a child directory one level down, keep the governance review anchored to the existing `docs/cgr/` directory at the control root.
 
 ---
 
@@ -39,7 +39,7 @@ For quick reference:
 - **DVT** -- Pilot with real users, security review, close governance gaps. ESD + CGR required to enter.
 - **PVT** -- Operational handoff, rollback test, go-live approval. Clean CGR required to enter.
 
-When used without PS, the CGR simply evaluates whatever live MRD, PRD, and ESD artifacts exist in `docs/projects/` against the governance rules below.
+When used without PS, the CGR simply evaluates whatever live MRD, PRD, and ESD artifacts exist in `docs/cgr/` against the governance rules below.
 
 ---
 
@@ -48,10 +48,10 @@ When used without PS, the CGR simply evaluates whatever live MRD, PRD, and ESD a
 You are reviewing the live solution documents for this repository for governance completeness.
 
 1. Treat the directory containing `CGR.md` as the repository control root.
-2. Use `docs/projects/` under that control root as the authoritative location for MRD, PRD, ESD, and CGR artifacts.
-3. If the repo root does not contain `docs/projects/`, look one level down for a child directory that does. If exactly one child directory qualifies, use that child as the effective project root for this review. If multiple child directories qualify, stop and ask the user which one to use.
-4. If the runnable application lives in a child directory one level down, keep the review output in the selected `docs/projects/` directory instead of placing it inside the nested application folder.
-5. Read every live project `.md` file in the selected `docs/projects/` directory, except `README.md`, any results file, and any `*_TEMPLATE.md` file unless the user explicitly asks to review templates.
+2. Use `docs/cgr/` under that control root as the authoritative location for MRD, PRD, ESD, and CGR artifacts.
+3. If the repo root does not contain `docs/cgr/`, look one level down for a child directory that does. If exactly one child directory qualifies, use that child as the effective project root for this review. If multiple child directories qualify, stop and ask the user which one to use.
+4. If the runnable application lives in a child directory one level down, keep the review output in the selected `docs/cgr/` directory instead of placing it inside the nested application folder.
+5. Read every live project `.md` file in the selected `docs/cgr/` directory, except `README.md`, any results file, and any `*_TEMPLATE.md` file unless the user explicitly asks to review templates.
 6. Ignore `README.md` and any `*_TEMPLATE.md` file unless the user explicitly asks to review the template itself.
 7. Classify each live artifact by type based on its filename prefix: MRD, PRD, or ESD.
 8. Determine the current stage based on which live documents exist:
@@ -59,11 +59,11 @@ You are reviewing the live solution documents for this repository for governance
    - MRD + PRD + ESD = project is at DVT gate or beyond
 9. Evaluate each live document against the applicable rules for its type (see sections below).
 10. In the Executive Summary, state which stage the project appears to be in and what's needed to advance.
-11. Before writing results, detect whether this is the first CGR run by checking whether `docs/projects/CGR-results.md` already exists under the selected project root.
-12. Produce a single results file: `docs/projects/CGR-results.md` under the selected project root.
+11. Before writing results, detect whether this is the first CGR run by checking whether `docs/cgr/CGR-results.md` already exists under the selected project root.
+12. Produce a single results file: `docs/cgr/CGR-results.md` under the selected project root.
 13. After the review:
-   - If this is the first CGR run, remove `docs/projects/MRD_TEMPLATE.md` and `docs/projects/PRD_TEMPLATE.md` if they are still present
-   - If a live ESD artifact exists and `docs/projects/ESD_TEMPLATE.md` is still present, remove it as post-review cleanup
+   - If this is the first CGR run, remove `docs/cgr/MRD_TEMPLATE.md` and `docs/cgr/PRD_TEMPLATE.md` if they are still present
+   - If a live ESD artifact exists and `docs/cgr/ESD_TEMPLATE.md` is still present, remove it as post-review cleanup
    - If operating read-only, call out each stale template explicitly instead of deleting it
 
 ---
@@ -213,7 +213,7 @@ An ESD that passes governance should contain at minimum these sections. If a sec
 
 ## Required Output Format
 
-Save the output as `docs/projects/CGR-results.md` under the selected project root using this structure:
+Save the output as `docs/cgr/CGR-results.md` under the selected project root using this structure:
 
 ```
 # Governance Review Results

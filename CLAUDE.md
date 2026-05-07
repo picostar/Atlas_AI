@@ -12,7 +12,9 @@ If the user closes with a sign-off phrase, such as `good night`, `goodnight`, `g
 
 Then read `ATLAS.md` for the default development process.
 
-If `docs/reference/stack-patterns/active-stack-pattern.md` exists and the task affects architecture, hosting, deployment, infrastructure, or platform selection, read it after `ATLAS.md` and treat it as the current stack baseline.
+If `patterns/stack-patterns/active-stack-pattern.md` exists and the task affects architecture, hosting, deployment, infrastructure, or platform selection, read it after `ATLAS.md` and treat it as the current stack baseline.
+
+If `patterns/ux-patterns/active-ux-pattern.md` exists and the task affects layout, navigation, page hierarchy, interaction flow, or UI generation, read it after `ATLAS.md` and treat it as the current UX baseline.
 
 Read `PS.md` only when the project uses formal release stages (EVT, DVT, PVT, GA) and document gates (MRD, PRD, ESD). It is optional.
 

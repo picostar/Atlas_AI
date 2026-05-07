@@ -7,3 +7,6 @@ Guidelines:
 - keep scripts parameterized
 - read config at runtime instead of hardcoding environments or credentials
 - document required inputs and expected outputs
+
+Included script:
+- `migrate-layout-v2.ps1` -- one-time migration from legacy layout (`docs/projects`, `docs/reference/*-patterns`) to v2 layout (`docs/cgr`, `patterns/*-patterns`)

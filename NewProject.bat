@@ -36,7 +36,7 @@ set "DO_MOVE=n"
 if "%HAS_EXISTING%"=="1" (
     echo  Existing files found in project folder.
     echo  These can be reviewed and reorganized into project folders:
-    echo    docs\agile, docs\projects, docs\reference, scripts, archive.
+    echo    docs\agile, docs\cgr, docs\reference, scripts, archive.
     echo  The seed folder itself is not reorganized.
     echo.
 )
@@ -121,7 +121,7 @@ if "%DO_SKILLS%"=="3" if not defined SKILLS_PATH echo  No path entered, skipping
 echo.
 echo  -- Stack Pattern --
 echo.
-echo  Choose an initial stack pattern baseline for docs\reference\stack-patterns\active-stack-pattern.md.
+echo  Choose an initial stack pattern baseline for patterns\stack-patterns\active-stack-pattern.md.
 echo  You can change this later by editing stack pattern docs.
 echo.
 echo  Options:
@@ -145,6 +145,26 @@ if "%STACK_PATTERN_CHOICE%"=="1" (
     set "STACK_PATTERN_FLAG=-StackPattern sp-04-appservice-sql-redis-frontdoor-keyvault.md"
 ) else if not "%STACK_PATTERN_CHOICE%"=="0" (
     echo  Invalid stack pattern choice, defaulting to none.
+)
+
+echo.
+echo  -- UX Pattern --
+echo.
+echo  Choose an initial UX pattern baseline for patterns\ux-patterns\active-ux-pattern.md.
+echo  You can change this later by editing UX pattern docs.
+echo.
+echo  Options:
+echo    0) None
+echo    1) Modern app shell layout
+echo.
+set /p UX_PATTERN_CHOICE=Choose [0/1, default 0]: 
+if not defined UX_PATTERN_CHOICE set "UX_PATTERN_CHOICE=0"
+
+set "UX_PATTERN_FLAG="
+if "%UX_PATTERN_CHOICE%"=="1" (
+    set "UX_PATTERN_FLAG=-UxPattern uxp-01-modern-app-shell-layout.md"
+) else if not "%UX_PATTERN_CHOICE%"=="0" (
+    echo  Invalid UX pattern choice, defaulting to none.
 )
 
 set "GITHUB_FLAG="
@@ -197,7 +217,7 @@ if not defined PSCMD (
     exit /b 1
 )
 
-%PSCMD% -ExecutionPolicy Bypass -File "%DOIT_DIR%\atlas_ai.ps1" -IncludeScaffold -InitGit -SeedPath "%DOIT_DIR%" -RemoveSeed %PS_FLAG% %CGR_FLAG% %ORG_FLAG% %SKILLS_FLAG% %SKILLS_SRC_FLAG% %STACK_PATTERN_FLAG% %GITHUB_FLAG% %GITHUB_OWNER_FLAG% %PUBLIC_FLAG%
+%PSCMD% -ExecutionPolicy Bypass -File "%DOIT_DIR%\atlas_ai.ps1" -IncludeScaffold -InitGit -SeedPath "%DOIT_DIR%" -RemoveSeed %PS_FLAG% %CGR_FLAG% %ORG_FLAG% %SKILLS_FLAG% %SKILLS_SRC_FLAG% %STACK_PATTERN_FLAG% %UX_PATTERN_FLAG% %GITHUB_FLAG% %GITHUB_OWNER_FLAG% %PUBLIC_FLAG%
 
 if errorlevel 1 (
     echo.

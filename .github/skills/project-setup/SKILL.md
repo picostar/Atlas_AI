@@ -24,7 +24,7 @@ description: 'Set up a project with atlas_ai. Use when adopting atlas_ai into a 
    - Add `-InitGit` for git initialization
    - Add `-GitHubRepo "name"` for GitHub repo creation
 3. If existing files are present, review and reorganize:
-   - Project docs go to `docs/projects/`
+   - Project docs go to `docs/cgr/`
    - Reference material goes to `docs/reference/`
    - Scripts go to `scripts/`
    - Superseded artifacts go to `archive/`

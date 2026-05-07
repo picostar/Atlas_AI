@@ -5,6 +5,8 @@
 - For automatic loading by common tools, keep these files at the repository root:
 	- `.github/copilot-instructions.md`
 	- `CLAUDE.md`
+	- `CHATGPT.md` when ChatGPT workflows are in scope
+	- `GEMINI.md` when Gemini workflows are in scope
 	- `AGENTS.md`
 	- `ATLAS.md`
 	- `PS.md` if the project uses formal release stages and document gates
@@ -15,7 +17,8 @@
 - This is a reusable development-process kit for any software project.
 - Keep project-specific values in repo docs, config files, or secret stores, not in these instruction files.
 - Keep environment URLs, credentials, tokens, tenant IDs, and deployment targets out of committed instruction files.
-- Keep reusable stack-pattern choices in `docs/reference/stack-patterns/`, not in `ATLAS.md` or the thin agent pointer files.
+- Keep reusable stack-pattern choices in `patterns/stack-patterns/`, not in `ATLAS.md` or the thin agent pointer files.
+- Keep reusable UX-pattern choices in `patterns/ux-patterns/`, not in `ATLAS.md` or the thin agent pointer files.
 
 ## Local Secrets File
 - Use `accounts.txt` at the repository root for local secure secrets, credentials, and keys.
@@ -25,9 +28,9 @@
 ## Split Repo Layout Handling
 - Some repositories keep control docs and AI instruction files at the repo root while the runnable application lives in a child directory one level down.
 - In that layout, treat the directory that contains `.github/copilot-instructions.md`, `ATLAS.md`, and `docs/` as the control root.
-- Keep MRD, PRD, ESD, CGR results, and other governance artifacts under the existing `docs/projects/` directory at that control root.
+- Keep MRD, PRD, ESD, CGR results, and other governance artifacts under the existing `docs/cgr/` directory at that control root.
 - If runtime code is needed and the repo root does not contain the application, inspect immediate child directories and use the best-fit child directory as the code root without moving docs or instruction files there.
-- If the repo root does not have `docs/projects/` but exactly one immediate child directory does, use that child as the effective project root for document work. If multiple child directories qualify, ask the user which one to use.
+- If the repo root does not have `docs/cgr/` but exactly one immediate child directory does, use that child as the effective project root for document work. If multiple child directories qualify, ask the user which one to use.
 - Do not create a duplicate `docs/` tree inside a nested app folder when a repo-root `docs/` tree already exists.
 
 ## Template And Scaffold Repo Behavior
@@ -50,9 +53,10 @@
 2. `ATLAS.md` -- default development process and task lifecycle
 3. `PS.md` -- optional project stages and document gates, only when the project uses formal EVT/DVT/PVT/GA stages
 4. `CGR.md` -- optional governance review prompt, only when governance or stage-gate review is requested
-5. If `docs/reference/stack-patterns/active-stack-pattern.md` exists and the task affects architecture, hosting, deployment, infrastructure, or platform selection, read it before proposing or changing the stack.
-6. Repo-specific planning docs if they exist, such as `docs/agile/devcycle.md`, `docs/agile/retro.md`, `docs/agile/backlog.md`, `docs/agile/status.md`
-7. Repo-specific project docs if they exist, such as MRD, PRD, ESD, architecture docs, ADRs, runbooks, and config references
+5. If `patterns/stack-patterns/active-stack-pattern.md` exists and the task affects architecture, hosting, deployment, infrastructure, or platform selection, read it before proposing or changing the stack.
+6. If `patterns/ux-patterns/active-ux-pattern.md` exists and the task affects layout, navigation, page hierarchy, interaction flow, or UI generation, read it before proposing or changing UX structure.
+7. Repo-specific planning docs if they exist, such as `docs/agile/devcycle.md`, `docs/agile/retro.md`, `docs/agile/backlog.md`, `docs/agile/status.md`
+8. Repo-specific project docs if they exist, such as MRD, PRD, ESD, architecture docs, ADRs, runbooks, and config references
 
 ## Startup And Greeting Behavior
 - If the user opens with a greeting or start-of-session phrase, such as `hi`, `hello`, `good morning`, or `ready to start`, treat it as a request for a quick project check-in.
@@ -91,28 +95,31 @@
 - Keep completed work out of the active task list. The active list is a burn-down, not a historical log.
 - Record implementation details, issues, decisions, and lessons learned in the repo's retrospective log if one exists.
 - Prefer feature branches over direct work on `main` when working in a git repository.
-- Remove matching `*_TEMPLATE.md` files from `docs/projects/` once live MRD, PRD, or ESD artifacts exist.
+- Remove matching `*_TEMPLATE.md` files from `docs/cgr/` once live MRD, PRD, or ESD artifacts exist.
 - Do not hardcode project names, tenant values, URLs, credentials, or deployment targets in reusable kits.
 - During `atlas_ai` adoption with `-OrganizeExisting`, treat startup-oriented files such as `todo`, `seed`, `startup`, `kickoff`, `project-start`, and similar inputs as reference artifacts and keep them in `docs/reference/`.
 - When startup-oriented files are moved into `docs/reference/`, ask the user whether to generate an initial `devcycle.md` from those files, but do this only after seed cleanup is complete.
 
 ## Recommended Repo Structure
 - `docs/agile/` -- active planning and delivery docs such as `devcycle.md`, `retro.md`, `backlog.md`, `status.md`
-- `docs/projects/` -- MRD, PRD, ESD, ADRs, roadmaps, governance records
+- `docs/cgr/` -- MRD, PRD, ESD, ADRs, roadmaps, governance records
 - `docs/reference/` -- setup notes, integration references, runbooks, external system constraints
+- `patterns/` -- stack and UX baseline patterns, active baselines, and template catalogs
 - `scripts/` -- reusable operational and verification scripts
 - `archive/` -- superseded artifacts and one-off outputs, usually gitignored
 
 ## AI Tool Coverage
 - Copilot uses `.github/copilot-instructions.md`.
 - Claude Code uses `CLAUDE.md`.
+- ChatGPT-oriented workflows can use `CHATGPT.md` as a thin pointer to this file and `ATLAS.md`.
+- Gemini-oriented workflows can use `GEMINI.md` as a thin pointer to this file and `ATLAS.md`.
 - Codex-style agents commonly use `AGENTS.md`.
-- Keep `CLAUDE.md` and `AGENTS.md` as thin pointers to this file and `ATLAS.md` so the process stays in one place.
+- Keep thin pointers minimal and aligned with this file and `ATLAS.md` so process logic stays in one place.
 
 ## Common Mistakes To Avoid
 - Do not bake one project's names, URLs, roles, or vendors into a reusable kit.
 - Do not reference files that do not exist in the copied kit without labeling them as optional or recommended.
 - Do not skip the repo-defined commit and GitHub follow-up steps after a completed devtask.
 - Do not keep completed tasks in the active burn-down list using checkboxes, strikethroughs, or DONE labels.
-- Do not leave live project artifacts mixed with stale `*_TEMPLATE.md` files in `docs/projects/`.
+- Do not leave live project artifacts mixed with stale `*_TEMPLATE.md` files in `docs/cgr/`.
 - Do not store secrets in committed config or instruction files.
