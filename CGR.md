@@ -269,6 +269,64 @@ vendor selection not covered anywhere, no document addresses rollback]
 
 ---
 
+## Optional Scoring Extension
+
+This extension is optional and does not replace the baseline output.
+
+Keep the required output exactly as defined above in `docs/cgr/CGR-results.md`.
+If a numeric governance score is desired, derive it from the compliance table and save it as `docs/cgr/score.md`.
+
+### Scoring Inputs
+
+- Use rule status from the compliance table in `CGR-results.md`.
+- Exclude rules marked `N/A` from scoring denominator.
+- Use rule criticality weighting for risk-sensitive gates.
+
+### Status Points
+
+| Status | Points |
+|---|---|
+| Compliant | 1.0 |
+| Partially | 0.5 |
+| Missing | 0.0 |
+
+### Recommended Rule Criticality Weights
+
+| Criticality | Weight |
+|---|---|
+| Critical | 3 |
+| High | 2 |
+| Standard | 1 |
+
+Recommended default mapping:
+- Critical: Rules 2, 7, 8, 9, 10, 11, 12, 13, 16
+- High: Rules 3, 4, 5, 6, 14, 15
+- Standard: Rule 1
+
+### Score Formula
+
+- Rule weighted points = status points * rule weight
+- Maximum weighted points = sum of applicable rule weights
+- Overall score (0 to 100) = (sum rule weighted points / maximum weighted points) * 100
+
+### Gate Interpretation Example
+
+- DVT recommendation target: score >= 70 and no unresolved Critical rule in Missing status.
+- PVT recommendation target: score >= 85 and no unresolved Critical or High rule in Missing status.
+
+Treat these thresholds as defaults. The organization may set stricter thresholds by policy.
+
+### Optional Score Artifact
+
+Save the derived score output as `docs/cgr/score.md` using a concise scorecard format with:
+- Review date, reviewer, source results file
+- Overall score and gate recommendation
+- Rule-level weighted scoring table
+- Top remediation priorities with owner and target date
+- Exception log with expiry dates
+
+---
+
 ## Constraints
 
 - Be direct and practical.

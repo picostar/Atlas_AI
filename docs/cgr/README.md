@@ -20,8 +20,11 @@ Recommended files:
 - `PRD_<PROJECT>_v1.md`
 - `ESD_<PROJECT>_v1.md`
 - `CGR-results.md`
+- `score.md` (optional, derived from `CGR-results.md` scoring extension)
 - ADRs, roadmaps, decision logs, or governance records as needed
 
 Starter docs are included in this folder to help bootstrap a new project. On the first CGR run, remove `MRD_TEMPLATE.md` and `PRD_TEMPLATE.md` if they are still present. In all cases, once a live MRD, PRD, or ESD artifact exists, remove the matching `*_TEMPLATE.md` file so this folder contains live project artifacts only.
 
 Keep `CGR-results.md` in this folder alongside the live MRD, PRD, and ESD artifacts for the project being reviewed.
+
+If your team uses numeric governance scoring, keep `score.md` in this folder as a derived artifact that references the latest `CGR-results.md`.

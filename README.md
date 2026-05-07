@@ -111,6 +111,8 @@ These are bootstrap files only. On the first CGR run, remove `MRD_TEMPLATE.md` a
 
 When a governance review runs, save the output as `docs/cgr/CGR-results.md`.
 
+Optional scoring extension: teams that want numeric governance tracking can derive a scorecard from `docs/cgr/CGR-results.md` and save it as `docs/cgr/score.md`.
+
 ### What CGR Means And Why It Matters
 
 CGR means Compliance and Governance Review.
