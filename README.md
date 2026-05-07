@@ -166,7 +166,7 @@ Set up this project with atlas_ai.
 Tasks:
 1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, and atlas_ai/AGENTS.md.
 2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold.
-3. If this repository already has docs, plans, runbooks, notes, scripts, or project files, review them and reorganize them into the atlas_ai structure where appropriate.
+3. If this repository is messy and you use `-OrganizeExisting`, existing files are moved into `docs/reference/` for triage. Keep `seed.md` and `secrets.md` in place.
 4. Do not blindly overwrite useful existing project files. Merge, move, or adapt existing content into the new structure.
 5. Summarize what was installed, what was reorganized, and what was left untouched.
 ```
@@ -185,7 +185,7 @@ Set up this project with atlas_ai including formal release stages.
 Tasks:
 1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, atlas_ai/PS.md, and atlas_ai/AGENTS.md.
 2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold -IncludePS.
-3. If this repository already has docs, plans, runbooks, notes, scripts, or project files, review them and reorganize them into the atlas_ai structure where appropriate.
+3. If this repository is messy and you use `-OrganizeExisting`, existing files are moved into `docs/reference/` for triage. Keep `seed.md` and `secrets.md` in place.
 4. Do not blindly overwrite useful existing project files. Merge, move, or adapt existing content into the new structure.
 5. Summarize what was installed, what was reorganized, and what was left untouched.
 ```
@@ -202,7 +202,7 @@ Set up this project with atlas_ai including CGR.
 Tasks:
 1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, atlas_ai/CGR.md, and atlas_ai/AGENTS.md.
 2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold -IncludeCGR.
-3. If this repository already has docs, plans, runbooks, notes, scripts, or project files, review them and reorganize them into the atlas_ai structure where appropriate.
+3. If this repository is messy and you use `-OrganizeExisting`, existing files are moved into `docs/reference/` for triage. Keep `seed.md` and `secrets.md` in place.
 4. Do not blindly overwrite useful existing project files. Merge, move, or adapt existing content into the new structure.
 5. Summarize what was installed, what was reorganized, and what was left untouched.
 ```
@@ -219,7 +219,7 @@ Set up this project with atlas_ai including PS and CGR.
 Tasks:
 1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, atlas_ai/PS.md, atlas_ai/CGR.md, and atlas_ai/AGENTS.md.
 2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold -IncludePS -IncludeCGR.
-3. If this repository already has docs, plans, runbooks, notes, scripts, or project files, review them and reorganize them into the atlas_ai structure where appropriate.
+3. If this repository is messy and you use `-OrganizeExisting`, existing files are moved into `docs/reference/` for triage. Keep `seed.md` and `secrets.md` in place.
 4. Do not blindly overwrite useful existing project files. Merge, move, or adapt existing content into the new structure.
 5. Summarize what was installed, what was reorganized, and what was left untouched.
 ```
@@ -262,7 +262,7 @@ Adopt the atlas_ai process into this repository.
 Tasks:
 1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, and atlas_ai/AGENTS.md.
 2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold.
-3. If this repository already has docs, plans, runbooks, notes, scripts, or project files, review them and reorganize them into the atlas_ai structure where appropriate.
+3. If this repository is messy and you use `-OrganizeExisting`, existing files are moved into `docs/reference/` for triage. Keep `seed.md` and `secrets.md` in place.
 4. Create or update these folders and files when needed:
 	- docs/agile/devcycle.md
 	- docs/agile/backlog.md
@@ -285,7 +285,8 @@ Rules:
 - Use `RDT` for reset devtasks.
 - Insert new `RDT` items ahead of the remaining unfinished planned devcycle tasks.
 - Put active work in devcycle.md, future work in backlog.md, current live state in status.md, and completed work in retro.md.
-- Put project requirements and design docs in docs/cgr/.
+- With `-OrganizeExisting`, move existing files into docs/reference first for triage, except seed.md and secrets.md.
+- Treat existing MRD, PRD, and ESD files as reference inputs and create source-of-truth MRD, PRD, and ESD artifacts in docs/cgr/.
 - Put setup notes, runbooks, integration details, and operational references in docs/reference/.
 - Put reusable scripts in scripts/.
 - Put superseded or one-off artifacts in archive/.
@@ -333,7 +334,7 @@ pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -UxPattern "uxp-01-modern-ap
 # Include scaffold and set active UX pattern using full template-relative path
 pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -UxPattern "patterns/ux-patterns/ux-pattern-templates/uxp-01-modern-app-shell-layout.md"
 
-# Reorganize existing docs and scripts into project folders before install copy
+# Reorganize existing files into docs/reference for triage before install copy
 pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -OrganizeExisting
 
 # Initialize git repo with .gitignore and initial commit

@@ -24,10 +24,9 @@ description: 'Set up a project with atlas_ai. Use when adopting atlas_ai into a 
    - Add `-InitGit` for git initialization
    - Add `-GitHubRepo "name"` for GitHub repo creation
 3. If existing files are present, review and reorganize:
-   - Project docs go to `docs/cgr/`
-   - Reference material goes to `docs/reference/`
-   - Scripts go to `scripts/`
-   - Superseded artifacts go to `archive/`
+   - With `-OrganizeExisting`, move existing files into `docs/reference/` first for triage
+   - Keep `seed.md` and `secrets.md` in place when present
+   - Treat existing MRD, PRD, and ESD files as reference inputs and create source-of-truth artifacts in `docs/cgr/`
    - If the runnable app lives in a child directory one level down, keep atlas_ai files and the `docs/` tree at the repo root and treat the child directory as code-only
 4. Do not overwrite existing project content -- merge or adapt it
 5. Summarize what was installed and reorganized

@@ -35,12 +35,13 @@ for %%F in ("%TARGET%\*") do (
 set "DO_MOVE=n"
 if "%HAS_EXISTING%"=="1" (
     echo  Existing files found in project folder.
-    echo  These can be reviewed and reorganized into project folders:
-    echo    docs\agile, docs\cgr, docs\reference, scripts, archive.
-    echo  The seed folder itself is not reorganized.
+    echo  OrganizeExisting mode will move existing files into docs\reference.
+    echo  seed.md and secrets.md are kept in place if present.
+    echo  Existing MRD, PRD, and ESD files are treated as reference inputs.
+    echo  New source-of-truth MRD, PRD, and ESD should be created in docs\cgr.
     echo.
 )
-if "%HAS_EXISTING%"=="1" set /p DO_MOVE=Review and reorganize existing project files? [y/n, default y]: 
+if "%HAS_EXISTING%"=="1" set /p DO_MOVE=Move existing project files into docs\reference now? [y/n, default y]: 
 if "%HAS_EXISTING%"=="1" if not defined DO_MOVE set "DO_MOVE=y"
 
 echo.

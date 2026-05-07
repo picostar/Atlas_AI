@@ -228,36 +228,7 @@ function Move-ExistingArtifacts {
     }
 
     $skipTopLevel = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
-    @(
-        '.git',
-        '.github',
-        '.vscode',
-        '.idea',
-        'docs',
-        'scripts',
-        'archive',
-        'src',
-        'app',
-        'api',
-        'web',
-        'frontend',
-        'backend',
-        'client',
-        'server',
-        'lib',
-        'libs',
-        'pkg',
-        'packages',
-        'test',
-        'tests',
-        'node_modules',
-        'dist',
-        'build',
-        'out',
-        'bin',
-        'obj',
-        'vendor'
-    ) | ForEach-Object {
+    @('.git') | ForEach-Object {
         $null = $skipTopLevel.Add($_)
     }
 
@@ -269,7 +240,7 @@ function Move-ExistingArtifacts {
     }
 
     $movedCount = 0
-    $startupReferenceFiles = [System.Collections.Generic.List[string]]::new()
+    $movedReferenceFiles = [System.Collections.Generic.List[string]]::new()
     $candidates = Get-ChildItem -LiteralPath $normalizedRoot -Recurse -File -Force -ErrorAction SilentlyContinue
 
     foreach ($candidate in $candidates) {
@@ -289,15 +260,21 @@ function Move-ExistingArtifacts {
             continue
         }
 
+        $normalizedRelativePath = ($relativePath -replace '\\', '/').TrimStart('/')
+        if ($normalizedRelativePath.StartsWith('docs/reference/', [System.StringComparison]::OrdinalIgnoreCase)) {
+            continue
+        }
+
+        if ($candidate.Name -match '^(seed|secrets)\.md$') {
+            continue
+        }
+
         $firstSegment = ($relativePath -split '[\\/]')[0]
         if ($skipTopLevel.Contains($firstSegment)) {
             continue
         }
 
-        $destinationRoot = Get-NtelioDestinationRoot -RelativePath $relativePath -FileName $candidate.Name -Extension $candidate.Extension
-        if (-not $destinationRoot) {
-            continue
-        }
+        $destinationRoot = 'docs/reference'
 
         $relativeDirectory = Split-Path -Path $relativePath -Parent
         $destinationDirectory = Join-Path $normalizedRoot $destinationRoot
@@ -317,22 +294,19 @@ function Move-ExistingArtifacts {
             $movedCount++
             $relativeDestinationPath = $destinationPath.Substring($rootWithSeparator.Length) -replace '\\', '/'
             Write-Host "Reorganized $relativePath -> $relativeDestinationPath"
-
-            if ($destinationRoot -eq 'docs/reference' -and (Test-IsStartupPlanningArtifact -FileName $candidate.Name)) {
-                $startupReferenceFiles.Add($relativeDestinationPath) | Out-Null
-            }
+            $movedReferenceFiles.Add($relativeDestinationPath) | Out-Null
         }
     }
 
     if ($movedCount -gt 0) {
-        Write-Host "Reorganized $movedCount existing files into project folders."
+        Write-Host "Reorganized $movedCount existing files into docs/reference (seed.md and secrets.md were left in place)."
     } else {
-        Write-Host "No existing files matched atlas_ai reorganization rules."
+        Write-Host "No existing files were moved into docs/reference."
     }
 
     return [pscustomobject]@{
         MovedCount = $movedCount
-        StartupReferenceFiles = @($startupReferenceFiles)
+        MovedReferenceFiles = @($movedReferenceFiles)
     }
 }
 
@@ -866,14 +840,12 @@ if ($RemoveSeed -and $resolvedSeedPath) {
 }
 
 if ($organizeResult) {
-    $startupReferenceFiles = @($organizeResult.StartupReferenceFiles)
-    if ($startupReferenceFiles.Count -gt 0) {
+    if ($organizeResult.MovedCount -gt 0) {
         Write-Host ""
-        Write-Host "Startup-oriented files were moved into docs/reference:"
-        foreach ($startupFile in $startupReferenceFiles) {
-            Write-Host " - $startupFile"
-        }
-        Write-Host "After seed cleanup is complete, ask your AI agent whether it should build an initial devcycle from these reference files."
+        Write-Host "Existing files were moved into docs/reference for triage and manual organization."
+        Write-Host "seed.md and secrets.md were left in place when present."
+        Write-Host "Any existing MRD, PRD, and ESD files are treated as reference inputs only."
+        Write-Host "Create or refresh source-of-truth MRD, PRD, and ESD artifacts in docs/cgr."
     }
 }
 

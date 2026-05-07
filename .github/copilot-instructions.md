@@ -82,7 +82,7 @@
 - If the repository appears to be a scaffold or template, use the next clear maintenance or adoption task rather than expecting an active live-project devcycle.
 - If the next task is clear and no blocker prevents progress, start executing it immediately rather than waiting for another confirmation.
 - If a blocker exists, call it out briefly and either resolve it or ask the minimum clarifying question needed to proceed.
-- For `newproject`, after installation and seed cleanup handling complete, if startup-oriented files were moved into `docs/reference/`, ask whether to generate an initial `docs/agile/devcycle.md` from those files.
+- For `newproject`, after installation and seed cleanup handling complete, if existing files were moved into `docs/reference/`, ask whether to generate an initial `docs/agile/devcycle.md` and draft source-of-truth MRD, PRD, and ESD artifacts in `docs/cgr/` from those references.
 - Keep the response short and action-oriented. The purpose of these phrases is to move from readiness review into execution.
 
 ## Session Close And Sign-Off Behavior
@@ -106,8 +106,9 @@
 - Prefer feature branches over direct work on `main` when working in a git repository.
 - Remove matching `*_TEMPLATE.md` files from `docs/cgr/` once live MRD, PRD, or ESD artifacts exist.
 - Do not hardcode project names, tenant values, URLs, credentials, or deployment targets in reusable kits.
-- During `atlas_ai` adoption with `-OrganizeExisting`, treat startup-oriented files such as `todo`, `seed`, `startup`, `kickoff`, `project-start`, and similar inputs as reference artifacts and keep them in `docs/reference/`.
-- When startup-oriented files are moved into `docs/reference/`, ask the user whether to generate an initial `devcycle.md` from those files, but do this only after seed cleanup is complete.
+- During `atlas_ai` adoption with `-OrganizeExisting`, move existing files into `docs/reference/` for triage, except `seed.md` and `secrets.md` which should remain in place.
+- During `atlas_ai` adoption with `-OrganizeExisting`, treat any existing MRD, PRD, and ESD files as reference inputs and create or refresh source-of-truth artifacts in `docs/cgr/`.
+- After existing files are moved into `docs/reference/`, ask the user whether to generate an initial `devcycle.md` and draft source-of-truth MRD, PRD, and ESD files from those references.
 
 ## Recommended Repo Structure
 - `docs/agile/` -- active planning and delivery docs such as `devcycle.md`, `retro.md`, `backlog.md`, `status.md`
