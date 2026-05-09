@@ -14,6 +14,21 @@ It gives you:
 - optional compliance and governance review prompt
 - a starter docs scaffold for active work, backlog, status, retro, project docs, reference docs, stack-baseline guidance, and UX-baseline guidance
 
+## AI Dev SOP Summary
+
+ATLAS keeps AI-assisted development fast without letting it become loose. The standard operating procedure is:
+
+1. Start from `docs/agile/devcycle.md`, the current active burn-down.
+2. Work one `DT` or `RDT` at a time.
+3. Keep each task small enough to validate, usually 5 CU or less.
+4. If a task is larger than 5 CU, split it into sub devtasks such as `DT3.1`, `DT3.2`, and `DT3.3` so each piece has a clear outcome, smoketest, and UAT or non-UAT validation path.
+5. Smoke test with CLI commands or scripts before treating the task as complete.
+6. Record UAT handoff or explicit non-UAT validation.
+7. Move completed work into `docs/agile/retro.md` with `eMOE`, `aMOE`, results, decisions, and lessons learned.
+8. Remove completed items from `devcycle.md` so the active list stays clean.
+
+This gives coding agents a tight loop: select, implement, validate, record, commit, and move on. It supports multiple devcycles per day when the work is flowing, while preserving enough structure for review, governance, and later calibration.
+
 ## What atlas_ai Solves
 
 The main problem with reusable instruction folders is that most AI tools do not reliably auto-load nested files. They usually look at the repository root.
@@ -482,6 +497,8 @@ A `reset devtask`, or `RDT`, is unplanned work discovered during the current dev
 The `retro` is the completed-work ledger. Completed devtasks and reset devtasks move out of `devcycle.md` and into `retro.md` with outcome notes, smoketest evidence, UAT status, decisions, issues, and effort calibration. This keeps `devcycle.md` clean as a burn-down list while preserving the history needed for learning and governance.
 
 ATLAS uses `CU`, `eMOE`, and `aMOE` for effort because AI velocity makes elapsed human time a poor planning unit. `CU` means Complexity Unit. It measures combined human-plus-agent delivery effort: uncertainty, decision load, dependencies, review depth, test burden, integration risk, and handoff cost. `eMOE` is the estimated Measure of Effort in CU before work starts. `aMOE` is the actual Measure of Effort in CU after the task is complete.
+
+As a rule of thumb, a devtask estimated above 5 CU should be split before execution. For example, `DT3 -- Add customer dashboard` at 8 CU should become smaller sub devtasks such as `DT3.1 -- Add dashboard data contract`, `DT3.2 -- Build dashboard API`, and `DT3.3 -- Build dashboard UI`. Each sub devtask should carry its own `eMOE`, smoketest, and UAT or non-UAT validation path so the agent can close work safely in smaller loops.
 
 This makes effort tracking useful again in AI development. A task may take an agent one minute to draft but still require meaningful review, validation, integration, and release judgment. By comparing `eMOE` to `aMOE`, the team can calibrate future devtasks around real delivery friction instead of pretending that wall-clock generation time equals effort.
 
