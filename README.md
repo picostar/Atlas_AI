@@ -14,20 +14,7 @@ It gives you:
 - optional compliance and governance review prompt
 - a starter docs scaffold for active work, backlog, status, retro, project docs, reference docs, stack-baseline guidance, and UX-baseline guidance
 
-## AI Dev SOP Summary
 
-ATLAS keeps AI-assisted development fast without letting it become loose. The standard operating procedure is:
-
-1. Start from `docs/agile/devcycle.md`, the current active burn-down.
-2. Work one `DT` or `RDT` at a time.
-3. Keep each task small enough to validate, usually 5 CU or less.
-4. If a task is larger than 5 CU, split it into sub devtasks such as `DT3.1`, `DT3.2`, and `DT3.3` so each piece has a clear outcome, smoketest, and UAT or non-UAT validation path.
-5. Smoke test with CLI commands or scripts before treating the task as complete.
-6. Record UAT handoff or explicit non-UAT validation.
-7. Move completed work into `docs/agile/retro.md` with `eMOE`, `aMOE`, results, decisions, and lessons learned.
-8. Remove completed items from `devcycle.md` so the active list stays clean.
-
-This gives coding agents a tight loop: select, implement, validate, record, commit, and move on. It supports multiple devcycles per day when the work is flowing, while preserving enough structure for review, governance, and later calibration.
 
 ## What atlas_ai Solves
 
@@ -54,6 +41,28 @@ In that layout:
 - keep MRD, PRD, ESD, and `CGR-results.md` in the existing `docs/cgr/` directory at the repo root
 - use the nested application folder for runtime code work only
 - only treat a child directory as the effective project root if the repo root has no `docs/cgr/` directory and exactly one immediate child directory does
+
+## AI Dev SOP Summary
+
+ATLAS uses `devcycle`, `devtask`, `reset devtask`, and `retro` because AI-assisted development moves at a different cadence than traditional agile delivery. Classic agile terms like sprint, story, and ceremony often imply multi-day or multi-week planning loops, human-only execution speed, and team rituals that are heavier than a coding-agent workflow needs.
+
+The AI Dev SOP is built for short, repeatable execution loops. A human sets direction, constraints, and acceptance expectations. The coding agent reads the repo instructions, executes one bounded task, validates the result, records what changed, and hands off the next decision point. The process favors small verified increments over large opaque batches.
+
+ATLAS keeps AI-assisted development fast without letting it become loose. The standard operating procedure is:
+
+1. Start from `docs/agile/devcycle.md`, the current active burn-down.
+2. Work one `DT` or `RDT` at a time.
+3. Keep each task small enough to validate, usually 5 CU or less.
+4. If a task is larger than 5 CU, split it into sub devtasks such as `DT3.1`, `DT3.2`, and `DT3.3` so each piece has a clear outcome, smoketest, and UAT or non-UAT validation path.
+5. Smoke test with CLI commands or scripts before treating the task as complete.
+6. Record UAT handoff or explicit non-UAT validation.
+7. Commit and push the completed task when the repo uses git and a remote is available.
+8. Move completed work into `docs/agile/retro.md` with `eMOE`, `aMOE`, results, decisions, and lessons learned.
+9. Remove completed items from `devcycle.md` so the active list stays clean.
+
+Each devcycle should have a visible purpose, a small active task set, and a clear stop condition. It can be as short as a single validated change or as broad as a focused build window. Multiple devcycles per day are normal when the work is flowing, especially when the agent can implement and smoke test quickly.
+
+The definition of done is deliberately operational: the code or docs are changed, the smoketest has passed or a blocker is recorded, UAT is handed off or marked not UAT-eligible, `retro.md` captures the result, and `devcycle.md` no longer carries completed work. This keeps the active loop fast while preserving enough evidence for review, governance, and later CU calibration.
 
 ## Included Files
 
