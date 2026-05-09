@@ -160,7 +160,7 @@ These are bootstrap files only. On the first CGR run, remove `MRD_TEMPLATE.md` a
 
 When a governance review runs, save the output as `docs/cgr/CGR-results.md`.
 
-Chat shortcut: in AI chat, type `CGR` to run the CGR workflow from `.github/prompts/cgr.prompt.md`.
+To run CGR, type `CGR` in AI chat. You can also say `run CGR`. The agent should use `.github/prompts/cgr.prompt.md` and write the review to `docs/cgr/CGR-results.md`.
 
 Optional scoring extension: teams that want numeric governance tracking can derive a scorecard from `docs/cgr/CGR-results.md` and save it as `docs/cgr/score.md`.
 

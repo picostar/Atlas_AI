@@ -24,7 +24,7 @@ agent: "agent"
 
 Run this prompt and ask the agent to review the live project documents in `docs/cgr/` and save the governance review to `docs/cgr/CGR-results.md`.
 
-Chat shortcut: in AI chat, you can type `CGR` to run this workflow.
+Chat shortcut: in AI chat, type `CGR` or say `run CGR` to run this workflow.
 
 The LLM will scan live MRD, PRD, and ESD artifacts in `docs/cgr/`, ignore starter templates and housekeeping files during evaluation, perform post-review template cleanup, and produce a single results file.
 

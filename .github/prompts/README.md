@@ -13,6 +13,7 @@ This folder stores reusable prompt files for common atlas_ai workflows.
 ## Usage
 - Use prompts when you want a structured review with fixed output format.
 - Prefer prompts for repeatable quality checks and governance checks.
+- To run the governance workflow, type `CGR` or say `run CGR` in AI chat. The agent should use `cgr.prompt.md`.
 
 ## Frontmatter
 Use the schema in `.github/FRONTMATTER-SCHEMA.md`.
