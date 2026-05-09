@@ -68,7 +68,7 @@
 8. Repo-specific project docs if they exist, such as MRD, PRD, ESD, architecture docs, ADRs, runbooks, and config references
 
 ## Startup And Greeting Behavior
-- If the user opens with a greeting or start-of-session phrase, such as `hi`, `hello`, `good morning`, or `ready to start`, treat it as a request for a quick project check-in.
+- If the user opens with a greeting or start-of-session phrase, such as `hi`, `hello`, `good morning`, `goodmorning`, or `ready to start`, treat it as a request for a quick project check-in.
 - Review where the project stands before proposing work. Use the read order above, then prioritize `docs/agile/status.md` for current state, `docs/agile/devcycle.md` for active work, and `docs/agile/backlog.md` if the active cycle is empty or unclear.
 - If the user opens with `atlas`, treat it as the same startup check-in flow.
 - During startup check-in, if `.github/prompts/cgr.prompt.md` is present and governance is enabled for this project, check whether live MRD, PRD, and ESD artifacts exist in `docs/cgr/`.

@@ -8,7 +8,7 @@ For non-secret cloud account and deployment destination binding, use committed `
 
 If `docs/agile/` files still contain placeholder scaffold content, treat the repository as a template or kit unless there is clear evidence it has been activated as a live project. In that case, assess template integrity and adoption readiness instead of treating placeholder agile docs as workflow failures.
 
-If the user opens with a greeting or start-of-session phrase, such as `hi`, `hello`, `good morning`, or `ready to start`, treat it as a request for a quick project check-in. Review project state using `ATLAS.md`, then prioritize `docs/agile/status.md`, `docs/agile/devcycle.md`, and `docs/agile/backlog.md` as needed. Confirm whether the project appears ready to start and suggest the next ATLAS-based step.
+If the user opens with a greeting or start-of-session phrase, such as `hi`, `hello`, `good morning`, `goodmorning`, or `ready to start`, treat it as a request for a quick project check-in. Review project state using `ATLAS.md`, then prioritize `docs/agile/status.md`, `docs/agile/devcycle.md`, and `docs/agile/backlog.md` as needed. Confirm whether the project appears ready to start and suggest the next ATLAS-based step.
 
 If the user opens with `atlas`, treat it as the same startup check-in request. If `.github/prompts/cgr.prompt.md` is present and governance is enabled, check whether live MRD, PRD, and ESD artifacts exist in `docs/cgr/`. If they are missing, ask whether to run CGR bootstrap to generate draft governance docs from `seed.md` and `docs/reference/`.
 

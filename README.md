@@ -62,6 +62,18 @@ Each devcycle should have a visible purpose, a small active task set, and a clea
 
 The definition of done is deliberately operational: the code or docs are changed, the smoketest has passed or a blocker is recorded, UAT is handed off or marked not UAT-eligible, `retro.md` captures the result, and `devcycle.md` no longer carries completed work. This keeps the active loop fast while preserving enough evidence for review, governance, and later CU calibration.
 
+## Chat Shortcuts
+
+Use these short chat phrases when you want the agent to run the standard ATLAS flows:
+
+- `atlas` -- run the startup project check-in flow.
+- `hi`, `hello`, `good morning`, `goodmorning`, or `ready to start` -- also run the startup project check-in flow.
+- `CGR` or `run CGR` -- run the governance workflow from `.github/prompts/cgr.prompt.md` and write `docs/cgr/CGR-results.md`.
+- `newproject` -- run the new-project installer flow from an otherwise empty project root.
+- `good night`, `goodnight`, `goodbye`, `that's all`, or `we are done` -- run the end-of-session closeout check.
+
+The startup check-in reviews current state, active devcycle work, and obvious blockers. The closeout check reviews smoketest, UAT, retro, status, commit, and GitHub follow-up readiness before the session ends.
+
 ## Included Files
 
 ### Root instruction files
