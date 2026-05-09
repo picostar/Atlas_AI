@@ -24,7 +24,7 @@ Use these files as the baseline:
 - [Backlog](../../docs/agile/backlog.md)
 - [Retrospective log](../../docs/agile/retro.md)
 - [Project stages](../../docs/cgr/PS.md), only if formal stages are in use
-- [Governance review](../../CGR.md), only if governance review is in scope
+- [Governance review](./cgr.prompt.md), only if governance review is in scope
 
 Perform this review in order:
 

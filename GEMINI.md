@@ -14,7 +14,7 @@ If `patterns/ux-patterns/active-ux-pattern.md` exists and the task affects layou
 
 Read `docs/cgr/PS.md` only when the project uses formal release stages (EVT, DVT, PVT, GA) and document gates (MRD, PRD, ESD).
 
-Read `CGR.md` only when governance review or stage-gate compliance review is requested.
+Read `.github/prompts/cgr.prompt.md` only when governance review or stage-gate compliance review is requested.
 
 If your Gemini environment does not auto-load repository instruction files, load this file, `.github/copilot-instructions.md`, and `ATLAS.md` manually at session start.
 

@@ -15,7 +15,7 @@ Use these files as the baseline:
 - [Source of truth](../copilot-instructions.md)
 - [ATLAS process](../../ATLAS.md)
 - [Project stages](../../docs/cgr/PS.md), only if formal stages are in use
-- [Governance prompt baseline](../../CGR.md)
+- [Governance prompt baseline](./cgr.prompt.md)
 - [CGR docs guidance](../../docs/cgr/README.md)
 - [Current CGR review output](../../docs/cgr/CGR-results.md), if it exists
 - [Current score output](../../docs/cgr/score.md), if it exists
@@ -36,7 +36,7 @@ Perform this workflow in order:
 - Do not invent missing approvals or decisions. Mark unknowns clearly.
 
 3. Refresh governance outputs.
-- Re-run CGR evaluation logic from `CGR.md`.
+- Re-run CGR evaluation logic from `cgr.prompt.md`.
 - Update `docs/cgr/CGR-results.md` with new compliance status.
 - Update `docs/cgr/score.md` with score delta and updated gate recommendation.
 

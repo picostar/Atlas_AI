@@ -1,8 +1,15 @@
+---
+name: "Atlas Guided Update"
+description: "Use when updating a legacy atlas project to the current Atlas_AI kit with a plan-first human review."
+argument-hint: "Optional legacy project path, scope, or update constraints"
+agent: "agent"
+---
+
 # Atlas Guided Update Prompt
 
 Use this prompt when updating a legacy atlas project to the current Atlas_AI process kit.
 
-Copy this file into the legacy project root, or paste its prompt into the agent while the legacy project is open in VS Code.
+Run this prompt from `.github/prompts/`, copy it into the legacy project, or paste its prompt into the agent while the legacy project is open in VS Code.
 
 Do not run a hard updater script. Treat this as a guided repository update: inspect, compare, ask targeted questions, then produce an update plan for human review. Do not modify, move, rename, or delete files until a human approves the plan.
 
@@ -18,7 +25,7 @@ Planning phase only: do not edit files, run migration scripts, move folders, ren
    - root instruction files
    - `.github/prompts/`
    - `.github/skills/`
-   - `ATLAS.md`, `docs/cgr/PS.md`, and `CGR.md`
+   - `ATLAS.md`, `docs/cgr/PS.md`, and `.github/prompts/cgr.prompt.md`
    - `docs/agile/`, `docs/cgr/`, and `docs/reference/`
    - `patterns/stack-patterns/` and `patterns/ux-patterns/`
    - `scripts/`

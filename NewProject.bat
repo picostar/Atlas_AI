@@ -8,7 +8,7 @@ echo  ------------------------
 echo.
 echo  This script installs the atlas_ai development process kit into a new project.
 echo  The project folder is the parent of the atlas_ai folder (or symlink).
-echo  If the project already has real files, use update.md for a plan-first update.
+echo  If the project already has real files, use .github\prompts\atlas-update.prompt.md for a plan-first update.
 echo.
 
 :: Resolve the project folder as the parent of wherever this .bat lives
@@ -36,7 +36,8 @@ if "%HAS_EXISTING%"=="1" (
     echo  Existing files found in project folder.
     echo  This does not look like a new project.
     echo  NewProject.bat will not move, rewrite, or reorganize existing files.
-    echo  Use update.md for a plan-first legacy project update, then run approved changes manually.
+    echo  Use .github\prompts\atlas-update.prompt.md from the kit for a plan-first legacy project update.
+    echo  Then run approved changes manually.
     echo.
     pause
     exit /b 1

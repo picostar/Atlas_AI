@@ -1,3 +1,10 @@
+---
+name: "Compliance And Governance Review"
+description: "Use when running CGR against live MRD, PRD, and ESD artifacts under docs/cgr."
+argument-hint: "Optional project name, stage gate, scope, or review constraints"
+agent: "agent"
+---
+
 # Prompt: Compliance And Governance Review
 
 ## Contents
@@ -15,7 +22,7 @@
 
 ## How to Use
 
-Point an LLM at this file and say: "Read this prompt, then review the live project documents in docs/cgr/ and save the governance review to docs/cgr/CGR-results.md."
+Run this prompt and ask the agent to review the live project documents in `docs/cgr/` and save the governance review to `docs/cgr/CGR-results.md`.
 
 Chat shortcut: in AI chat, you can type `CGR` to run this workflow.
 
@@ -25,7 +32,7 @@ If live MRD, PRD, and ESD artifacts do not exist yet, the workflow first bootstr
 
 If live MRD, PRD, or ESD artifacts already exist, the workflow uses them as the base and improves them using current user instructions plus any new material found in `seed.md` and `docs/reference/`.
 
-Treat the directory containing this file as the repository control root. If the runnable application lives in a child directory one level down, keep the governance review anchored to the existing `docs/cgr/` directory at the control root.
+Treat the directory containing `.github/copilot-instructions.md`, `ATLAS.md`, and `docs/` as the repository control root. If the runnable application lives in a child directory one level down, keep the governance review anchored to the existing `docs/cgr/` directory at the control root.
 
 ---
 
@@ -53,7 +60,7 @@ When used without PS, the CGR simply evaluates whatever live MRD, PRD, and ESD a
 
 You are reviewing the live solution documents for this repository for governance completeness.
 
-1. Treat the directory containing `CGR.md` as the repository control root.
+1. Treat the directory containing `.github/copilot-instructions.md`, `ATLAS.md`, and `docs/` as the repository control root.
 2. Use `docs/cgr/` under that control root as the authoritative location for MRD, PRD, ESD, and CGR artifacts.
 3. If the repo root does not contain `docs/cgr/`, look one level down for a child directory that does. If exactly one child directory qualifies, use that child as the effective project root for this review. If multiple child directories qualify, stop and ask the user which one to use.
 4. If the runnable application lives in a child directory one level down, keep the review output in the selected `docs/cgr/` directory instead of placing it inside the nested application folder.

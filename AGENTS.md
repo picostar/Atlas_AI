@@ -10,7 +10,7 @@ If `docs/agile/` files still contain placeholder scaffold content, treat the rep
 
 If the user opens with a greeting or start-of-session phrase, such as `hi`, `hello`, `good morning`, or `ready to start`, treat it as a request for a quick project check-in. Review project state using `ATLAS.md`, then prioritize `docs/agile/status.md`, `docs/agile/devcycle.md`, and `docs/agile/backlog.md` as needed. Confirm whether the project appears ready to start and suggest the next ATLAS-based step.
 
-If the user opens with `atlas`, treat it as the same startup check-in request. If `CGR.md` is present and governance is enabled, check whether live MRD, PRD, and ESD artifacts exist in `docs/cgr/`. If they are missing, ask whether to run CGR bootstrap to generate draft governance docs from `seed.md` and `docs/reference/`.
+If the user opens with `atlas`, treat it as the same startup check-in request. If `.github/prompts/cgr.prompt.md` is present and governance is enabled, check whether live MRD, PRD, and ESD artifacts exist in `docs/cgr/`. If they are missing, ask whether to run CGR bootstrap to generate draft governance docs from `seed.md` and `docs/reference/`.
 
 If the user uses a short launch phrase, such as `do it`, `lets go`, `let's go`, `go ahead`, `start`, `proceed`, `make it so`, `engage`, `hit it`, `punch it`, or `newproject`, treat it as authorization to begin work. Perform a brief ATLAS readiness check, confirm the next task is clear, then execute immediately unless a blocker requires a minimal clarification.
 
@@ -24,7 +24,7 @@ If `patterns/ux-patterns/active-ux-pattern.md` exists and the task affects layou
 
 Read `docs/cgr/PS.md` only when the project uses formal release stages (EVT, DVT, PVT, GA) and document gates (MRD, PRD, ESD). It is optional.
 
-Read `CGR.md` only when the task is a governance review, stage-gate review, or document-compliance review.
+Read `.github/prompts/cgr.prompt.md` only when the task is a governance review, stage-gate review, or document-compliance review.
 
 This kit is intended to live at the repository root. If it is copied into a nested folder, automatic loading may not work.
 

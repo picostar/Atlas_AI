@@ -25,7 +25,7 @@ description: 'Set up a new project with atlas_ai. Use when bootstrapping a new r
    - Add `-GitHubRepo "name"` for GitHub repo creation
 3. If existing project files are present, stop and tell the user this does not look like a new project
    - Do not move, rewrite, reorganize, migrate, or delete existing files
-   - Use `update.md` for a plan-first legacy project update instead
+   - Use `.github/prompts/atlas-update.prompt.md` from the kit for a plan-first legacy project update instead
 4. Create committed `accounts.md` for non-secret cloud account and deployment destination binding
 5. Summarize what was installed
 

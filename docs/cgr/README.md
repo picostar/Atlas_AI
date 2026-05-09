@@ -8,7 +8,7 @@ CGR means Compliance and Governance Review.
 
 A CGR is a structured review of live project artifacts such as MRD, PRD, and ESD documents to verify governance readiness, delivery controls, and release decision quality.
 
-Chat shortcut: in AI chat, type `CGR` to run this workflow from `CGR.md`.
+Chat shortcut: in AI chat, type `CGR` to run this workflow from `.github/prompts/cgr.prompt.md`.
 
 ## Why CGR Matters
 

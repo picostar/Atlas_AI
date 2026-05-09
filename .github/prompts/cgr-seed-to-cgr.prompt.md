@@ -15,7 +15,7 @@ Use these files as the baseline:
 - [Source of truth](../copilot-instructions.md)
 - [ATLAS process](../../ATLAS.md)
 - [Project stages](../../docs/cgr/PS.md), only if formal stages are in use
-- [Governance prompt baseline](../../CGR.md)
+- [Governance prompt baseline](./cgr.prompt.md)
 - [CGR docs guidance](../../docs/cgr/README.md)
 - [Seed input](../../seed.md), if it exists
 - [Project accounts](../../accounts.md), if it exists
@@ -43,12 +43,12 @@ Perform this workflow in order:
 - Call out missing source evidence and unresolved assumptions.
 
 4. Run CGR review.
-- Apply the governance evaluation process from `CGR.md` against the generated drafts.
+- Apply the governance evaluation process from `cgr.prompt.md` against the generated drafts.
 - Write or refresh `docs/cgr/CGR-results.md` using the required baseline output format.
 
 5. Produce score output.
 - If scoring is in scope, derive and write `docs/cgr/score.md` from `CGR-results.md`.
-- Use the scoring extension in `CGR.md` and capture gate recommendation.
+- Use the scoring extension in `cgr.prompt.md` and capture gate recommendation.
 
 6. Initialize remediation tracking.
 - Create or refresh `docs/cgr/remediation-tracking.md` with rule-level gaps, owner placeholders, target dates, and status.

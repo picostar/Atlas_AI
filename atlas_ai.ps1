@@ -331,7 +331,7 @@ if (-not (Test-Path -LiteralPath $resolvedTargetRoot)) {
 
 $blockingItems = @(Get-NonNewProjectItems -RootPath $resolvedTargetRoot -InstallerPath $templateRoot)
 if ($blockingItems.Count -gt 0) {
-    Write-Error "Target does not look like a new project. Found existing top-level item(s): $($blockingItems -join ', '). Use update.md for a plan-first legacy project update instead of atlas_ai.ps1."
+    Write-Error "Target does not look like a new project. Found existing top-level item(s): $($blockingItems -join ', '). Use .github/prompts/atlas-update.prompt.md from the kit for a plan-first legacy project update instead of atlas_ai.ps1."
     return
 }
 
@@ -342,11 +342,8 @@ $filesToCopy = @(
     ".github/FRONTMATTER-SCHEMA.md",
     ".github/INSTRUCTION-MAINTENANCE.md",
     "CLAUDE.md",
-    "CHATGPT.md",
-    "GEMINI.md",
     "AGENTS.md",
-    "ATLAS.md",
-    "update.md"
+    "ATLAS.md"
 )
 
 $promptRoot = Join-Path $templateRoot ".github/prompts"
@@ -412,10 +409,6 @@ if ($IncludeSkills -and -not $SkillsSource) {
     } else {
         Write-Warning "Skills source not found: $resolvedSkillsSource"
     }
-}
-
-if ($IncludeCGR) {
-    $filesToCopy += "CGR.md"
 }
 
 if ($IncludePS) {
