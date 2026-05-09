@@ -1,12 +1,18 @@
 [CmdletBinding(SupportsShouldProcess = $true)]
 param(
     [string]$RepoRoot = ".",
-    [switch]$SkipReferenceRewrite
+    [switch]$SkipReferenceRewrite,
+    [switch]$Approved
 )
 
 $ErrorActionPreference = 'Stop'
 
 $resolvedRoot = [System.IO.Path]::GetFullPath($RepoRoot)
+
+if (-not $WhatIfPreference -and -not $Approved) {
+    Write-Error "Refusing to run a real layout migration without explicit approval. Preview with -WhatIf first, then rerun with -Approved after human review."
+    return
+}
 
 function Merge-DirectoryContent {
     param(

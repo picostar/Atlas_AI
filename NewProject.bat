@@ -47,7 +47,7 @@ echo.
 echo  -- Optional components --
 echo.
 echo  Project Stages (PS) adds formal release gates: EVT, DVT, PVT, GA.
-echo  Use this for enginering projects, regulated products, or anything
+echo  Use this for engineering projects, regulated products, or anything
 echo  that needs structured milestone reviews with MRD/PRD/ESD documents.
 echo.
 set /p DO_PS=Include Project Stages? [y/n, default n]: 

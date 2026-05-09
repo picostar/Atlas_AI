@@ -368,16 +368,16 @@ Prerequisites: `git` must be on PATH. For `-GitHubRepo`, install the [GitHub CLI
 If an existing repo still uses legacy paths (`docs/projects/` and `docs/reference/*-patterns`), run the migration from a disposable git worktree, not the live checkout:
 
 ```powershell
-pwsh -File .\scripts\migrate-layout-v2.ps1 -RepoRoot .
-```
-
-Dry run:
-
-```powershell
 pwsh -File .\scripts\migrate-layout-v2.ps1 -RepoRoot . -WhatIf
 ```
 
-This migration is idempotent and safe to re-run, but it still moves files and rewrites references. Preview first and use a disposable git worktree for the real migration.
+After the guided update plan and preview are approved, run the real migration with explicit approval:
+
+```powershell
+pwsh -File .\scripts\migrate-layout-v2.ps1 -RepoRoot . -Approved
+```
+
+This migration is idempotent and safe to re-run, but it still moves files and rewrites references. The script refuses to run real changes unless `-Approved` is provided. Preview first and use a disposable git worktree for the real migration.
 
 ### Guided update for older atlas projects
 
