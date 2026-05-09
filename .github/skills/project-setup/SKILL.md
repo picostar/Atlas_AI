@@ -1,6 +1,6 @@
 ---
 name: project-setup
-description: 'Set up a project with atlas_ai. Use when adopting atlas_ai into a new or existing repository, running the installer, reorganizing existing files into the atlas_ai structure, or bootstrapping a project.'
+description: 'Set up a new project with atlas_ai. Use when bootstrapping a new repository, running the installer, initializing git, or creating a GitHub repo.'
 ---
 
 # Project Setup with atlas_ai
@@ -8,8 +8,8 @@ description: 'Set up a project with atlas_ai. Use when adopting atlas_ai into a 
 ## When to Use
 
 - Setting up a new project with the atlas_ai process kit
-- Adopting atlas_ai into an existing repository
-- Reorganizing existing docs into the atlas_ai structure
+- Bootstrapping a new repository
+- Initializing git or creating a new GitHub repository for a new project
 
 ## Procedure
 
@@ -23,13 +23,11 @@ description: 'Set up a project with atlas_ai. Use when adopting atlas_ai into a 
    - Add `-IncludeCGR` for governance review
    - Add `-InitGit` for git initialization
    - Add `-GitHubRepo "name"` for GitHub repo creation
-3. If existing files are present, review and reorganize:
-   - With `-OrganizeExisting`, move existing files into `docs/reference/` first for triage
-   - Keep `seed.md` and `secrets.md` in place when present
-   - Treat existing MRD, PRD, and ESD files as reference inputs and create source-of-truth artifacts in `docs/cgr/`
-   - If the runnable app lives in a child directory one level down, keep atlas_ai files and the `docs/` tree at the repo root and treat the child directory as code-only
-4. Do not overwrite existing project content -- merge or adapt it
-5. Summarize what was installed and reorganized
+3. If existing project files are present, stop and tell the user this does not look like a new project
+   - Do not move, rewrite, reorganize, migrate, or delete existing files
+   - Use `update.md` for a plan-first legacy project update instead
+4. Create committed `accounts.md` for non-secret cloud account and deployment destination binding
+5. Summarize what was installed
 
 ## File Placement Rules
 
@@ -41,5 +39,7 @@ Refer to [ATLAS.md](../../../ATLAS.md) for the full doc structure table. Key rul
 - Live state in `docs/agile/status.md`
 - Keep reusable instruction files generic -- no project-specific values
 - No secrets in committed files
+- Use committed `accounts.md` for non-secret cloud account binding such as subscriptions, resource groups, project IDs, account IDs, regions, zones, and deployment target names
+- Check `accounts.md` before cloud, hosting, infrastructure, deployment, or provider CLI work
 - Before asking the user for credentials, tokens, keys, or other secret values, check `secrets.md` at the repository root first if it exists
 - Do not place secrets in any other file by default; if the user requests an override, warn first and proceed only after confirmation

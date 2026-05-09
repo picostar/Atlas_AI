@@ -15,3 +15,4 @@ This file records API-first setup intent for this repository.
 
 - This file must not contain secrets.
 - Store local secrets only in secrets.md at repository root, and keep that file gitignored.
+- Store non-secret cloud account and deployment destination binding in accounts.md at repository root.

@@ -1,7 +1,7 @@
 # Seed Notes For Project Startup
 
 ## Purpose
-This file captures startup context for an atlas_ai adoption run.
+This file captures startup context for a new atlas_ai project setup run.
 Use it to describe project intent and first-cycle priorities before generating an initial devcycle.
 
 ## How To Use
@@ -10,26 +10,24 @@ Use it to describe project intent and first-cycle priorities before generating a
 3. Recommended chat-only command:
 
 ```powershell
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -OrganizeExisting -InitGit -SeedPath .\atlas_ai -RemoveSeed
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -ApiFirst -InitGit
 ```
 
 Optional stack pattern selection:
 
 ```powershell
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -OrganizeExisting -InitGit -SeedPath .\atlas_ai -RemoveSeed -StackPattern "sp-01-functions-tables-swa-keyvault.md"
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -ApiFirst -InitGit -StackPattern "sp-01-functions-tables-swa-keyvault.md"
 ```
 
 Optional UX pattern selection:
 
 ```powershell
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -OrganizeExisting -InitGit -SeedPath .\atlas_ai -RemoveSeed -UxPattern "uxp-01-modern-app-shell-layout.md"
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -ApiFirst -InitGit -UxPattern "uxp-01-modern-app-shell-layout.md"
 ```
 
 You can also just say `newproject` in AI chat and the agent should run this same command flow.
 
-4. With -OrganizeExisting, startup files like this one are moved to docs/reference.
-5. After seed cleanup is complete, ask the agent: build an initial docs/agile/devcycle.md from docs/reference startup files.
-6. Review and adjust scope, priorities, and CU estimates.
+4. Review and adjust scope, priorities, and CU estimates.
 
 ## Project Outline (Brief)
 Project name: atlas_ai
@@ -41,7 +39,7 @@ Primary outcomes:
 - Consistent AI instruction loading at repository root.
 - ATLAS workflow for devtasks, smoketest, UAT, retro, and closeout.
 - Optional PS stage-gate model and optional CGR governance review.
-- Predictable adoption path for both new and existing repositories.
+- Predictable setup path for new repositories.
 
 Current implementation scope:
 - Installer and setup flow (atlas_ai.ps1 and NewProject.bat).
@@ -61,4 +59,4 @@ Known constraints:
 Initial devcycle candidates:
 - Improve installer ergonomics and post-install guidance.
 - Expand or standardize high-value skills.
-- Tighten documentation around adoption and closeout.
+- Tighten documentation around setup and closeout.

@@ -9,7 +9,7 @@ Guidelines:
 - document required inputs and expected outputs
 
 Included script:
-- `migrate-layout-v2.ps1` -- one-time migration from legacy layout (`docs/projects`, `docs/reference/*-patterns`) to v2 layout (`docs/cgr`, `patterns/*-patterns`)
+- `migrate-layout-v2.ps1` -- optional manual migration from legacy layout (`docs/projects`, `docs/reference/*-patterns`) to v2 layout (`docs/cgr`, `patterns/*-patterns`). Preview and plan with `update.md` before running it on a legacy project, and run only after human approval.
 
-Related root script:
-- `updateatlas.ps1` -- one-step updater for older atlas projects. It runs git safety preflight and creates a rollback tag by default, can push the rollback tag to `origin` with `-PushRollbackTag`, refreshes kit files non-destructively, runs verification, performs legacy layout migration when needed, and removes seed updater artifacts after success unless `-KeepSeedArtifacts` or `-NoSelfDelete` is used.
+Related root prompt:
+- `update.md` -- guided legacy atlas update prompt. Copy it into the legacy project or paste it into an agent, use `picostar/Atlas_AI` as source of truth, and produce a human-reviewed plan before any edits.

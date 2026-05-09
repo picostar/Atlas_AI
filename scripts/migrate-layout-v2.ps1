@@ -4,6 +4,8 @@ param(
     [switch]$SkipReferenceRewrite
 )
 
+$ErrorActionPreference = 'Stop'
+
 $resolvedRoot = [System.IO.Path]::GetFullPath($RepoRoot)
 
 function Merge-DirectoryContent {
@@ -22,15 +24,12 @@ function Merge-DirectoryContent {
         New-Item -ItemType Directory -Path $DestinationPath -Force | Out-Null
     }
 
-    $items = Get-ChildItem -LiteralPath $SourcePath -Force
+    $items = Get-ChildItem -LiteralPath $SourcePath -Force -ErrorAction Stop
     foreach ($item in $items) {
         $targetPath = Join-Path $DestinationPath $item.Name
         if (Test-Path -LiteralPath $targetPath) {
             if ($item.PSIsContainer) {
                 Merge-DirectoryContent -SourcePath $item.FullName -DestinationPath $targetPath
-                if ((Get-ChildItem -LiteralPath $item.FullName -Force | Measure-Object).Count -eq 0) {
-                    Remove-Item -LiteralPath $item.FullName -Force
-                }
             } else {
                 $base = [System.IO.Path]::GetFileNameWithoutExtension($item.Name)
                 $ext = [System.IO.Path]::GetExtension($item.Name)
@@ -41,16 +40,16 @@ function Merge-DirectoryContent {
                     $counter++
                 } while (Test-Path -LiteralPath $altPath)
 
-                Move-Item -LiteralPath $item.FullName -Destination $altPath -Force
+                Move-Item -LiteralPath $item.FullName -Destination $altPath -Force -ErrorAction Stop
                 Write-Host "Conflict resolved by rename: $($item.FullName) -> $altPath"
             }
         } else {
-            Move-Item -LiteralPath $item.FullName -Destination $targetPath -Force
+            Move-Item -LiteralPath $item.FullName -Destination $targetPath -Force -ErrorAction Stop
         }
     }
 
-    if ((Get-ChildItem -LiteralPath $SourcePath -Force | Measure-Object).Count -eq 0) {
-        Remove-Item -LiteralPath $SourcePath -Force
+    if ((Test-Path -LiteralPath $SourcePath) -and (Get-ChildItem -LiteralPath $SourcePath -Force -ErrorAction Stop | Measure-Object).Count -eq 0) {
+        Remove-Item -LiteralPath $SourcePath -Force -ErrorAction Stop
     }
 }
 
@@ -81,12 +80,25 @@ if ($SkipReferenceRewrite) {
     return
 }
 
-$textFiles = Get-ChildItem -Path $resolvedRoot -Recurse -File -Include *.md,*.ps1,*.bat |
+$textFiles = Get-ChildItem -Path $resolvedRoot -Recurse -File -Include *.md,*.ps1,*.bat -ErrorAction SilentlyContinue |
     Where-Object { $_.FullName -ne $PSCommandPath }
 $updated = 0
 
 foreach ($file in $textFiles) {
-    $content = Get-Content -LiteralPath $file.FullName -Raw
+    if (-not (Test-Path -LiteralPath $file.FullName)) {
+        continue
+    }
+
+    try {
+        $content = Get-Content -LiteralPath $file.FullName -Raw -ErrorAction Stop
+    } catch {
+        if ($_.Exception -is [System.Management.Automation.ItemNotFoundException] -or $_.Exception -is [System.IO.DirectoryNotFoundException] -or $_.Exception -is [System.IO.FileNotFoundException]) {
+            continue
+        }
+
+        throw
+    }
+
     $rewritten = $content.Replace("docs/projects/", "docs/cgr/")
     $rewritten = $rewritten.Replace("docs/projects\\", "docs/cgr\\")
     $rewritten = $rewritten.Replace("docs/reference/stack-patterns/", "patterns/stack-patterns/")
@@ -96,7 +108,7 @@ foreach ($file in $textFiles) {
 
     if ($rewritten -ne $content) {
         if ($PSCmdlet.ShouldProcess($file.FullName, "Rewrite legacy references")) {
-            Set-Content -LiteralPath $file.FullName -Value $rewritten
+            Set-Content -LiteralPath $file.FullName -Value $rewritten -Encoding UTF8
             $updated++
         }
     }

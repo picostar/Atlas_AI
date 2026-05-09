@@ -9,11 +9,14 @@ Review this repository for end-of-session ATLAS closeout readiness.
 
 Before asking the user for credentials, tokens, keys, or other secret values, check `secrets.md` at the repository root first if it exists. Do not place secrets in any other file by default. If the user explicitly requests an override, warn about commit and leakage risk first, then proceed only after confirmation.
 
+For cloud, hosting, infrastructure, deployment, or provider CLI concerns, check committed `accounts.md` first if it exists. Treat it as non-secret account and destination binding. Do not move account binding details into `secrets.md`.
+
 Use these files as the baseline:
 - [Source of truth](../copilot-instructions.md)
 - [ATLAS process](../../ATLAS.md)
 - [Active stack pattern](../../patterns/stack-patterns/active-stack-pattern.md), only if the file exists and the session touched architecture, hosting, deployment, infrastructure, or platform selection
 - [Active UX pattern](../../patterns/ux-patterns/active-ux-pattern.md), only if the file exists and the session touched layout, navigation, page hierarchy, interaction flow, or UI generation
+- [Project accounts](../../accounts.md), only if the session touched cloud, hosting, infrastructure, deployment, or provider account binding
 - [Claude pointer](../../CLAUDE.md)
 - [Agents pointer](../../AGENTS.md)
 - [Current status](../../docs/agile/status.md)

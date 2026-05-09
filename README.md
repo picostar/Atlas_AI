@@ -37,7 +37,6 @@ In that layout:
 - `GEMINI.md` -- thin pointer for Gemini-oriented workflows
 - `AGENTS.md` -- thin pointer for Codex-style agents and similar tooling
 - `ATLAS.md` -- default development process
-- `PS.md` -- optional project stages and document gates (EVT/DVT/PVT/GA)
 - `CGR.md` -- optional compliance and governance review prompt
 
 ### AI governance docs
@@ -56,8 +55,12 @@ In that layout:
 - `atlas_ai.ps1` -- copies kit files into the target repository root
 - `.gitignore` -- default ignore patterns, copied to the target when `-InitGit` is used
 
+### Guided update prompt
+- `update.md` -- prompt-driven workflow for updating legacy atlas projects by comparing against the public Atlas_AI kit before editing
+
 ### Startup seed file
-- `seed.md` -- optional startup brief and usage notes for adoption runs. Keep high-level project intent here, then move it to `docs/reference/` during `-OrganizeExisting`.
+- `seed.md` -- optional startup brief and usage notes for new project setup runs.
+- `accounts.md` -- committed non-secret cloud account and deployment destination binding. Keep credentials, keys, tokens, and secrets out of this file.
 - `secrets.md` -- local-only secrets note file stored at repo root and ignored by git. Keep credentials and keys here, not in committed files.
 
 This `README.md` is for the kit itself. It is not copied into the target repository by the installer.
@@ -68,6 +71,7 @@ This `README.md` is for the kit itself. It is not copied into the target reposit
 - `docs/agile/status.md` -- current live state
 - `docs/agile/retro.md` -- completed work log
 - `docs/cgr/README.md` -- governance document guidance
+- `docs/cgr/PS.md` -- optional project stages and document gates (EVT/DVT/PVT/GA)
 - `docs/reference/README.md` -- reference docs guidance
 - `patterns/README.md` -- pattern catalog root guidance
 - `patterns/stack-patterns/README.md` -- stack baseline guidance
@@ -80,7 +84,7 @@ This `README.md` is for the kit itself. It is not copied into the target reposit
 ### Skills (installed with -IncludeSkills)
 - `.github/skills/azure-deploy/SKILL.md` -- Azure Functions and SWA deployment procedures
 - `.github/skills/devcycle-management/SKILL.md` -- DT/RDT task lifecycle, retro logging, CU scoring
-- `.github/skills/project-setup/SKILL.md` -- atlas_ai adoption and repo bootstrapping
+- `.github/skills/project-setup/SKILL.md` -- new project setup and repo bootstrapping
 - `.github/skills/powershell-style/SKILL.md` -- PowerShell scripting conventions
 - `.github/skills/git-workflow/SKILL.md` -- branch strategy, commit format, PR conventions
 - `.github/skills/example-skill/SKILL.md` -- template for creating new skills
@@ -143,7 +147,7 @@ Why this matters:
 
 ### Quick Start -- Point a project at atlas_ai
 
-The simplest way to adopt atlas_ai is to copy or clone it into your project folder, then tell your AI agent to set it up. This works in VS Code with Copilot, Claude Code, or any Codex-style agent.
+The simplest way to start a new project with atlas_ai is to copy or clone it into an otherwise empty project folder, then tell your AI agent to set it up. This works in VS Code with Copilot, Claude Code, or any Codex-style agent.
 
 **Step 1:** Copy the `atlas_ai` folder into your project root. You can clone it, copy it, or drop it in manually. Your project should look like this:
 
@@ -166,9 +170,8 @@ Set up this project with atlas_ai.
 Tasks:
 1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, and atlas_ai/AGENTS.md.
 2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold.
-3. If this repository is messy and you use `-OrganizeExisting`, existing files are moved into `docs/reference/` for triage. Keep `seed.md` and `secrets.md` in place.
-4. Do not blindly overwrite useful existing project files. Merge, move, or adapt existing content into the new structure.
-5. Summarize what was installed, what was reorganized, and what was left untouched.
+3. If this repository already contains real project files, stop. Do not move, rewrite, reorganize, or overwrite them. Use `update.md` for a plan-first legacy project update instead.
+4. Summarize what was installed.
 ```
 
 This installs the core workflow, AI instruction files, and docs scaffold. No release stages, no governance review. Good for POC work, internal tools, and exploratory development.
@@ -183,11 +186,10 @@ atlas_ai
 Set up this project with atlas_ai including formal release stages.
 
 Tasks:
-1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, atlas_ai/PS.md, and atlas_ai/AGENTS.md.
+1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, atlas_ai/docs/cgr/PS.md, and atlas_ai/AGENTS.md.
 2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold -IncludePS.
-3. If this repository is messy and you use `-OrganizeExisting`, existing files are moved into `docs/reference/` for triage. Keep `seed.md` and `secrets.md` in place.
-4. Do not blindly overwrite useful existing project files. Merge, move, or adapt existing content into the new structure.
-5. Summarize what was installed, what was reorganized, and what was left untouched.
+3. If this repository already contains real project files, stop. Do not move, rewrite, reorganize, or overwrite them. Use `update.md` for a plan-first legacy project update instead.
+4. Summarize what was installed.
 ```
 
 #### Setup with governance review (optional)
@@ -202,9 +204,8 @@ Set up this project with atlas_ai including CGR.
 Tasks:
 1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, atlas_ai/CGR.md, and atlas_ai/AGENTS.md.
 2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold -IncludeCGR.
-3. If this repository is messy and you use `-OrganizeExisting`, existing files are moved into `docs/reference/` for triage. Keep `seed.md` and `secrets.md` in place.
-4. Do not blindly overwrite useful existing project files. Merge, move, or adapt existing content into the new structure.
-5. Summarize what was installed, what was reorganized, and what was left untouched.
+3. If this repository already contains real project files, stop. Do not move, rewrite, reorganize, or overwrite them. Use `update.md` for a plan-first legacy project update instead.
+4. Summarize what was installed.
 ```
 
 #### Setup with both PS and CGR (optional)
@@ -217,21 +218,20 @@ atlas_ai
 Set up this project with atlas_ai including PS and CGR.
 
 Tasks:
-1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, atlas_ai/PS.md, atlas_ai/CGR.md, and atlas_ai/AGENTS.md.
+1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, atlas_ai/docs/cgr/PS.md, atlas_ai/CGR.md, and atlas_ai/AGENTS.md.
 2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold -IncludePS -IncludeCGR.
-3. If this repository is messy and you use `-OrganizeExisting`, existing files are moved into `docs/reference/` for triage. Keep `seed.md` and `secrets.md` in place.
-4. Do not blindly overwrite useful existing project files. Merge, move, or adapt existing content into the new structure.
-5. Summarize what was installed, what was reorganized, and what was left untouched.
+3. If this repository already contains real project files, stop. Do not move, rewrite, reorganize, or overwrite them. Use `update.md` for a plan-first legacy project update instead.
+4. Summarize what was installed.
 ```
 
 #### Adding release stages or CGR later
 
-You can start with the basic setup and add `PS.md` or `CGR.md` later at any time:
+You can start with the basic setup and add `docs/cgr/PS.md` or `CGR.md` later at any time:
 
 ```text
 atlas_ai
 
-Add project stages to this project. Install PS.md from the atlas_ai kit.
+Add project stages to this project. Install docs/cgr/PS.md from the atlas_ai kit.
 ```
 
 ```text
@@ -250,49 +250,11 @@ Add `-InitGit` to any install step above to initialize a git repository with a `
 
 Requires `git` on PATH. For `-GitHubRepo`, install the [GitHub CLI](https://cli.github.com/). Login is handled automatically if needed.
 
-### Full agent-driven adoption for an existing repo
+### Existing repo updates
 
-If the project already has substantial docs, plans, scripts, and references that need sorting into the atlas_ai structure, use this more detailed prompt:
+Do not use `atlas_ai.ps1` or `NewProject.bat` to update an existing repository. Those entry points are new-project only. For legacy atlas projects, copy or open `update.md` in the target repository and use it as a plan-first prompt. The prompt compares the target against the public `picostar/Atlas_AI` source of truth and stops before making edits until a human approves the plan.
 
-```text
-atlas_ai
-
-Adopt the atlas_ai process into this repository.
-
-Tasks:
-1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, and atlas_ai/AGENTS.md.
-2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold.
-3. If this repository is messy and you use `-OrganizeExisting`, existing files are moved into `docs/reference/` for triage. Keep `seed.md` and `secrets.md` in place.
-4. Create or update these folders and files when needed:
-	- docs/agile/devcycle.md
-	- docs/agile/backlog.md
-	- docs/agile/status.md
-	- docs/agile/retro.md
-	- docs/cgr/
-	- docs/reference/
-	- scripts/
-	- archive/
-5. Do not blindly overwrite useful existing project files. Merge, move, or adapt existing content into the new structure.
-6. Preserve project-specific facts, but keep reusable AI instruction files generic.
-7. If existing files overlap with the kit, prefer the repo's real project content and fit it into the process.
-8. Update the active task list, status, and retro docs based on the repository's current state if enough information exists.
-9. Summarize what was installed, what was reorganized, what was left untouched, and any ambiguities that still need a human decision.
-10. If unplanned blocker work appears during the current devcycle, add it as an `RDT` reset devtask ahead of the remaining unfinished planned devtasks.
-
-Rules:
-- Treat ATLAS.md as the default process.
-- Keep completed work out of devcycle.md.
-- Use `RDT` for reset devtasks.
-- Insert new `RDT` items ahead of the remaining unfinished planned devcycle tasks.
-- Put active work in devcycle.md, future work in backlog.md, current live state in status.md, and completed work in retro.md.
-- With `-OrganizeExisting`, move existing files into docs/reference first for triage, except seed.md and secrets.md.
-- Treat existing MRD, PRD, and ESD files as reference inputs and create source-of-truth MRD, PRD, and ESD artifacts in docs/cgr/.
-- Put setup notes, runbooks, integration details, and operational references in docs/reference/.
-- Put reusable scripts in scripts/.
-- Put superseded or one-off artifacts in archive/.
-- Do not hardcode secrets, tenants, URLs, or credentials into reusable instruction files.
-- Ask only if a decision cannot be made from the repo contents.
-```
+If a legacy `accounts.txt` exists, the update plan should replace it with committed `accounts.md` for non-secret provider binding, then remove `accounts.txt` after approval. Do not keep both as active account sources.
 
 Add `-IncludePS` and/or `-IncludeCGR` to the install step if the project needs project stages or governance review.
 
@@ -301,14 +263,8 @@ Add `-IncludePS` and/or `-IncludeCGR` to the install step if the project needs p
 If you do not want to use an agent prompt, run the installer directly:
 
 ```powershell
-# Chat-only equivalent of NewProject.bat (run from project root)
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -ApiFirst -OrganizeExisting -InitGit -SeedPath .\atlas_ai -RemoveSeed
-
-# Update an older atlas project to the latest kit (safe refresh + verification + self-delete)
-pwsh -File .\atlas_ai\updateatlas.ps1 -ProjectRoot .
-
-# Batch wrapper for the updater
-.\atlas_ai\UpdateAtlas.bat
+# Chat-only equivalent of NewProject.bat (run from an otherwise empty project root)
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -ApiFirst -InitGit
 
 # Basic -- core workflow and scaffold only
 pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold
@@ -340,9 +296,6 @@ pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -UxPattern "uxp-01-modern-ap
 # Include scaffold and set active UX pattern using full template-relative path
 pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -UxPattern "patterns/ux-patterns/ux-pattern-templates/uxp-01-modern-app-shell-layout.md"
 
-# Reorganize existing files into docs/reference for triage before install copy
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -OrganizeExisting
-
 # Initialize git repo with .gitignore and initial commit
 pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -InitGit
 
@@ -358,19 +311,17 @@ pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -IncludePS -IncludeCGR -Init
 # Preview without copying
 pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -IncludePS -IncludeCGR -InitGit -WhatIf
 
-# Overwrite existing files
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -IncludePS -IncludeCGR -Force
 ```
 
 Chat shortcut: in AI chat, you can say `newproject` and the agent should execute the same non-interactive installer flow.
 
-`-OrganizeExisting` reviews existing non-code artifacts in the target root and moves matched files into `docs/agile`, `docs/cgr`, `docs/reference`, `scripts`, or `archive` using filename and extension heuristics. Startup-oriented files such as `todo`, `seed`, `startup`, `kickoff`, and `project-start` are treated as reference inputs and moved to `docs/reference`. It does not reorganize the seed folder itself. `-StackPattern` accepts a stack pattern template filename or template-relative path and sets `patterns/stack-patterns/active-stack-pattern.md` from that template. `-UxPattern` accepts a UX pattern template filename or template-relative path and sets `patterns/ux-patterns/active-ux-pattern.md` from that template. `-InitGit` copies the `.gitignore` from the kit, runs `git init` (if needed), and makes an initial commit with project artifacts only. `-GitHubRepo` creates a GitHub repository using the `gh` CLI (defaults to private, add `-Public` for public). Use `-GitHubOwner` to specify the GitHub account or org. If not logged in, the script runs `gh auth login` automatically. `-GitHubRepo` implies `-InitGit`.
+`-StackPattern` accepts a stack pattern template filename or template-relative path and sets `patterns/stack-patterns/active-stack-pattern.md` from that template. `-UxPattern` accepts a UX pattern template filename or template-relative path and sets `patterns/ux-patterns/active-ux-pattern.md` from that template. `-InitGit` copies the `.gitignore` from the kit, runs `git init` if needed, and makes an initial commit with project artifacts only. `-GitHubRepo` creates a GitHub repository using the `gh` CLI. Use `-GitHubOwner` to specify the GitHub account or org. If not logged in, the script runs `gh auth login` automatically. `-GitHubRepo` implies `-InitGit`.
 
 Prerequisites: `git` must be on PATH. For `-GitHubRepo`, install the [GitHub CLI](https://cli.github.com/). Login is handled automatically if needed.
 
 ### One-time layout migration (legacy repos)
 
-If an existing repo still uses legacy paths (`docs/projects/` and `docs/reference/*-patterns`), run:
+If an existing repo still uses legacy paths (`docs/projects/` and `docs/reference/*-patterns`), run the migration from a disposable git worktree, not the live checkout:
 
 ```powershell
 pwsh -File .\scripts\migrate-layout-v2.ps1 -RepoRoot .
@@ -382,112 +333,38 @@ Dry run:
 pwsh -File .\scripts\migrate-layout-v2.ps1 -RepoRoot . -WhatIf
 ```
 
-This migration is idempotent and safe to re-run.
+This migration is idempotent and safe to re-run, but it still moves files and rewrites references. Preview first and use a disposable git worktree for the real migration.
 
-### One-step updater for older atlas projects
+### Guided update for older atlas projects
 
-If your repository was created with an older atlas kit, run:
+Older atlas projects should be updated with the prompt in `update.md`, not with a hard updater script.
 
-```powershell
-pwsh -File .\atlas_ai\updateatlas.ps1 -ProjectRoot .
-```
+Copy `update.md` into the legacy project root, or paste its prompt into the agent while the legacy project is open in VS Code. The prompt sends the agent to `picostar/Atlas_AI` as the source of truth, then asks for update suggestions as a plan. The first pass is plan-only and must stop for human review before any file changes.
 
-What it does:
-- reviews the current project structure and detects optional components already in use (`PS.md`, `CGR.md`, `.github/skills`)
-- runs git safety preflight in git repos (clean working tree, fetch and sync check against upstream when available)
-- creates a rollback tag before making changes (default behavior)
-- refreshes core instruction files with `-Force` so old kit logic is updated
-- runs a non-destructive scaffold pass (no `-Force`) plus installer verification
-- runs legacy layout migration when needed (`docs/projects` and `docs/reference/*-patterns`)
-- performs post-update checks for required files and migration completion
-- removes updater seed artifacts after a successful run by default
+Use this flow:
+1. Open the legacy project in VS Code.
+2. Copy `update.md` into the legacy project root, or paste it into the agent as the update prompt.
+3. Give the agent access to the current Atlas_AI kit, preferably the public `picostar/Atlas_AI` repository or a local checkout of this repo.
+4. Let the agent compare the legacy project against the Atlas_AI source of truth.
+5. Review the proposed update plan before files are moved, renamed, deleted, rewritten, or generated.
+6. Answer any questions about legacy layout paths, account binding, pattern folders, and local project-specific files.
+7. Approve the plan explicitly before execution.
+8. Apply the agreed changes deliberately, then review the diff and commit.
 
-Useful options:
-- `-SourcePath "C:\path\to\atlas_ai"` to use a local kit instead of downloading from GitHub
-- `-SkipLayoutMigration` to skip path migration even if legacy paths are detected
-- `-SkipGitSafetyChecks` to bypass clean-tree and upstream sync preflight (not recommended)
-- `-SkipGitFetch` to skip `git fetch --prune origin` during preflight
-- `-NoRollbackTag` to skip creating the pre-update rollback tag
-- `-PushRollbackTag` to push the rollback tag to `origin` for team-visible rollback
-- `-KeepSeedArtifacts` to keep the copied `atlas_ai` folder after success
-- `-NoSelfDelete` to keep the updater script after success
-- `-WhatIf` to preview actions
+The guided update flow is designed to catch project-specific decisions before editing, especially:
+- whether `docs/projects` should become `docs/cgr`
+- whether `docs/reference/stack-patterns` and `docs/reference/ux-patterns` should become `patterns/stack-patterns` and `patterns/ux-patterns`
+- whether legacy `accounts.txt` should be replaced by committed `accounts.md` and removed
+- which local instructions, prompts, skills, docs, and reference files should be preserved
 
-Windows batch wrapper:
+The planning pass should not modify the legacy project. It should produce file-by-file recommendations, questions, and a proposed validation checklist for human approval.
 
-```bat
-.\atlas_ai\UpdateAtlas.bat
-```
-
-`UpdateAtlas.bat` auto-selects `ProjectRoot` by location:
-- if the wrapper is inside an `atlas_ai` folder, it targets the parent folder
-- otherwise it targets the wrapper's current folder
-
-The wrapper forwards any arguments to the PowerShell updater, for example:
-
-```bat
-.\atlas_ai\UpdateAtlas.bat -WhatIf -NoSelfDelete
-```
-
-Quick checklist:
-1. Put `atlas_ai` in the old project root (copy, symlink, or junction).
-2. Clean your git working tree (`git status` should be clean).
-3. Preview: `.\atlas_ai\UpdateAtlas.bat -WhatIf`
-4. Run update: `.\atlas_ai\UpdateAtlas.bat`
-5. Optional team rollback tag: `.\atlas_ai\UpdateAtlas.bat -PushRollbackTag`
-6. Review diff and commit.
-
-### UpdateAtlas.bat step by step
-
-Prerequisite:
-- This flow assumes your old project has an `atlas_ai` folder at project root (copied kit or symlink/junction).
-
-1. Copy or link `atlas_ai` into your old project root if it is not already present.
-2. Commit or stash your current work so the repository is clean.
-3. Open a terminal in the project root (the folder that contains `atlas_ai`).
-4. Run a preview first:
-
-```bat
-.\atlas_ai\UpdateAtlas.bat -WhatIf
-```
-
-5. Run the real update:
-
-```bat
-.\atlas_ai\UpdateAtlas.bat
-```
-
-6. Optional, create and push a team-visible rollback tag before update:
-
-```bat
-.\atlas_ai\UpdateAtlas.bat -PushRollbackTag
-```
-
-7. Review changes:
-
-```powershell
-git status
-git diff
-```
-
-8. If you need rollback:
-
-```powershell
-git tag --list "pre-updateatlas-*"
-git reset --hard <tag-name>
-```
-
-Cleanup behavior after success:
-- By default, `updateatlas` removes seed artifacts used only for update, including the copied `atlas_ai` folder it ran from, when that path is not tracked by git.
-- If that seed path appears tracked by git, cleanup is skipped for safety and a warning is printed.
-- Use `-KeepSeedArtifacts` to always keep the copied `atlas_ai` folder.
-- Use `-NoSelfDelete` to keep updater artifacts for debugging, which also skips automatic seed artifact cleanup.
+The migration script `scripts/migrate-layout-v2.ps1` remains available as an optional manual utility, but it should only be used after the guided update plan confirms that the layout migration is wanted.
 
 Placement guidance:
-- `atlas_ai.ps1` stays at the kit root because existing setup flows and docs call it there.
-- `updateatlas.ps1` can live at kit root or under `scripts/`. `UpdateAtlas.bat` checks both locations.
-- `updateatlas.ps1` is intended as a one-shot updater and self-deletes by default on success.
-- `scripts/migrate-layout-v2.ps1` is a reusable migration utility and should remain in `scripts/`.
+- `atlas_ai.ps1` stays at the kit root because setup flows and docs call it there.
+- `update.md` is the recommended legacy update workflow.
+- `scripts/migrate-layout-v2.ps1` is a reusable optional migration utility and should remain in `scripts/`.
 
 Or manually copy the files you want from `atlas_ai/` to the repository root:
 - `.github/copilot-instructions.md` -- always
@@ -498,7 +375,9 @@ Or manually copy the files you want from `atlas_ai/` to the repository root:
 - `GEMINI.md` -- optional pointer for Gemini-oriented workflows
 - `AGENTS.md` -- always
 - `ATLAS.md` -- always
-- `PS.md` -- only if the project uses formal project stages
+- `accounts.md` -- recommended for non-secret cloud account and deployment destination binding
+- `update.md` -- recommended for guided legacy atlas updates
+- `docs/cgr/PS.md` -- only if the project uses formal project stages
 - `CGR.md` -- only if the project uses governance review
 - the `docs/`, `scripts/`, and `archive/` scaffold as needed
 
@@ -570,9 +449,9 @@ If the repository has an agreed UX baseline, create `patterns/ux-patterns/active
 
 The atlas_ai instruction files and prompts treat that file as the source of truth for UX-sensitive work, such as layout, navigation, page hierarchy, and UI generation changes.
 
-## Existing Repo Adoption
+## Existing Repo Updates
 
-Use the Quick Start prompts above. The "Full agent-driven adoption" prompt handles repos with existing docs, plans, and scripts. The agent will sort existing content into the atlas_ai structure without erasing it.
+Use `update.md` for existing repositories. The first pass is planning only and should not execute edits, migrations, moves, renames, deletes, or destructive commands until a human reviews and approves the plan.
 
 ## How To Customize For A New Project
 
@@ -606,7 +485,7 @@ After installing the kit into a new repository:
 3. Add CLI or script smoketests and a `UAT:` section to each devtask. For non-user-facing work, use `Not UAT-eligible` and name the internal validation.
 4. Add repo-specific setup notes in `docs/reference/`, and if the repo has agreed architecture or UX baselines, capture them in `patterns/stack-patterns/active-stack-pattern.md` and `patterns/ux-patterns/active-ux-pattern.md`.
 5. If the repo uses git, create one commit per completed `DT` or `RDT`. If the repo has a GitHub remote, push the branch and update or create the related pull request after each completed task.
-6. Optionally, add `PS.md` later if the project grows into formal release stages.
+6. Optionally, add `docs/cgr/PS.md` later if the project grows into formal release stages.
 7. Optionally, add `CGR.md` later if the project needs governance review.
 
 ## Design Principles
@@ -640,7 +519,7 @@ If you improve the process, update these files in this kit folder first, then co
 - `MRD`: Market Requirements Document.
 - `PRD`: Product Requirements Document.
 - `ESD`: Engineering Specification or Engineering Design document.
-- `PS`: Project Stages. The optional EVT/DVT/PVT/GA release lifecycle defined in `PS.md`.
+- `PS`: Project Stages. The optional EVT/DVT/PVT/GA release lifecycle defined in `docs/cgr/PS.md`.
 - `CGR`: Compliance and Governance Review.
 
 ## Acronym Rules

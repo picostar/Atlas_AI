@@ -9,16 +9,19 @@ Iterate governance documents using the latest CGR and score outputs.
 
 Before asking the user for credentials, tokens, keys, or other secret values, check `secrets.md` at the repository root first if it exists. Do not place secrets in any other file by default. If the user explicitly requests an override, warn about commit and leakage risk first, then proceed only after confirmation.
 
+Use committed `accounts.md` only for non-secret cloud account and destination context. Do not copy credentials, keys, tokens, or other secrets into governance artifacts.
+
 Use these files as the baseline:
 - [Source of truth](../copilot-instructions.md)
 - [ATLAS process](../../ATLAS.md)
-- [Project stages](../../PS.md), only if formal stages are in use
+- [Project stages](../../docs/cgr/PS.md), only if formal stages are in use
 - [Governance prompt baseline](../../CGR.md)
 - [CGR docs guidance](../../docs/cgr/README.md)
 - [Current CGR review output](../../docs/cgr/CGR-results.md), if it exists
 - [Current score output](../../docs/cgr/score.md), if it exists
 - [Remediation tracker](../../docs/cgr/remediation-tracking.md), if it exists
 - [Seed and reference sources](../../seed.md), [Reference docs folder](../../docs/reference/README.md)
+- [Project accounts](../../accounts.md), if it exists
 
 Perform this workflow in order:
 

@@ -6,9 +6,9 @@ echo.
 echo  atlas_ai -- Project Setup
 echo  ------------------------
 echo.
-echo  This script installs the atlas_ai development process kit into a project.
+echo  This script installs the atlas_ai development process kit into a new project.
 echo  The project folder is the parent of the atlas_ai folder (or symlink).
-echo  After a successful install, this script removes the atlas_ai seed path.
+echo  If the project already has real files, use update.md for a plan-first update.
 echo.
 
 :: Resolve the project folder as the parent of wherever this .bat lives
@@ -23,7 +23,7 @@ echo  Project folder: %TARGET%
 echo  Project name:   %PROJECT_NAME%
 echo.
 
-:: Check for existing top-level files that can be reorganized into project folders
+:: Check for existing top-level files. NewProject is create-only.
 set "HAS_EXISTING=0"
 for %%F in ("%TARGET%\*") do (
     if /i not "%%~nxF"=="%SEED_NAME%" (
@@ -32,17 +32,15 @@ for %%F in ("%TARGET%\*") do (
         set "HAS_EXISTING=1"
     )))
 )
-set "DO_MOVE=n"
 if "%HAS_EXISTING%"=="1" (
     echo  Existing files found in project folder.
-    echo  OrganizeExisting mode will move existing files into docs\reference.
-    echo  seed.md and secrets.md are kept in place if present.
-    echo  Existing MRD, PRD, and ESD files are treated as reference inputs.
-    echo  New source-of-truth MRD, PRD, and ESD should be created in docs\cgr.
+    echo  This does not look like a new project.
+    echo  NewProject.bat will not move, rewrite, or reorganize existing files.
+    echo  Use update.md for a plan-first legacy project update, then run approved changes manually.
     echo.
+    pause
+    exit /b 1
 )
-if "%HAS_EXISTING%"=="1" set /p DO_MOVE=Move existing project files into docs\reference now? [y/n, default y]: 
-if "%HAS_EXISTING%"=="1" if not defined DO_MOVE set "DO_MOVE=y"
 
 echo.
 echo  -- Optional components --
@@ -86,7 +84,11 @@ if /i "%DO_GITHUB%"=="y" (
     echo  If not logged in to GitHub CLI, you will be prompted to log in.
     echo.
     set /p GITHUB_OWNER=GitHub account or org: 
-    if not defined GITHUB_OWNER echo  No account entered -- repo will be created under the current gh auth account.
+    if not defined GITHUB_OWNER (
+        echo  GitHub account or org is required for repo creation.
+        pause
+        exit /b 1
+    )
 )
 
 echo.
@@ -96,7 +98,7 @@ echo  Skills are reusable AI agent workflows installed to .github\skills\.
 echo  Default skills included in this kit:
 echo    - azure-deploy      : Azure Functions and SWA deployment procedures
 echo    - devcycle-management: DT/RDT task lifecycle, retro logging, CU scoring
-echo    - project-setup     : atlas_ai adoption and repo bootstrapping
+echo    - project-setup     : New project bootstrapping
 echo    - powershell-style  : PowerShell scripting conventions
 echo    - git-workflow      : Branch strategy, commit format, PR conventions
 echo    - example-skill     : Template for creating your own skills
@@ -207,9 +209,6 @@ if /i "%DO_PS%"=="y" set "PS_FLAG=-IncludePS"
 set "CGR_FLAG="
 if /i "%DO_CGR%"=="y" set "CGR_FLAG=-IncludeCGR"
 
-set "ORG_FLAG="
-if /i "%DO_MOVE%"=="y" set "ORG_FLAG=-OrganizeExisting"
-
 echo.
 echo  Running atlas_ai installer ...
 
@@ -231,7 +230,7 @@ if not defined PSCMD (
     exit /b 1
 )
 
-%PSCMD% -ExecutionPolicy Bypass -File "%DOIT_DIR%\atlas_ai.ps1" -IncludeScaffold %API_FIRST_FLAG% -InitGit -SeedPath "%DOIT_DIR%" -RemoveSeed %PS_FLAG% %CGR_FLAG% %ORG_FLAG% %SKILLS_FLAG% %SKILLS_SRC_FLAG% %STACK_PATTERN_FLAG% %UX_PATTERN_FLAG% %GITHUB_FLAG% %GITHUB_OWNER_FLAG% %PUBLIC_FLAG%
+%PSCMD% -ExecutionPolicy Bypass -File "%DOIT_DIR%\atlas_ai.ps1" -IncludeScaffold %API_FIRST_FLAG% -InitGit %PS_FLAG% %CGR_FLAG% %SKILLS_FLAG% %SKILLS_SRC_FLAG% %STACK_PATTERN_FLAG% %UX_PATTERN_FLAG% %GITHUB_FLAG% %GITHUB_OWNER_FLAG% %PUBLIC_FLAG%
 
 if errorlevel 1 (
     echo.
@@ -242,8 +241,8 @@ if errorlevel 1 (
 
 echo.
 echo  Done. Project is at %TARGET%
-echo  Seed cleanup status is shown in the installer output above.
-echo  If startup files were moved into docs\reference, ask your AI agent
-echo  whether to generate an initial devcycle after cleanup completes.
+echo  accounts.md was created for non-secret cloud destination details.
+echo  The atlas_ai seed folder was not staged in the initial commit.
+echo  You can remove the seed folder manually after reviewing the generated project.
 echo.
 exit /b 0

@@ -4,7 +4,6 @@ param(
     [switch]$IncludeCGR,
     [switch]$IncludePS,
     [switch]$IncludeScaffold,
-    [switch]$OrganizeExisting,
     [switch]$IncludeSkills,
     [string]$SkillsSource,
     [string]$StackPattern,
@@ -12,33 +11,22 @@ param(
     [string]$GitHubRepo,
     [string]$GitHubOwner,
     [switch]$Public,
-    [switch]$Force,
     [switch]$Verify,
-    [string]$SeedPath,
-    [switch]$RemoveSeed,
     [string]$UxPattern,
     [switch]$ApiFirst,
     [switch]$NoApiFirst
 )
 
 $templateRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-$resolvedTargetRoot = [System.IO.Path]::GetFullPath((Join-Path $templateRoot $TargetRoot))
-$resolvedSeedPath = $null
-$seedGitPath = $null
-
-if ($SeedPath) {
-    $resolvedSeedPath = [System.IO.Path]::GetFullPath($SeedPath)
-    $targetRootWithSeparator = $resolvedTargetRoot.TrimEnd('\') + '\'
-
-    if ($resolvedSeedPath.Equals($resolvedTargetRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
-        Write-Warning "SeedPath points at the target root and will not be excluded from the initial commit."
-        $resolvedSeedPath = $null
-    } elseif ($resolvedSeedPath.StartsWith($targetRootWithSeparator, [System.StringComparison]::OrdinalIgnoreCase)) {
-        $seedGitPath = $resolvedSeedPath.Substring($targetRootWithSeparator.Length) -replace '\\', '/'
-    } else {
-        Write-Warning "SeedPath is outside the target root and will not be excluded from the initial commit: $resolvedSeedPath"
-        $resolvedSeedPath = $null
-    }
+if ([System.IO.Path]::IsPathRooted($TargetRoot)) {
+    $resolvedTargetRoot = [System.IO.Path]::GetFullPath($TargetRoot)
+} else {
+    $resolvedTargetRoot = [System.IO.Path]::GetFullPath((Join-Path $templateRoot $TargetRoot))
+}
+$installerGitPath = $null
+$targetRootWithSeparator = $resolvedTargetRoot.TrimEnd('\') + '\'
+if ($templateRoot.StartsWith($targetRootWithSeparator, [System.StringComparison]::OrdinalIgnoreCase)) {
+    $installerGitPath = $templateRoot.Substring($targetRootWithSeparator.Length) -replace '\\', '/'
 }
 
 $apiFirstEnabled = $true
@@ -48,269 +36,12 @@ if ($NoApiFirst) {
     $apiFirstEnabled = $true
 }
 
-function Start-SeedCleanup {
-    param(
-        [Parameter(Mandatory = $true)]
-        [string]$PathToRemove
-    )
-
-    $powerShellCommand = Get-Command pwsh -ErrorAction SilentlyContinue
-    if (-not $powerShellCommand) {
-        $powerShellCommand = Get-Command powershell -ErrorAction SilentlyContinue
-    }
-
-    if (-not $powerShellCommand) {
-        Write-Warning "Could not schedule seed cleanup because no PowerShell executable was found on PATH."
-        return
-    }
-
-    $escapedPath = $PathToRemove.Replace("'", "''")
-    $cleanupScript = @"
-`$seed = '$escapedPath'
-for (`$attempt = 0; `$attempt -lt 100; `$attempt++) {
-    try {
-        if (-not (Test-Path -LiteralPath `$seed)) {
-            exit 0
-        }
-
-        `$item = Get-Item -LiteralPath `$seed -Force -ErrorAction Stop
-        `$isLink = `$false
-        if (`$item.Attributes -band [System.IO.FileAttributes]::ReparsePoint) {
-            if (`$item.PSObject.Properties.Name -contains 'LinkType') {
-                `$isLink = -not [string]::IsNullOrWhiteSpace([string]`$item.LinkType)
-            }
-
-            if (-not `$isLink -and (`$item.PSObject.Properties.Name -contains 'Target')) {
-                `$targetValue = `$item.Target
-                if (`$targetValue -is [System.Array]) {
-                    `$isLink = `$targetValue.Count -gt 0
-                } else {
-                    `$isLink = -not [string]::IsNullOrWhiteSpace([string]`$targetValue)
-                }
-            }
-        }
-
-        if (`$isLink) {
-            Remove-Item -LiteralPath `$seed -Force -ErrorAction Stop
-        } else {
-            Remove-Item -LiteralPath `$seed -Recurse -Force -ErrorAction Stop
-        }
-
-        if (-not (Test-Path -LiteralPath `$seed)) {
-            exit 0
-        }
-    } catch {
-    }
-
-    Start-Sleep -Milliseconds 200
+if ($GitHubRepo -and [string]::IsNullOrWhiteSpace($GitHubOwner)) {
+    Write-Error "GitHubOwner is required when GitHubRepo is specified. Provide the GitHub username or organization that should own the new repository."
+    return
 }
 
-exit 1
-"@
-
-    $encodedCleanupScript = [Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($cleanupScript))
-    $cleanupWorkingDirectory = Split-Path -Parent $PathToRemove
-
-    Start-Process -FilePath $powerShellCommand.Source -WindowStyle Hidden -WorkingDirectory $cleanupWorkingDirectory -ArgumentList @(
-        '-NoProfile',
-        '-ExecutionPolicy',
-        'Bypass',
-        '-EncodedCommand',
-        $encodedCleanupScript
-    ) | Out-Null
-}
-
-function Test-IsStartupPlanningArtifact {
-    param(
-        [Parameter(Mandatory = $true)]
-        [string]$FileName
-    )
-
-    $normalizedName = $FileName.ToLowerInvariant()
-    return $normalizedName -match '(^|[_\-.])(todo|seed|startup|start|start-here|kickoff|bootstrap|init|newproject|new-project|project-start|project-setup)([_\-.]|$)'
-}
-
-function Get-NtelioDestinationRoot {
-    param(
-        [Parameter(Mandatory = $true)]
-        [string]$RelativePath,
-        [Parameter(Mandatory = $true)]
-        [string]$FileName,
-        [string]$Extension
-    )
-
-    $normalizedRelative = ($RelativePath -replace '\\', '/').ToLowerInvariant()
-    $normalizedName = $FileName.ToLowerInvariant()
-    $normalizedExtension = ($Extension ?? '').ToLowerInvariant()
-    $firstSegment = ($normalizedRelative -split '/')[0]
-
-    if ($firstSegment -match '^(scripts?|tools?|automation|ops)$') {
-        return 'scripts'
-    }
-
-    if ($firstSegment -match '^(archive|archived|old|legacy|backup)$') {
-        return 'archive'
-    }
-
-    if ($firstSegment -match '^(agile|planning|plan|sprint)$') {
-        return 'docs/agile'
-    }
-
-    if ($firstSegment -match '^(project|projects|product|requirements|design|architecture|adr|spec|specs)$') {
-        return 'docs/cgr'
-    }
-
-    if ($normalizedName -match '(^|[_\-.])(backlog|devcycle|status|retro|sprint|kanban)([_\-.]|$)') {
-        return 'docs/agile'
-    }
-
-    if ($normalizedName -match '(^|[_\-.])(mrd|prd|esd|adr|rfc|requirements?|spec|specification|design|architecture|roadmap|proposal)([_\-.]|$)') {
-        return 'docs/cgr'
-    }
-
-    if ($normalizedName -match '(^|[_\-.])(archive|archived|legacy|old|deprecated|backup)([_\-.]|$)') {
-        return 'archive'
-    }
-
-    if (Test-IsStartupPlanningArtifact -FileName $FileName) {
-        return 'docs/reference'
-    }
-
-    $scriptExtensions = @('.ps1', '.psm1', '.psd1', '.bat', '.cmd', '.sh', '.zsh', '.bash', '.py')
-    if ($scriptExtensions -contains $normalizedExtension) {
-        return 'scripts'
-    }
-
-    $docExtensions = @('.md', '.txt', '.rst', '.adoc', '.rtf', '.pdf', '.doc', '.docx')
-    if ($docExtensions -contains $normalizedExtension) {
-        return 'docs/reference'
-    }
-
-    return $null
-}
-
-function Get-UniqueDestinationPath {
-    param(
-        [Parameter(Mandatory = $true)]
-        [string]$Path
-    )
-
-    if (-not (Test-Path -LiteralPath $Path)) {
-        return $Path
-    }
-
-    $directory = Split-Path -Parent $Path
-    $name = [System.IO.Path]::GetFileNameWithoutExtension($Path)
-    $extension = [System.IO.Path]::GetExtension($Path)
-
-    $counter = 1
-    do {
-        $candidate = Join-Path $directory ("{0}-migrated-{1}{2}" -f $name, $counter, $extension)
-        $counter++
-    } while (Test-Path -LiteralPath $candidate)
-
-    return $candidate
-}
-
-function Move-ExistingArtifacts {
-    [CmdletBinding(SupportsShouldProcess = $true)]
-    param(
-        [Parameter(Mandatory = $true)]
-        [string]$RootPath,
-        [string]$SeedPath
-    )
-
-    $normalizedRoot = $RootPath.TrimEnd('\')
-    $rootWithSeparator = $normalizedRoot + '\'
-    $normalizedSeed = $null
-    if ($SeedPath) {
-        $normalizedSeed = $SeedPath.TrimEnd('\')
-    }
-
-    $skipTopLevel = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
-    @('.git') | ForEach-Object {
-        $null = $skipTopLevel.Add($_)
-    }
-
-    if ($normalizedSeed) {
-        $seedFolderName = Split-Path -Leaf $normalizedSeed
-        if ($seedFolderName) {
-            $null = $skipTopLevel.Add($seedFolderName)
-        }
-    }
-
-    $movedCount = 0
-    $movedReferenceFiles = [System.Collections.Generic.List[string]]::new()
-    $candidates = Get-ChildItem -LiteralPath $normalizedRoot -Recurse -File -Force -ErrorAction SilentlyContinue
-
-    foreach ($candidate in $candidates) {
-        if ($normalizedSeed -and (
-            $candidate.FullName.Equals($normalizedSeed, [System.StringComparison]::OrdinalIgnoreCase) -or
-            $candidate.FullName.StartsWith($normalizedSeed + '\', [System.StringComparison]::OrdinalIgnoreCase)
-        )) {
-            continue
-        }
-
-        if (-not $candidate.FullName.StartsWith($rootWithSeparator, [System.StringComparison]::OrdinalIgnoreCase)) {
-            continue
-        }
-
-        $relativePath = $candidate.FullName.Substring($rootWithSeparator.Length)
-        if ([string]::IsNullOrWhiteSpace($relativePath)) {
-            continue
-        }
-
-        $normalizedRelativePath = ($relativePath -replace '\\', '/').TrimStart('/')
-        if ($normalizedRelativePath.StartsWith('docs/reference/', [System.StringComparison]::OrdinalIgnoreCase)) {
-            continue
-        }
-
-        if ($candidate.Name -match '^(seed|secrets)\.md$') {
-            continue
-        }
-
-        $firstSegment = ($relativePath -split '[\\/]')[0]
-        if ($skipTopLevel.Contains($firstSegment)) {
-            continue
-        }
-
-        $destinationRoot = 'docs/reference'
-
-        $relativeDirectory = Split-Path -Path $relativePath -Parent
-        $destinationDirectory = Join-Path $normalizedRoot $destinationRoot
-        if ($relativeDirectory -and $relativeDirectory -ne '.') {
-            $destinationDirectory = Join-Path $destinationDirectory $relativeDirectory
-        }
-
-        if (-not (Test-Path -LiteralPath $destinationDirectory)) {
-            New-Item -ItemType Directory -Path $destinationDirectory -Force | Out-Null
-        }
-
-        $destinationPath = Join-Path $destinationDirectory $candidate.Name
-        $destinationPath = Get-UniqueDestinationPath -Path $destinationPath
-
-        if ($PSCmdlet.ShouldProcess($destinationPath, "Move existing artifact: $relativePath")) {
-            Move-Item -LiteralPath $candidate.FullName -Destination $destinationPath -Force
-            $movedCount++
-            $relativeDestinationPath = $destinationPath.Substring($rootWithSeparator.Length) -replace '\\', '/'
-            Write-Host "Reorganized $relativePath -> $relativeDestinationPath"
-            $movedReferenceFiles.Add($relativeDestinationPath) | Out-Null
-        }
-    }
-
-    if ($movedCount -gt 0) {
-        Write-Host "Reorganized $movedCount existing files into docs/reference (seed.md and secrets.md were left in place)."
-    } else {
-        Write-Host "No existing files were moved into docs/reference."
-    }
-
-    return [pscustomobject]@{
-        MovedCount = $movedCount
-        MovedReferenceFiles = @($movedReferenceFiles)
-    }
-}
-
-function Get-GitTopLevelSegment {
+function Get-InstallerTopLevelSegment {
     param(
         [Parameter(Mandatory = $true)]
         [string]$GitPath
@@ -322,6 +53,30 @@ function Get-GitTopLevelSegment {
     }
 
     return ($normalizedPath -split '/')[0]
+}
+
+function New-AccountsFile {
+    [CmdletBinding(SupportsShouldProcess = $true)]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$RootPath
+    )
+
+    $sourcePath = Join-Path $templateRoot "accounts.md"
+    $accountsPath = Join-Path $RootPath "accounts.md"
+    if (-not (Test-Path -LiteralPath $sourcePath)) {
+        Write-Warning "accounts.md template not found: $sourcePath"
+        return
+    }
+
+    if (Test-Path -LiteralPath $accountsPath) {
+        return
+    }
+
+    if ($PSCmdlet.ShouldProcess($accountsPath, "Create project accounts.md")) {
+        Copy-Item -LiteralPath $sourcePath -Destination $accountsPath
+        Write-Host "Set project accounts file: accounts.md"
+    }
 }
 
 function Get-PathsUnderTopLevelSegment {
@@ -350,6 +105,44 @@ function Get-PathsUnderTopLevelSegment {
     }
 
     return $matchingPaths
+}
+
+function Get-NonNewProjectItems {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$RootPath,
+        [string]$InstallerPath
+    )
+
+    if (-not (Test-Path -LiteralPath $RootPath)) {
+        return @()
+    }
+
+    $allowedNames = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
+    @('.git', '.gitignore', '.gitattributes') | ForEach-Object {
+        $null = $allowedNames.Add($_)
+    }
+
+    $normalizedInstallerPath = $null
+    if ($InstallerPath) {
+        $normalizedInstallerPath = $InstallerPath.TrimEnd('\')
+    }
+
+    $items = Get-ChildItem -LiteralPath $RootPath -Force -ErrorAction SilentlyContinue
+    $blockingItems = @()
+    foreach ($item in $items) {
+        if ($allowedNames.Contains($item.Name)) {
+            continue
+        }
+
+        if ($normalizedInstallerPath -and $item.FullName.TrimEnd('\').Equals($normalizedInstallerPath, [System.StringComparison]::OrdinalIgnoreCase)) {
+            continue
+        }
+
+        $blockingItems += $item.Name
+    }
+
+    return $blockingItems
 }
 
 function Resolve-StackPatternRelativePath {
@@ -428,8 +221,7 @@ function Write-ApiFirstPolicyFile {
         [Parameter(Mandatory = $true)]
         [string]$RootPath,
         [Parameter(Mandatory = $true)]
-        [bool]$Enabled,
-        [switch]$Force
+        [bool]$Enabled
     )
 
     $policyPath = Join-Path $RootPath "docs/reference/api-first-policy.md"
@@ -439,8 +231,8 @@ function Write-ApiFirstPolicyFile {
         New-Item -ItemType Directory -Path $policyDirectory -Force | Out-Null
     }
 
-    if ((Test-Path -LiteralPath $policyPath) -and -not $Force) {
-        Write-Warning "Skipping existing file: $policyPath. Use -Force to overwrite."
+    if (Test-Path -LiteralPath $policyPath) {
+        Write-Warning "Skipping existing file: $policyPath. This installer does not overwrite existing project files."
         return
     }
 
@@ -464,7 +256,8 @@ function Write-ApiFirstPolicyFile {
         "## Notes",
         "",
         "- This policy file is not a place for secrets.",
-        "- Store local secrets only in secrets.md at repository root, which should stay gitignored."
+        "- Store local secrets only in secrets.md at repository root, which should stay gitignored.",
+        "- Store non-secret cloud account and deployment destination binding in accounts.md at repository root."
     ) -join [Environment]::NewLine
 
     if ($PSCmdlet.ShouldProcess($policyPath, "Write API-first policy file")) {
@@ -473,7 +266,7 @@ function Write-ApiFirstPolicyFile {
     }
 }
 
-function Ensure-LocalSecretsFile {
+function New-LocalSecretsFile {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param(
         [Parameter(Mandatory = $true)]
@@ -501,14 +294,14 @@ function Ensure-LocalSecretsFile {
     }
 }
 
-function Remove-SeedChangesFromIndex {
+function Remove-InstallerChangesFromIndex {
     param(
         [Parameter(Mandatory = $true)]
-        [string]$SeedGitPath
+        [string]$InstallerGitPath
     )
 
-    $seedTopLevel = Get-GitTopLevelSegment -GitPath $SeedGitPath
-    if (-not $seedTopLevel) {
+    $installerTopLevel = Get-InstallerTopLevelSegment -GitPath $InstallerGitPath
+    if (-not $installerTopLevel) {
         return
     }
 
@@ -519,9 +312,9 @@ function Remove-SeedChangesFromIndex {
     }
 
     $stagedPaths = @(git diff --cached --name-only)
-    $seedStagedPaths = Get-PathsUnderTopLevelSegment -Paths $stagedPaths -TopLevelSegment $seedTopLevel
+    $installerStagedPaths = Get-PathsUnderTopLevelSegment -Paths $stagedPaths -TopLevelSegment $installerTopLevel
 
-    foreach ($stagedPath in $seedStagedPaths) {
+    foreach ($stagedPath in $installerStagedPaths) {
         if ($headExists) {
             git reset -q HEAD -- "$stagedPath" 2>&1 | Out-Null
         } else {
@@ -530,20 +323,16 @@ function Remove-SeedChangesFromIndex {
     }
 }
 
-function Test-SeedTrackedInIndex {
-    param(
-        [Parameter(Mandatory = $true)]
-        [string]$SeedGitPath
-    )
-
-    $seedTopLevel = Get-GitTopLevelSegment -GitPath $SeedGitPath
-    if (-not $seedTopLevel) {
-        return $false
+if (-not (Test-Path -LiteralPath $resolvedTargetRoot)) {
+    if ($PSCmdlet.ShouldProcess($resolvedTargetRoot, "Create new project target folder")) {
+        New-Item -ItemType Directory -Path $resolvedTargetRoot -Force | Out-Null
     }
+}
 
-    $trackedPaths = @(git ls-files)
-    $seedTrackedPaths = Get-PathsUnderTopLevelSegment -Paths $trackedPaths -TopLevelSegment $seedTopLevel
-    return $seedTrackedPaths.Count -gt 0
+$blockingItems = @(Get-NonNewProjectItems -RootPath $resolvedTargetRoot -InstallerPath $templateRoot)
+if ($blockingItems.Count -gt 0) {
+    Write-Error "Target does not look like a new project. Found existing top-level item(s): $($blockingItems -join ', '). Use update.md for a plan-first legacy project update instead of atlas_ai.ps1."
+    return
 }
 
 $filesToCopy = @(
@@ -556,7 +345,8 @@ $filesToCopy = @(
     "CHATGPT.md",
     "GEMINI.md",
     "AGENTS.md",
-    "ATLAS.md"
+    "ATLAS.md",
+    "update.md"
 )
 
 $promptRoot = Join-Path $templateRoot ".github/prompts"
@@ -616,7 +406,7 @@ if ($IncludeSkills -and -not $SkillsSource) {
             New-Item -ItemType Directory -Path $skillsDest -Force | Out-Null
         }
         if ($PSCmdlet.ShouldProcess($skillsDest, "Copy skills from $resolvedSkillsSource")) {
-            Copy-Item -Path "$resolvedSkillsSource\*" -Destination $skillsDest -Recurse -Force:$Force
+            Copy-Item -Path "$resolvedSkillsSource\*" -Destination $skillsDest -Recurse
             Write-Host "Copied skills from $resolvedSkillsSource"
         }
     } else {
@@ -629,7 +419,7 @@ if ($IncludeCGR) {
 }
 
 if ($IncludePS) {
-    $filesToCopy += "PS.md"
+    $filesToCopy += "docs/cgr/PS.md"
 }
 
 if ($IncludePS -or $IncludeCGR) {
@@ -647,11 +437,6 @@ if ($IncludeScaffold) {
 $resolvedStackPatternTemplate = Resolve-StackPatternRelativePath -PatternValue $StackPattern
 $resolvedUxPatternTemplate = Resolve-UxPatternRelativePath -PatternValue $UxPattern
 
-$organizeResult = $null
-if ($OrganizeExisting) {
-    $organizeResult = Move-ExistingArtifacts -RootPath $resolvedTargetRoot -SeedPath $resolvedSeedPath
-}
-
 foreach ($relativePath in $filesToCopy) {
     $sourcePath = Join-Path $templateRoot $relativePath
     $destinationPath = Join-Path $resolvedTargetRoot $relativePath
@@ -666,13 +451,13 @@ foreach ($relativePath in $filesToCopy) {
         New-Item -ItemType Directory -Path $destinationDir -Force | Out-Null
     }
 
-    if ((Test-Path $destinationPath) -and -not $Force) {
-        Write-Warning "Skipping existing file: $destinationPath. Use -Force to overwrite."
+    if (Test-Path $destinationPath) {
+        Write-Warning "Skipping existing file: $destinationPath. This installer does not overwrite existing project files."
         continue
     }
 
     if ($PSCmdlet.ShouldProcess($destinationPath, "Copy atlas_ai file")) {
-        Copy-Item -Path $sourcePath -Destination $destinationPath -Force:$Force
+        Copy-Item -Path $sourcePath -Destination $destinationPath
         Write-Host "Copied $relativePath"
     }
 }
@@ -686,11 +471,11 @@ if ($resolvedStackPatternTemplate) {
         New-Item -ItemType Directory -Path $activeStackPatternDirectory -Force | Out-Null
     }
 
-    if ((Test-Path $activeStackPatternPath) -and -not $Force) {
-        Write-Warning "Skipping existing file: $activeStackPatternPath. Use -Force to overwrite."
+    if (Test-Path $activeStackPatternPath) {
+        Write-Warning "Skipping existing file: $activeStackPatternPath. This installer does not overwrite existing project files."
     } else {
         if ($PSCmdlet.ShouldProcess($activeStackPatternPath, "Set active stack pattern from $resolvedStackPatternTemplate")) {
-            Copy-Item -Path $selectedStackPatternSource -Destination $activeStackPatternPath -Force:$Force
+            Copy-Item -Path $selectedStackPatternSource -Destination $activeStackPatternPath
             Write-Host "Set active stack pattern from $resolvedStackPatternTemplate"
         }
     }
@@ -705,19 +490,20 @@ if ($resolvedUxPatternTemplate) {
         New-Item -ItemType Directory -Path $activeUxPatternDirectory -Force | Out-Null
     }
 
-    if ((Test-Path $activeUxPatternPath) -and -not $Force) {
-        Write-Warning "Skipping existing file: $activeUxPatternPath. Use -Force to overwrite."
+    if (Test-Path $activeUxPatternPath) {
+        Write-Warning "Skipping existing file: $activeUxPatternPath. This installer does not overwrite existing project files."
     } else {
         if ($PSCmdlet.ShouldProcess($activeUxPatternPath, "Set active UX pattern from $resolvedUxPatternTemplate")) {
-            Copy-Item -Path $selectedUxPatternSource -Destination $activeUxPatternPath -Force:$Force
+            Copy-Item -Path $selectedUxPatternSource -Destination $activeUxPatternPath
             Write-Host "Set active UX pattern from $resolvedUxPatternTemplate"
         }
     }
 }
 
 if ($IncludeScaffold) {
-    Ensure-LocalSecretsFile -RootPath $resolvedTargetRoot
-    Write-ApiFirstPolicyFile -RootPath $resolvedTargetRoot -Enabled $apiFirstEnabled -Force:$Force
+    New-AccountsFile -RootPath $resolvedTargetRoot
+    New-LocalSecretsFile -RootPath $resolvedTargetRoot
+    Write-ApiFirstPolicyFile -RootPath $resolvedTargetRoot -Enabled $apiFirstEnabled
 }
 
 # --- Git initialization ---
@@ -734,13 +520,13 @@ if ($InitGit -or $GitHubRepo) {
         $gitignoreSrc = Join-Path $templateRoot ".gitignore"
         $gitignoreDst = Join-Path $resolvedTargetRoot ".gitignore"
         if (Test-Path $gitignoreSrc) {
-            if (-not (Test-Path $gitignoreDst) -or $Force) {
+            if (-not (Test-Path $gitignoreDst)) {
                 if ($PSCmdlet.ShouldProcess($gitignoreDst, "Copy .gitignore")) {
-                    Copy-Item -Path $gitignoreSrc -Destination $gitignoreDst -Force:$Force
+                    Copy-Item -Path $gitignoreSrc -Destination $gitignoreDst
                     Write-Host "Copied .gitignore"
                 }
             } else {
-                Write-Warning "Skipping existing .gitignore. Use -Force to overwrite."
+                Write-Warning "Skipping existing .gitignore. This installer does not overwrite existing project files."
             }
         }
 
@@ -758,8 +544,8 @@ if ($InitGit -or $GitHubRepo) {
         # Stage and commit if there are changes
         if ($PSCmdlet.ShouldProcess("all files", "Stage and commit initial files")) {
             git add -A 2>&1 | Out-Null
-            if ($seedGitPath) {
-                Remove-SeedChangesFromIndex -SeedGitPath $seedGitPath
+            if ($installerGitPath) {
+                Remove-InstallerChangesFromIndex -InstallerGitPath $installerGitPath
             }
             $status = git status --porcelain
             if ($status) {
@@ -794,8 +580,7 @@ if ($GitHubRepo) {
         }
     }
 
-    # Build the full repo name: owner/repo if owner was supplied, otherwise just repo
-    $fullRepoName = if ($GitHubOwner) { "$GitHubOwner/$GitHubRepo" } else { $GitHubRepo }
+    $fullRepoName = "$GitHubOwner/$GitHubRepo"
 
     Push-Location $resolvedTargetRoot
     try {
@@ -817,38 +602,6 @@ if ($GitHubRepo) {
 Write-Host "atlas_ai install complete."
 Write-Host "Target root: $resolvedTargetRoot"
 
-if ($RemoveSeed -and $resolvedSeedPath) {
-    $seedCleanupAllowed = $true
-    if ($seedGitPath -and (Test-Path (Join-Path $resolvedTargetRoot ".git"))) {
-        Push-Location $resolvedTargetRoot
-        try {
-            if (Test-SeedTrackedInIndex -SeedGitPath $seedGitPath) {
-                $seedCleanupAllowed = $false
-            }
-        } finally {
-            Pop-Location
-        }
-    }
-
-    if ($seedCleanupAllowed) {
-        Start-SeedCleanup -PathToRemove $resolvedSeedPath
-        Write-Host "Seed cleanup scheduled: $resolvedSeedPath"
-    } else {
-        Write-Warning "Seed cleanup skipped because that seed path is currently tracked by git."
-        Write-Warning "Keeping it avoids staging seed-folder deletions in unrelated commits."
-    }
-}
-
-if ($organizeResult) {
-    if ($organizeResult.MovedCount -gt 0) {
-        Write-Host ""
-        Write-Host "Existing files were moved into docs/reference for triage and manual organization."
-        Write-Host "seed.md and secrets.md were left in place when present."
-        Write-Host "Any existing MRD, PRD, and ESD files are treated as reference inputs only."
-        Write-Host "Create or refresh source-of-truth MRD, PRD, and ESD artifacts in docs/cgr."
-    }
-}
-
 # --- Post-install verification ---
 if ($Verify) {
     Write-Host ""
@@ -861,6 +614,10 @@ if ($Verify) {
         }
     }
     if ($IncludeScaffold) {
+        $accountsCheckPath = Join-Path $resolvedTargetRoot "accounts.md"
+        if (-not (Test-Path $accountsCheckPath)) {
+            $missing += "accounts.md"
+        }
         $secretsCheckPath = Join-Path $resolvedTargetRoot "secrets.md"
         if (-not (Test-Path $secretsCheckPath)) {
             $missing += "secrets.md"

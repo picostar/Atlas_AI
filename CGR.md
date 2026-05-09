@@ -31,7 +31,7 @@ Treat the directory containing this file as the repository control root. If the 
 
 ## Product Release Stages
 
-If the project uses `PS.md`, see that file for full stage definitions, gate criteria, exit criteria, and ownership model. CGR does not require PS -- it can run standalone against any set of MRD, PRD, and ESD documents.
+If the project uses `docs/cgr/PS.md`, see that file for full stage definitions, gate criteria, exit criteria, and ownership model. CGR does not require PS -- it can run standalone against any set of MRD, PRD, and ESD documents.
 
 When used with PS, the CGR is designed to run at two points in the product lifecycle:
 
@@ -61,6 +61,7 @@ You are reviewing the live solution documents for this repository for governance
    - `seed.md` at repo root, if present.
    - relevant markdown files under `docs/reference/`, if present.
    - any raw MRD, PRD, or ESD-like artifacts found in `docs/reference/` that can be refactored into `docs/cgr/`.
+   - `accounts.md` at repo root, if present, for non-secret cloud account and deployment destination context.
    - for local secrets, check `secrets.md` at repo root if needed, and do not place secrets in governance artifacts.
 6. Determine workflow mode:
    - Bootstrap mode: no live MRD, PRD, or ESD exists in `docs/cgr/`.

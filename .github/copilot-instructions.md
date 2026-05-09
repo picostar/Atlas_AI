@@ -9,7 +9,6 @@
 	- `GEMINI.md` when Gemini workflows are in scope
 	- `AGENTS.md`
 	- `ATLAS.md`
-	- `PS.md` if the project uses formal release stages and document gates
 	- `CGR.md` if governance review is part of the project
 - If you copy this kit into another repository, copy the files to that repository root. Do not leave them buried in a nested subfolder if you expect auto-loading to work.
 
@@ -26,6 +25,13 @@
 - Do not place secrets in any other file by default.
 - If the user explicitly asks for a different location, warn about commit and leakage risk first, then proceed only after confirmation.
 - Before asking the user for credentials, tokens, keys, or other secret values, check `secrets.md` first if it exists.
+
+## Project Accounts File
+- Use `accounts.md` at the repository root for non-secret cloud destination and provider account binding.
+- Keep `accounts.md` committed when it exists. It may contain subscription IDs, resource group names, project IDs, account IDs, regions, zones, deployment target names, and provider account notes.
+- Do not store credentials, keys, tokens, passwords, connection strings, or deployment secrets in `accounts.md`.
+- Before cloud, hosting, deployment, infrastructure, or provider CLI work, check `accounts.md` first if it exists.
+- If `accounts.md` conflicts with live CLI state, repo guardrails, or user instructions, stop and ask which account, subscription, resource group, project, zone, or target to use.
 
 ## Split Repo Layout Handling
 - Some repositories keep control docs and AI instruction files at the repo root while the runnable application lives in a child directory one level down.
@@ -53,7 +59,7 @@
 ## Read Order
 1. `.github/copilot-instructions.md` -- this file
 2. `ATLAS.md` -- default development process and task lifecycle
-3. `PS.md` -- optional project stages and document gates, only when the project uses formal EVT/DVT/PVT/GA stages
+3. `docs/cgr/PS.md` -- optional project stages and document gates, only when the project uses formal EVT/DVT/PVT/GA stages
 4. `CGR.md` -- optional governance review prompt, only when governance or stage-gate review is requested
 5. If `patterns/stack-patterns/active-stack-pattern.md` exists and the task affects architecture, hosting, deployment, infrastructure, or platform selection, read it before proposing or changing the stack.
 6. If `patterns/ux-patterns/active-ux-pattern.md` exists and the task affects layout, navigation, page hierarchy, interaction flow, or UI generation, read it before proposing or changing UX structure.
@@ -76,13 +82,13 @@
 - If the user says `CGR`, treat it as a request to run the governance workflow defined in `CGR.md`.
 - For `CGR`: if live MRD, PRD, and ESD artifacts do not exist in `docs/cgr/`, bootstrap draft docs from `seed.md` and `docs/reference/` first, then run CGR and write `docs/cgr/CGR-results.md`.
 - For `CGR`: if live MRD, PRD, or ESD artifacts already exist in `docs/cgr/`, use them as the base and improve them using user instructions plus any new materials in `seed.md` or `docs/reference/`.
-- If the user says `newproject`, treat it as a request to run the non-interactive atlas_ai installer flow from the repository root using: `pwsh -File ./atlas_ai/atlas_ai.ps1 -IncludeScaffold -ApiFirst -OrganizeExisting -InitGit -SeedPath ./atlas_ai -RemoveSeed`.
+- If the user says `newproject`, treat it as a request to run the non-interactive atlas_ai installer flow from the repository root using: `pwsh -File ./atlas_ai/atlas_ai.ps1 -IncludeScaffold -ApiFirst -InitGit`.
 - Before acting, perform a brief ATLAS readiness check. Review the current state, confirm the next task is clear, and look for obvious blockers or missing planning context.
 - Use `docs/agile/status.md` for current state, `docs/agile/devcycle.md` for the active task, and `docs/agile/backlog.md` if the active cycle is empty or unclear.
 - If the repository appears to be a scaffold or template, use the next clear maintenance or adoption task rather than expecting an active live-project devcycle.
 - If the next task is clear and no blocker prevents progress, start executing it immediately rather than waiting for another confirmation.
 - If a blocker exists, call it out briefly and either resolve it or ask the minimum clarifying question needed to proceed.
-- For `newproject`, after installation and seed cleanup handling complete, if existing files were moved into `docs/reference/`, ask whether to generate an initial `docs/agile/devcycle.md` and draft source-of-truth MRD, PRD, and ESD artifacts in `docs/cgr/` from those references.
+- For `newproject`, if the target already contains real project files, stop. Do not move, rewrite, or reorganize them. Tell the user to use `update.md` for a plan-first legacy project update.
 - Keep the response short and action-oriented. The purpose of these phrases is to move from readiness review into execution.
 
 ## Session Close And Sign-Off Behavior
@@ -106,9 +112,8 @@
 - Prefer feature branches over direct work on `main` when working in a git repository.
 - Remove matching `*_TEMPLATE.md` files from `docs/cgr/` once live MRD, PRD, or ESD artifacts exist.
 - Do not hardcode project names, tenant values, URLs, credentials, or deployment targets in reusable kits.
-- During `atlas_ai` adoption with `-OrganizeExisting`, move existing files into `docs/reference/` for triage, except `seed.md` and `secrets.md` which should remain in place.
-- During `atlas_ai` adoption with `-OrganizeExisting`, treat any existing MRD, PRD, and ESD files as reference inputs and create or refresh source-of-truth artifacts in `docs/cgr/`.
-- After existing files are moved into `docs/reference/`, ask the user whether to generate an initial `devcycle.md` and draft source-of-truth MRD, PRD, and ESD files from those references.
+- Keep `atlas_ai.ps1` and `NewProject.bat` new-project only. They must not move, rewrite, reorganize, migrate, or delete existing project files.
+- For existing or legacy atlas projects, use `update.md` as a plan-first prompt. It may recommend replacing legacy `accounts.txt` with committed `accounts.md`, but execution requires explicit human approval.
 
 ## Recommended Repo Structure
 - `docs/agile/` -- active planning and delivery docs such as `devcycle.md`, `retro.md`, `backlog.md`, `status.md`

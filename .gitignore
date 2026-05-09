@@ -12,6 +12,8 @@ Desktop.ini
 .env.local
 .env.*.local
 secrets.md
+
+# Legacy redundant account file. Do not use; replace non-secret binding with committed accounts.md.
 accounts.txt
 
 # Local scratch notes

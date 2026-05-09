@@ -82,11 +82,12 @@ atlas_ai includes a starter scaffold for these locations. Use it as a bootstrap,
 | `backlog.md` | `docs/agile/` | Future work queue | When scope changes |
 | `retro.md` | `docs/agile/` | Detailed record of completed work | After each task |
 | `ATLAS.md` | repo root | Development process rules | When process changes |
-| `PS.md` | repo root | Optional project stages and document gates | When the project adopts formal release gates |
+| `docs/cgr/PS.md` | `docs/cgr/` | Optional project stages and document gates | When the project adopts formal release gates |
 | `project-config.json` | repo root | Non-secret project configuration | When infrastructure changes |
-| `MRD_*.md` | `docs/cgr/` | Market or business requirements (optional, see `PS.md`) | Before PRD, when context changes |
-| `PRD_*.md` | `docs/cgr/` | Product requirements and acceptance criteria (optional, see `PS.md`) | Before EVT, when scope changes |
-| `ESD_*.md` | `docs/cgr/` | Engineering design and operations model (optional, see `PS.md`) | Draft in EVT, complete before DVT |
+| `accounts.md` | repo root | Non-secret cloud account and deployment destination binding | At setup and when cloud destinations change |
+| `MRD_*.md` | `docs/cgr/` | Market or business requirements (optional, see `docs/cgr/PS.md`) | Before PRD, when context changes |
+| `PRD_*.md` | `docs/cgr/` | Product requirements and acceptance criteria (optional, see `docs/cgr/PS.md`) | Before EVT, when scope changes |
+| `ESD_*.md` | `docs/cgr/` | Engineering design and operations model (optional, see `docs/cgr/PS.md`) | Draft in EVT, complete before DVT |
 | `CGR-results.md` | `docs/cgr/` | Governance review output and tracked remediation gaps | After each CGR run |
 | `api-first-policy.md` | `docs/reference/` | API-first mode intent and validation expectations | At setup and when policy changes |
 
@@ -107,9 +108,9 @@ atlas_ai includes a starter scaffold for these locations. Use it as a bootstrap,
 
 ## Project Stages and Required Documents (Optional)
 
-For projects with formal release gates, signers, and governance reviews, see `PS.md`. That file defines the four-stage release model (EVT, DVT, PVT, GA) and the required document gates (MRD, PRD, ESD, CGR).
+For projects with formal release gates, signers, and governance reviews, see `docs/cgr/PS.md`. That file defines the four-stage release model (EVT, DVT, PVT, GA) and the required document gates (MRD, PRD, ESD, CGR).
 
-POC work, internal tools, and exploratory development do not need `PS.md`. The core workflow above is sufficient on its own.
+POC work, internal tools, and exploratory development do not need `docs/cgr/PS.md`. The core workflow above is sufficient on its own.
 
 ---
 
@@ -178,9 +179,12 @@ Reset devtasks are short, unplanned tasks that unblock or redirect the current d
 ### Config-Driven Development
 
 - Store non-secret configuration in a repo config file such as `project-config.json`.
+- Store non-secret cloud account binding in `accounts.md`, including subscriptions, resource groups, project IDs, account IDs, regions, zones, and deployment target names.
 - Store secrets in environment variables or a secrets manager, never in committed files.
 - If local secret notes are needed, use `secrets.md` at repo root and keep it gitignored.
 - Scripts should read from config at runtime instead of hardcoding environments, URLs, repo names, or tenant values.
+- Before cloud, hosting, deployment, infrastructure, or provider CLI work, check `accounts.md` and adhere to its selected account, subscription, resource group, project, zone, and target values.
+- If `accounts.md` is missing or incomplete for cloud work, ask for the missing non-secret destination binding before proceeding.
 
 ### CI/CD Toolchain
 
@@ -231,6 +235,7 @@ Lessons learned: ...
 
 - Ignore `.env`, local overrides, generated secrets, and `archive/`.
 - Ignore `secrets.md` for local-only secret notes and keep it out of commits.
+- Commit `accounts.md` for non-secret cloud destination binding.
 - Keep local override patterns explicit, such as `project-config.local.json`.
 - Store CI/CD secrets in the platform secret store, not in committed files.
 
