@@ -469,6 +469,22 @@ The atlas_ai instruction files and prompts treat that file as the source of trut
 
 Use `.github/prompts/atlas-update.prompt.md` for existing repositories. The first pass is planning only and should not execute edits, migrations, moves, renames, deletes, or destructive commands until a human reviews and approves the plan.
 
+## AI Development Velocity
+
+ATLAS uses `devcycle`, `devtask`, `reset devtask`, and `retro` because AI-assisted development moves at a different cadence than traditional agile delivery. Classic agile terms like sprint, story, and ceremony often imply multi-day or multi-week planning loops, human-only execution speed, and team rituals that are heavier than a coding-agent workflow needs.
+
+A `devcycle` is the active burn-down for the next focused unit of work. It can represent a morning, an afternoon, a release push, or any short execution window. In AI-assisted delivery, multiple devcycles can happen in a single day because agents can implement, revise, and validate small tasks much faster than a human-only team cadence.
+
+A `devtask` is a concrete planned implementation task inside the current devcycle. It is intentionally smaller and more operational than a traditional user story. A good devtask names the change, expected outcome, smoketest, and UAT or non-UAT validation path. The goal is to give the agent enough context to execute safely without turning every small change into a heavyweight planning artifact.
+
+A `reset devtask`, or `RDT`, is unplanned work discovered during the current devcycle that must interrupt the planned order. This replaces vague mid-cycle churn with a visible reset point: the interruption is named, estimated, validated, recorded, and then removed from the active list when complete.
+
+The `retro` is the completed-work ledger. Completed devtasks and reset devtasks move out of `devcycle.md` and into `retro.md` with outcome notes, smoketest evidence, UAT status, decisions, issues, and effort calibration. This keeps `devcycle.md` clean as a burn-down list while preserving the history needed for learning and governance.
+
+ATLAS uses `CU`, `eMOE`, and `aMOE` for effort because AI velocity makes elapsed human time a poor planning unit. `CU` means Complexity Unit. It measures combined human-plus-agent delivery effort: uncertainty, decision load, dependencies, review depth, test burden, integration risk, and handoff cost. `eMOE` is the estimated Measure of Effort in CU before work starts. `aMOE` is the actual Measure of Effort in CU after the task is complete.
+
+This makes effort tracking useful again in AI development. A task may take an agent one minute to draft but still require meaningful review, validation, integration, and release judgment. By comparing `eMOE` to `aMOE`, the team can calibrate future devtasks around real delivery friction instead of pretending that wall-clock generation time equals effort.
+
 ## How To Customize For A New Project
 
 Safe to customize:
