@@ -14,8 +14,6 @@ It gives you:
 - optional compliance and governance review prompt
 - a starter docs scaffold for active work, backlog, status, retro, project docs, reference docs, stack-baseline guidance, and UX-baseline guidance
 
-
-
 ## What atlas_ai Solves
 
 The main problem with reusable instruction folders is that most AI tools do not reliably auto-load nested files. They usually look at the repository root.
@@ -51,7 +49,7 @@ The AI Dev SOP is built for short, repeatable execution loops. A human sets dire
 ATLAS keeps AI-assisted development fast without letting it become loose. The standard operating procedure is:
 
 1. Start from `docs/agile/devcycle.md`, the current active burn-down.
-2. Work one `DT` or `RDT` at a time.
+2. Work one development task (`DT`) or reset devtask (`RDT`) at a time.
 3. Keep each task small enough to validate, usually 5 CU or less.
 4. If a task is larger than 5 CU, split it into sub devtasks such as `DT3.1`, `DT3.2`, and `DT3.3` so each piece has a clear outcome, smoketest, and UAT or non-UAT validation path.
 5. Smoke test with CLI commands or scripts before treating the task as complete.
