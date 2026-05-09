@@ -298,7 +298,7 @@ Requires `git` on PATH. For `-GitHubRepo`, install the [GitHub CLI](https://cli.
 
 Do not use `atlas_ai.ps1` or `NewProject.bat` to update an existing repository. Those entry points are new-project only. For legacy atlas projects, run or copy `.github/prompts/atlas-update.prompt.md` from the kit and use it as a plan-first prompt. The prompt compares the target against the public `picostar/Atlas_AI` source of truth and stops before making edits until a human approves the plan.
 
-If a legacy `accounts.txt` exists, the update plan should replace it with committed `accounts.md` for non-secret provider binding, then remove `accounts.txt` after approval. Do not keep both as active account sources.
+If a legacy account-binding file exists, the update plan should consolidate non-secret provider binding into committed `accounts.md` after approval. Do not keep multiple active account sources.
 
 Add `-IncludePS` and/or `-IncludeCGR` to the install step if the project needs project stages or governance review.
 
@@ -398,7 +398,7 @@ Use this flow:
 The guided update flow is designed to catch project-specific decisions before editing, especially:
 - whether `docs/projects` should become `docs/cgr`
 - whether `docs/reference/stack-patterns` and `docs/reference/ux-patterns` should become `patterns/stack-patterns` and `patterns/ux-patterns`
-- whether legacy `accounts.txt` should be replaced by committed `accounts.md` and removed
+- whether legacy account-binding files should be consolidated into committed `accounts.md`
 - which local instructions, prompts, skills, docs, and reference files should be preserved
 
 The planning pass should not modify the legacy project. It should produce file-by-file recommendations, questions, and a proposed validation checklist for human approval.

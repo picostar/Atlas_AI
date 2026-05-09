@@ -31,12 +31,12 @@ Planning phase only: do not edit files, run migration scripts, move folders, ren
    - `scripts/`
    - `accounts.md` and `secrets.md` handling
 4. Detect legacy layout paths, including `docs/projects`, `docs/reference/stack-patterns`, and `docs/reference/ux-patterns`.
-5. Detect legacy account files. `accounts.txt` is legacy and redundant. If it exists, recommend replacing it with committed `accounts.md` and removing `accounts.txt` after human review. `secrets.md` remains the local-only file for credentials, keys, tokens, and other secrets.
+5. Detect legacy account-binding files. Recommend consolidating non-secret provider binding into committed `accounts.md` after human review. `secrets.md` remains the local-only file for credentials, keys, tokens, and other secrets.
 6. Present a concise update plan that answers:
    - which files will be copied or merged from the public kit
    - which local project files should be preserved
    - whether legacy layout folders should stay in place or be moved
-   - whether legacy `accounts.txt` should be replaced by `accounts.md` and removed
+   - whether legacy account-binding files should be consolidated into `accounts.md`
    - whether any project-specific values need user confirmation
 7. Ask only the questions needed to avoid losing project-specific content.
 8. Stop after presenting the plan and questions. Wait for explicit human approval before making changes.

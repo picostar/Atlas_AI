@@ -114,7 +114,7 @@
 - Remove matching `*_TEMPLATE.md` files from `docs/cgr/` once live MRD, PRD, or ESD artifacts exist.
 - Do not hardcode project names, tenant values, URLs, credentials, or deployment targets in reusable kits.
 - Keep `atlas_ai.ps1` and `NewProject.bat` new-project only. They must not move, rewrite, reorganize, migrate, or delete existing project files.
-- For existing or legacy atlas projects, use `.github/prompts/atlas-update.prompt.md` as a plan-first prompt. It may recommend replacing legacy `accounts.txt` with committed `accounts.md`, but execution requires explicit human approval.
+- For existing or legacy atlas projects, use `.github/prompts/atlas-update.prompt.md` as a plan-first prompt. It may recommend consolidating legacy account-binding files into committed `accounts.md`, but execution requires explicit human approval.
 
 ## Recommended Repo Structure
 - `docs/agile/` -- active planning and delivery docs such as `devcycle.md`, `retro.md`, `backlog.md`, `status.md`
