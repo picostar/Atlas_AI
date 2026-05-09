@@ -2,6 +2,8 @@
 
 This folder is a reusable AI coding agent process kit for software repositories.
 
+An AI coding agent process kit and agentic workflow scaffold built around ATLAS, the AI Task Lifecycle Automation System.
+
 In current developer terminology, atlas_ai is best described as an agentic workflow scaffold or AI agent instruction scaffold: it installs root-level agent instructions, prompt workflows, and lightweight delivery governance so coding agents can operate consistently in a repository.
 
 It gives you:
@@ -19,6 +21,14 @@ The main problem with reusable instruction folders is that most AI tools do not 
 atlas_ai is designed for that reality.
 
 You can keep this folder as your source kit, drop a copy into a new repository, and then install the correct files into the repo root.
+
+## AI Ecosystem Fit
+
+atlas_ai sits one layer above individual AI coding agents. It does not replace Copilot, Claude Code, ChatGPT, Codex-style agents, Gemini, Grok, DeepSeek, or future LLM tools. It gives those tools a consistent repository contract: where to read instructions, how to understand the active task, how to preserve project context, and how to validate work before handoff.
+
+In the current AI development ecosystem, most tools provide the model, chat surface, editor integration, or command execution. atlas_ai provides the project-side operating model those tools can share. It standardizes root instruction files, reusable prompt workflows, task lifecycle docs, governance artifacts, and optional stack and UX baselines so different agents can work from the same map.
+
+That makes atlas_ai closer to an agentic workflow scaffold than a runtime harness. A harness usually drives or measures execution. atlas_ai prepares the repository so agents can orient, execute, smoke test, document, and hand off work consistently across tools.
 
 ## Split Repo Layouts
 
