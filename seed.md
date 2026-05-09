@@ -33,7 +33,7 @@ You can also just say `newproject` in AI chat and the agent should run this same
 Project name: atlas_ai
 
 Project goal:
-- Provide a reusable process kit that installs root-level AI instruction files and a practical delivery workflow for software repositories.
+- Provide a reusable AI coding agent process kit that installs root-level AI instruction files and a practical delivery workflow for software repositories.
 
 Primary outcomes:
 - Consistent AI instruction loading at repository root.
@@ -43,7 +43,7 @@ Primary outcomes:
 
 Current implementation scope:
 - Installer and setup flow (atlas_ai.ps1 and NewProject.bat).
-- Root instruction stack (.github/copilot-instructions.md, ATLAS.md, AGENTS.md, CLAUDE.md).
+- Root instruction stack (.github/copilot-instructions.md, ATLAS.md, AGENTS.md, CLAUDE.md, CHATGPT.md).
 - Docs scaffold under docs/agile, docs/cgr, docs/reference, patterns, scripts, and archive.
 - Skill scaffolding under .github/skills.
 

@@ -1,13 +1,15 @@
 # Tool Capability Matrix
 
-| Capability | Copilot In VS Code | Claude Code In VS Code | Codex-Style Agents | ChatGPT | Gemini |
+| Capability | Copilot In VS Code | Claude Code In VS Code | ChatGPT-Oriented Workflows | Codex-Style Agents | Optional Hosted LLMs |
 |---|---|---|---|---|---|
-| Read repo files | Yes | Yes | Usually | Environment-dependent | Environment-dependent |
-| Edit repo files | Yes | Yes | Usually | Environment-dependent | Environment-dependent |
-| Run terminal commands | Yes | Yes | Environment-dependent | Usually no | Usually no |
-| Use git locally | Yes | Yes | Environment-dependent | Usually no | Usually no |
-| Use GitHub CLI | Yes if installed | Yes if installed | Environment-dependent | Usually no | Usually no |
-| Auto-load repo instructions | Yes | Usually | Tool-dependent | Environment-dependent | Environment-dependent |
+| Read repo files | Yes | Yes | Environment-dependent | Usually | Environment-dependent |
+| Edit repo files | Yes | Yes | Environment-dependent | Usually | Environment-dependent |
+| Run terminal commands | Yes | Yes | Usually no | Environment-dependent | Usually no |
+| Use git locally | Yes | Yes | Usually no | Environment-dependent | Usually no |
+| Use GitHub CLI | Yes if installed | Yes if installed | Usually no | Environment-dependent | Usually no |
+| Auto-load repo instructions | Yes | Usually | Environment-dependent | Tool-dependent | Environment-dependent |
+
+Optional hosted LLMs include Gemini, Grok, DeepSeek, and similar chat-first environments.
 
 ## Usage Guidance
 - Treat this matrix as guidance, not a guarantee.

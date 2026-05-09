@@ -19,5 +19,6 @@ This file defines the minimum tooling assumptions for atlas_ai workflows.
 
 ## Agent Portability Notes
 - Copilot, Claude Code, and Codex-style agents can typically use repo files directly.
-- ChatGPT and Gemini may require manual loading of repo instruction files, depending on environment.
-- When auto-loading is unavailable, load `CHATGPT.md` or `GEMINI.md`, then `.github/copilot-instructions.md`, then `ATLAS.md`.
+- ChatGPT-oriented coding workflows are common enough to get a default root pointer, but may still require manual loading depending on environment.
+- Gemini, Grok, DeepSeek, and other hosted LLMs may require manual loading of repo instruction files, depending on environment.
+- When auto-loading is unavailable, load the relevant pointer file, then `.github/copilot-instructions.md`, then `ATLAS.md`.

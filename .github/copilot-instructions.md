@@ -5,14 +5,16 @@
 - For automatic loading by common tools, keep these files at the repository root:
 	- `.github/copilot-instructions.md`
 	- `CLAUDE.md`
-	- `CHATGPT.md` when ChatGPT workflows are in scope
+	- `CHATGPT.md`
 	- `GEMINI.md` when Gemini workflows are in scope
+	- `GROK.md` when Grok workflows are in scope
+	- `DEEPSEEK.md` when DeepSeek workflows are in scope
 	- `AGENTS.md`
 	- `ATLAS.md`
 - If you copy this kit into another repository, copy the files to that repository root. Do not leave them buried in a nested subfolder if you expect auto-loading to work.
 
 ## Project Context
-- This is a reusable development-process kit for any software project.
+- This is a reusable AI coding agent process kit for any software project. Modern labels for this kind of repository include agentic workflow scaffold, AI agent instruction scaffold, and agent-ready project scaffold.
 - Keep project-specific values in repo docs, config files, or secret stores, not in these instruction files.
 - Keep environment URLs, credentials, tokens, tenant IDs, and deployment targets out of committed instruction files.
 - Keep reusable stack-pattern choices in `patterns/stack-patterns/`, not in `ATLAS.md` or the thin agent pointer files.
@@ -125,8 +127,10 @@
 ## AI Tool Coverage
 - Copilot uses `.github/copilot-instructions.md`.
 - Claude Code uses `CLAUDE.md`.
-- ChatGPT-oriented workflows can use `CHATGPT.md` as a thin pointer to this file and `ATLAS.md`.
+- ChatGPT-oriented workflows use `CHATGPT.md` as a thin pointer to this file and `ATLAS.md`.
 - Gemini-oriented workflows can use `GEMINI.md` as a thin pointer to this file and `ATLAS.md`.
+- Grok-oriented workflows can use `GROK.md` as a thin pointer to this file and `ATLAS.md`.
+- DeepSeek-oriented workflows can use `DEEPSEEK.md` as a thin pointer to this file and `ATLAS.md`.
 - Codex-style agents commonly use `AGENTS.md`.
 - Keep thin pointers minimal and aligned with this file and `ATLAS.md` so process logic stays in one place.
 

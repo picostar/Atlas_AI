@@ -249,7 +249,9 @@ Lessons learned: ...
 
 - `.github/copilot-instructions.md` is the source of truth.
 - `CLAUDE.md` is a thin pointer plus duplicated response rules.
+- `CHATGPT.md` is a default thin pointer for ChatGPT-oriented coding workflows.
 - `AGENTS.md` is the equivalent thin pointer for Codex-style agents and related tooling.
+- `GEMINI.md`, `GROK.md`, and `DEEPSEEK.md` are optional hosted-LLM pointers.
 - Keep the pointers thin so they do not drift from the source of truth.
 
 ### Credential Security

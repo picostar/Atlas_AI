@@ -342,6 +342,7 @@ $filesToCopy = @(
     ".github/FRONTMATTER-SCHEMA.md",
     ".github/INSTRUCTION-MAINTENANCE.md",
     "CLAUDE.md",
+    "CHATGPT.md",
     "AGENTS.md",
     "ATLAS.md"
 )

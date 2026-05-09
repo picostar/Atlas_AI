@@ -1,9 +1,11 @@
 # atlas_ai
 
-This folder is a reusable project-start kit for software repositories.
+This folder is a reusable AI coding agent process kit for software repositories.
+
+In current developer terminology, atlas_ai is best described as an agentic workflow scaffold or AI agent instruction scaffold: it installs root-level agent instructions, prompt workflows, and lightweight delivery governance so coding agents can operate consistently in a repository.
 
 It gives you:
-- root-level AI instruction files for Copilot, Claude Code, and Codex-style agents
+- root-level AI instruction files for Copilot, Claude Code, ChatGPT, and Codex-style agents
 - reusable ATLAS prompt files for realignment and closeout checks
 - a default workflow for task execution and delivery tracking
 - optional release stages and document gates for formal projects
@@ -33,8 +35,10 @@ In that layout:
 ### Root instruction files
 - `.github/copilot-instructions.md` -- source of truth for Copilot
 - `CLAUDE.md` -- thin pointer for Claude Code
-- `CHATGPT.md` -- optional thin pointer for ChatGPT-oriented workflows, not installed by default
+- `CHATGPT.md` -- thin pointer for ChatGPT-oriented workflows
 - `GEMINI.md` -- optional thin pointer for Gemini-oriented workflows, not installed by default
+- `GROK.md` -- optional thin pointer for Grok-oriented workflows, not installed by default
+- `DEEPSEEK.md` -- optional thin pointer for DeepSeek-oriented workflows, not installed by default
 - `AGENTS.md` -- thin pointer for Codex-style agents and similar tooling
 - `ATLAS.md` -- default development process
 
@@ -145,7 +149,7 @@ Why this matters:
 
 ### Quick Start -- Point a project at atlas_ai
 
-The simplest way to start a new project with atlas_ai is to copy or clone it into an otherwise empty project folder, then tell your AI agent to set it up. This works in VS Code with Copilot, Claude Code, or any Codex-style agent.
+The simplest way to start a new project with atlas_ai is to copy or clone it into an otherwise empty project folder, then tell your AI coding agent to set it up. This works in VS Code with Copilot, Claude Code, ChatGPT-oriented workflows, or any Codex-style agent.
 
 **Step 1:** Copy the `atlas_ai` folder into your project root. You can clone it, copy it, or drop it in manually. Your project should look like this:
 
@@ -369,8 +373,10 @@ Or manually copy the files you want from `atlas_ai/` to the repository root:
 - `.github/prompts/atlas-update.prompt.md` -- recommended for guided legacy atlas updates
 - `.github/prompts/cgr.prompt.md` -- only if the project uses governance review
 - `CLAUDE.md` -- always
-- `CHATGPT.md` -- optional pointer for ChatGPT-oriented workflows
+- `CHATGPT.md` -- always
 - `GEMINI.md` -- optional pointer for Gemini-oriented workflows
+- `GROK.md` -- optional pointer for Grok-oriented workflows
+- `DEEPSEEK.md` -- optional pointer for DeepSeek-oriented workflows
 - `AGENTS.md` -- always
 - `ATLAS.md` -- always
 - `accounts.md` -- recommended for non-secret cloud account and deployment destination binding
@@ -425,9 +431,13 @@ Claude Code commonly checks `CLAUDE.md` in the repository root.
 
 Many Codex-style tools and repo agents check `AGENTS.md` in the repository root.
 
-### ChatGPT and Gemini
+### ChatGPT
 
-ChatGPT and Gemini workflows can use `CHATGPT.md` and `GEMINI.md` as thin pointers to the source of truth and `ATLAS.md` when auto-loading is available. If auto-loading is not available in the current tool, load these files manually at session start.
+ChatGPT-oriented workflows can use `CHATGPT.md` as a thin pointer to the source of truth and `ATLAS.md`. Because ChatGPT is commonly used for coding workflows, the installer copies `CHATGPT.md` by default.
+
+### Optional hosted LLMs
+
+Gemini, Grok, DeepSeek, and similar hosted LLM workflows can use `GEMINI.md`, `GROK.md`, or `DEEPSEEK.md` as optional thin pointers when a project wants tool-specific session instructions. If auto-loading is not available in the current tool, load the relevant pointer, `.github/copilot-instructions.md`, and `ATLAS.md` manually at session start.
 
 ### Important limitation
 
@@ -463,6 +473,7 @@ Safe to customize:
 Keep generic unless the repo itself needs a different process:
 - `.github/copilot-instructions.md`
 - `CLAUDE.md`
+- `CHATGPT.md`
 - `AGENTS.md`
 - `ATLAS.md`
 

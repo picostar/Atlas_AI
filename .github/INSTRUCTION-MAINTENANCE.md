@@ -4,7 +4,7 @@ This file defines how to keep instruction files aligned over time.
 
 ## Source Of Truth
 - `.github/copilot-instructions.md` is authoritative.
-- Thin pointers (`CLAUDE.md`, `AGENTS.md`, `CHATGPT.md`, `GEMINI.md`) must not duplicate full process logic.
+- Thin pointers (`CLAUDE.md`, `AGENTS.md`, `CHATGPT.md`, `GEMINI.md`, `GROK.md`, `DEEPSEEK.md`) must not duplicate full process logic.
 
 ## Update Order
 1. Update `.github/copilot-instructions.md` first.

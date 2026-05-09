@@ -19,7 +19,7 @@ You are preparing to update this legacy atlas project to align with the current 
 
 Planning phase only: do not edit files, run migration scripts, move folders, rename files, delete files, or run destructive commands. Your first deliverable is an update plan for human review.
 
-1. Read the local repository instructions first, especially `.github/copilot-instructions.md`, `ATLAS.md`, and any existing `AGENTS.md`, `CLAUDE.md`, `CHATGPT.md`, or `GEMINI.md` files.
+1. Read the local repository instructions first, especially `.github/copilot-instructions.md`, `ATLAS.md`, and any existing `AGENTS.md`, `CLAUDE.md`, `CHATGPT.md`, `GEMINI.md`, `GROK.md`, or `DEEPSEEK.md` files.
 2. Use `picostar/Atlas_AI` on its default branch as the source of truth for the current kit. If the Atlas_AI repository is open locally, inspect that repo. Otherwise fetch or inspect the public repository.
 3. Compare the local legacy project against the Atlas_AI source of truth before proposing edits. Focus on:
    - root instruction files
