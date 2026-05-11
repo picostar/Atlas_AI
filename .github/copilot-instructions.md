@@ -90,7 +90,8 @@
 - If the repository appears to be a scaffold or template, use the next clear maintenance or adoption task rather than expecting an active live-project devcycle.
 - If the next task is clear and no blocker prevents progress, start executing it immediately rather than waiting for another confirmation.
 - If a blocker exists, call it out briefly and either resolve it or ask the minimum clarifying question needed to proceed.
-- For `newproject`, if the target already contains real project files, stop. Do not move, rewrite, or reorganize them. Tell the user to use `atlas_update.md` from the kit for a plan-first legacy project update.
+- For `newproject`, if the target already contains Atlas control files at the repo root, stop and tell the user to use `atlas_update.md` from the kit for a plan-first legacy project update.
+- For `newproject`, if the target contains pre-existing user files, preserve them by moving them into `docs/reference/preexisting-root/`. If `.git` already exists, adopt that repository rather than reinitializing it.
 - Keep the response short and action-oriented. The purpose of these phrases is to move from readiness review into execution.
 
 ## Session Close And Sign-Off Behavior
@@ -114,7 +115,7 @@
 - Prefer feature branches over direct work on `main` when working in a git repository.
 - Remove matching `*_TEMPLATE.md` files from `docs/cgr/` once live MRD, PRD, or ESD artifacts exist.
 - Do not hardcode project names, tenant values, URLs, credentials, or deployment targets in reusable kits.
-- Keep `atlas_ai.ps1` and `NewProject.bat` new-project only. They must not move, rewrite, reorganize, migrate, or delete existing project files.
+- Keep `atlas_ai.ps1` and `NewProject.bat` new-project only. They may relocate pre-existing user source material into `docs/reference/preexisting-root/` during first-time bootstrap, but they must not perform in-place legacy Atlas upgrades.
 - For existing or legacy atlas projects, use root-level `atlas_update.md` as a plan-first prompt. It may recommend consolidating legacy account-binding files into committed `accounts.md`, but execution requires explicit human approval.
 
 ## Recommended Repo Structure

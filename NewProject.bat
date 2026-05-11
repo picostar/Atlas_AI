@@ -8,7 +8,8 @@ echo  ------------------------
 echo.
 echo  This script installs the atlas_ai development process kit into a new project.
 echo  The project folder is the parent of the atlas_ai folder (or symlink).
-echo  If the project already has real files, use atlas_update.md for a plan-first update.
+echo  Pre-existing user files are preserved under docs\reference\preexisting-root.
+echo  If a .git folder already exists, atlas_ai adopts that repository.
 echo.
 
 :: Resolve the project folder as the parent of wherever this .bat lives
@@ -22,26 +23,6 @@ for %%I in ("%DOIT_DIR%") do set "SEED_NAME=%%~nxI"
 echo  Project folder: %TARGET%
 echo  Project name:   %PROJECT_NAME%
 echo.
-
-:: Check for existing top-level files. NewProject is create-only.
-set "HAS_EXISTING=0"
-for %%F in ("%TARGET%\*") do (
-    if /i not "%%~nxF"=="%SEED_NAME%" (
-    if /i not "%%~nxF"==".gitignore" (
-    if /i not "%%~nxF"==".gitattributes" (
-        set "HAS_EXISTING=1"
-    )))
-)
-if "%HAS_EXISTING%"=="1" (
-    echo  Existing files found in project folder.
-    echo  This does not look like a new project.
-    echo  NewProject.bat will not move, rewrite, or reorganize existing files.
-    echo  Use atlas_update.md from the kit for a plan-first legacy project update.
-    echo  Then run approved changes manually.
-    echo.
-    pause
-    exit /b 1
-)
 
 echo.
 echo  -- Optional components --
@@ -247,6 +228,8 @@ if errorlevel 1 (
 echo.
 echo  Done. Project is at %TARGET%
 echo  accounts.md was created for non-secret cloud destination details.
+echo  Pre-existing user files were preserved under docs\reference\preexisting-root.
+echo  Existing .git metadata was adopted when present.
 echo  The atlas_ai seed folder was not staged in the initial commit.
 echo  You can remove the seed folder manually after reviewing the generated project.
 echo.

@@ -23,9 +23,9 @@ description: 'Set up a new project with atlas_ai. Use when bootstrapping a new r
    - Add `-IncludeCGR` for governance review
    - Add `-InitGit` for git initialization
    - Add `-GitHubRepo "name"` for GitHub repo creation
-3. If existing project files are present, stop and tell the user this does not look like a new project
-   - Do not move, rewrite, reorganize, migrate, or delete existing files
-   - Use `atlas_update.md` from the kit for a plan-first legacy project update instead
+3. If Atlas control files are already present at the repo root, stop and use `atlas_update.md` from the kit for a plan-first legacy project update instead
+   - Otherwise preserve pre-existing user files by moving them into `docs/reference/preexisting-root/`
+   - If `.git` already exists, adopt that repository rather than reinitializing it
 4. Create committed `accounts.md` for non-secret cloud account and deployment destination binding
 5. Summarize what was installed
 

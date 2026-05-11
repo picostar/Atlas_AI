@@ -69,7 +69,7 @@ Use these short chat phrases when you want the agent to run the standard ATLAS f
 - `atlas` -- run the startup project check-in flow.
 - `hi`, `hello`, `good morning`, `goodmorning`, or `ready to start` -- also run the startup project check-in flow.
 - `CGR` or `run CGR` -- run the governance workflow from `.github/prompts/cgr.prompt.md` and write `docs/cgr/CGR-results.md`.
-- `newproject` -- run the new-project installer flow from an otherwise empty project root.
+- `newproject` -- run the new-project installer flow, preserving pre-existing user material under `docs/reference/` and adopting `.git` when present.
 - `good night`, `goodnight`, `goodbye`, `that's all`, or `we are done` -- run the end-of-session closeout check.
 
 The startup check-in reviews current state, active devcycle work, and obvious blockers. The closeout check reviews smoketest, UAT, retro, status, commit, and GitHub follow-up readiness before the session ends.
@@ -195,7 +195,7 @@ Why this matters:
 
 ### Quick Start -- Point a project at atlas_ai
 
-The simplest way to start a new project with atlas_ai is to copy or clone it into an otherwise empty project folder, then tell your AI coding agent to set it up. This works in VS Code with Copilot, Claude Code, ChatGPT-oriented workflows, or any Codex-style agent.
+The simplest way to start a new project with atlas_ai is to copy or clone it into your project folder, then tell your AI coding agent to set it up. This works in VS Code with Copilot, Claude Code, ChatGPT-oriented workflows, or any Codex-style agent.
 
 **Step 1:** Copy the `atlas_ai` folder into your project root. You can clone it, copy it, or drop it in manually. Your project should look like this:
 
@@ -203,6 +203,8 @@ The simplest way to start a new project with atlas_ai is to copy or clone it int
 my-project/
   atlas_ai/          <-- the kit
 ```
+
+If the project root already contains user files, atlas_ai preserves them by moving them into `docs/reference/preexisting-root/` during install. If `.git` already exists, atlas_ai adopts that repository instead of reinitializing it.
 
 **Step 2:** Open the project in VS Code (or your editor with an AI agent). Then use one of these prompts.
 
@@ -216,7 +218,7 @@ Set up this project with atlas_ai.
 Tasks:
 1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, and atlas_ai/AGENTS.md.
 2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold.
-3. If this repository already contains real project files, stop. Do not move, rewrite, reorganize, or overwrite them. Use `atlas_update.md` from the kit for a plan-first legacy project update instead.
+3. If this repository already contains Atlas control files at the repo root, stop and use `atlas_update.md` for a plan-first legacy project update. Otherwise preserve pre-existing user files by moving them into `docs/reference/preexisting-root/`.
 4. Summarize what was installed.
 ```
 
@@ -234,7 +236,7 @@ Set up this project with atlas_ai including formal release stages.
 Tasks:
 1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, atlas_ai/docs/cgr/PS.md, and atlas_ai/AGENTS.md.
 2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold -IncludePS.
-3. If this repository already contains real project files, stop. Do not move, rewrite, reorganize, or overwrite them. Use `atlas_update.md` from the kit for a plan-first legacy project update instead.
+3. If this repository already contains Atlas control files at the repo root, stop and use `atlas_update.md` for a plan-first legacy project update. Otherwise preserve pre-existing user files by moving them into `docs/reference/preexisting-root/`.
 4. Summarize what was installed.
 ```
 
@@ -250,7 +252,7 @@ Set up this project with atlas_ai including CGR.
 Tasks:
 1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, atlas_ai/.github/prompts/cgr.prompt.md, and atlas_ai/AGENTS.md.
 2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold -IncludeCGR.
-3. If this repository already contains real project files, stop. Do not move, rewrite, reorganize, or overwrite them. Use `atlas_update.md` from the kit for a plan-first legacy project update instead.
+3. If this repository already contains Atlas control files at the repo root, stop and use `atlas_update.md` for a plan-first legacy project update. Otherwise preserve pre-existing user files by moving them into `docs/reference/preexisting-root/`.
 4. Summarize what was installed.
 ```
 
@@ -266,7 +268,7 @@ Set up this project with atlas_ai including PS and CGR.
 Tasks:
 1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, atlas_ai/docs/cgr/PS.md, atlas_ai/.github/prompts/cgr.prompt.md, and atlas_ai/AGENTS.md.
 2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold -IncludePS -IncludeCGR.
-3. If this repository already contains real project files, stop. Do not move, rewrite, reorganize, or overwrite them. Use `atlas_update.md` from the kit for a plan-first legacy project update instead.
+3. If this repository already contains Atlas control files at the repo root, stop and use `atlas_update.md` for a plan-first legacy project update. Otherwise preserve pre-existing user files by moving them into `docs/reference/preexisting-root/`.
 4. Summarize what was installed.
 ```
 
@@ -298,7 +300,7 @@ Requires `git` on PATH. For `-GitHubRepo`, install the [GitHub CLI](https://cli.
 
 ### Existing repo updates
 
-Do not use `atlas_ai.ps1` or `NewProject.bat` to update an existing repository. Those entry points are new-project only. For legacy atlas projects, run or copy `atlas_update.md` from the kit and use it as a plan-first prompt. The prompt compares the target against the public `picostar/Atlas_AI` source of truth and stops before making edits until a human approves the plan.
+Do not use `atlas_ai.ps1` or `NewProject.bat` to update an existing Atlas-managed repository. Those entry points are for first-time bootstrap. They can preserve pre-existing user source material by moving it into `docs/reference/preexisting-root/`, but they should not be used for legacy Atlas upgrades. For legacy Atlas projects, run or copy `atlas_update.md` from the kit and use it as a plan-first prompt. The prompt compares the target against the public `picostar/Atlas_AI` source of truth and stops before making edits until a human approves the plan.
 
 If a legacy account-binding file exists, the update plan should consolidate non-secret provider binding into committed `accounts.md` after approval. Do not keep multiple active account sources.
 
@@ -309,7 +311,7 @@ Add `-IncludePS` and/or `-IncludeCGR` to the install step if the project needs p
 If you do not want to use an agent prompt, run the installer directly:
 
 ```powershell
-# Chat-only equivalent of NewProject.bat (run from an otherwise empty project root)
+# Chat-only equivalent of NewProject.bat
 pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -InitGit
 
 # Basic -- core workflow and scaffold only

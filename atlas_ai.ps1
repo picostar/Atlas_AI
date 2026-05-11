@@ -37,8 +37,7 @@ if ($NoApiFirst) {
 }
 
 if ($GitHubRepo -and [string]::IsNullOrWhiteSpace($GitHubOwner)) {
-    Write-Error "GitHubOwner is required when GitHubRepo is specified. Provide the GitHub username or organization that should own the new repository."
-    return
+    throw "GitHubOwner is required when GitHubRepo is specified. Provide the GitHub username or organization that should own the new repository."
 }
 
 function Get-InstallerTopLevelSegment {
@@ -107,7 +106,49 @@ function Get-PathsUnderTopLevelSegment {
     return $matchingPaths
 }
 
-function Get-NonNewProjectItems {
+function Get-ExistingAtlasInstallMarkers {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$RootPath,
+        [string]$InstallerPath
+    )
+
+    if (-not (Test-Path -LiteralPath $RootPath)) {
+        return @()
+    }
+
+    $normalizedInstallerPath = $null
+    if ($InstallerPath) {
+        $normalizedInstallerPath = $InstallerPath.TrimEnd('\')
+    }
+
+    $markerPaths = @(
+        'ATLAS.md',
+        '.github/copilot-instructions.md',
+        'docs/agile/devcycle.md',
+        'docs/agile/backlog.md',
+        'docs/agile/status.md',
+        'docs/agile/retro.md'
+    )
+
+    $existingMarkers = @()
+    foreach ($markerPath in $markerPaths) {
+        $fullPath = Join-Path $RootPath $markerPath
+        if (-not (Test-Path -LiteralPath $fullPath)) {
+            continue
+        }
+
+        if ($normalizedInstallerPath -and $fullPath.TrimEnd('\').Equals($normalizedInstallerPath, [System.StringComparison]::OrdinalIgnoreCase)) {
+            continue
+        }
+
+        $existingMarkers += $markerPath
+    }
+
+    return $existingMarkers
+}
+
+function Get-PreExistingUserItems {
     param(
         [Parameter(Mandatory = $true)]
         [string]$RootPath,
@@ -119,7 +160,7 @@ function Get-NonNewProjectItems {
     }
 
     $allowedNames = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
-    @('.git', '.gitignore', '.gitattributes') | ForEach-Object {
+    @('.git', '.gitignore', '.gitattributes', '.gitmodules', '.git-blame-ignore-revs') | ForEach-Object {
         $null = $allowedNames.Add($_)
     }
 
@@ -129,7 +170,7 @@ function Get-NonNewProjectItems {
     }
 
     $items = Get-ChildItem -LiteralPath $RootPath -Force -ErrorAction SilentlyContinue
-    $blockingItems = @()
+    $movableItems = @()
     foreach ($item in $items) {
         if ($allowedNames.Contains($item.Name)) {
             continue
@@ -139,10 +180,98 @@ function Get-NonNewProjectItems {
             continue
         }
 
-        $blockingItems += $item.Name
+        $movableItems += $item
     }
 
-    return $blockingItems
+    return $movableItems
+}
+
+function Get-AvailablePath {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$BasePath
+    )
+
+    if (-not (Test-Path -LiteralPath $BasePath)) {
+        return $BasePath
+    }
+
+    $suffix = 2
+    while ($true) {
+        $candidatePath = "$BasePath-$suffix"
+        if (-not (Test-Path -LiteralPath $candidatePath)) {
+            return $candidatePath
+        }
+
+        $suffix++
+    }
+}
+
+function Stage-PreExistingReferenceItems {
+    [CmdletBinding(SupportsShouldProcess = $true)]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$RootPath,
+        [string]$InstallerPath
+    )
+
+    $movableItems = @(Get-PreExistingUserItems -RootPath $RootPath -InstallerPath $InstallerPath)
+    if ($movableItems.Count -eq 0) {
+        return $null
+    }
+
+    $stagingPath = Get-AvailablePath -BasePath (Join-Path $RootPath '.atlas_ai-preexisting-reference')
+    if (-not (Test-Path -LiteralPath $stagingPath)) {
+        New-Item -ItemType Directory -Path $stagingPath -Force | Out-Null
+    }
+
+    foreach ($item in $movableItems) {
+        $destinationPath = Join-Path $stagingPath $item.Name
+        if ($PSCmdlet.ShouldProcess($item.FullName, "Move pre-existing user material into atlas_ai staging")) {
+            Move-Item -LiteralPath $item.FullName -Destination $destinationPath
+            Write-Host "Staged pre-existing user material: $($item.Name)"
+        }
+    }
+
+    return $stagingPath
+}
+
+function Finalize-PreExistingReferenceItems {
+    [CmdletBinding(SupportsShouldProcess = $true)]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$RootPath,
+        [string]$StagingPath
+    )
+
+    if ([string]::IsNullOrWhiteSpace($StagingPath) -or -not (Test-Path -LiteralPath $StagingPath)) {
+        return $null
+    }
+
+    $referenceRoot = Join-Path $RootPath 'docs/reference'
+    if (-not (Test-Path -LiteralPath $referenceRoot)) {
+        New-Item -ItemType Directory -Path $referenceRoot -Force | Out-Null
+    }
+
+    $referenceImportPath = Get-AvailablePath -BasePath (Join-Path $referenceRoot 'preexisting-root')
+    if (-not (Test-Path -LiteralPath $referenceImportPath)) {
+        New-Item -ItemType Directory -Path $referenceImportPath -Force | Out-Null
+    }
+
+    $stagedItems = Get-ChildItem -LiteralPath $StagingPath -Force -ErrorAction SilentlyContinue
+    foreach ($item in $stagedItems) {
+        $destinationPath = Join-Path $referenceImportPath $item.Name
+        if ($PSCmdlet.ShouldProcess($item.FullName, "Move pre-existing user material into docs/reference")) {
+            Move-Item -LiteralPath $item.FullName -Destination $destinationPath
+            Write-Host "Preserved pre-existing user material in docs/reference: $($item.Name)"
+        }
+    }
+
+    if ($PSCmdlet.ShouldProcess($StagingPath, 'Remove temporary atlas_ai staging folder')) {
+        Remove-Item -LiteralPath $StagingPath -Recurse -Force -ErrorAction SilentlyContinue
+    }
+
+    return $referenceImportPath
 }
 
 function Resolve-StackPatternRelativePath {
@@ -310,11 +439,12 @@ if (-not (Test-Path -LiteralPath $resolvedTargetRoot)) {
     }
 }
 
-$blockingItems = @(Get-NonNewProjectItems -RootPath $resolvedTargetRoot -InstallerPath $templateRoot)
-if ($blockingItems.Count -gt 0) {
-    Write-Error "Target does not look like a new project. Found existing top-level item(s): $($blockingItems -join ', '). Use atlas_update.md from the kit for a plan-first legacy project update instead of atlas_ai.ps1."
-    return
+$existingAtlasMarkers = @(Get-ExistingAtlasInstallMarkers -RootPath $resolvedTargetRoot -InstallerPath $templateRoot)
+if ($existingAtlasMarkers.Count -gt 0) {
+    throw "Target already contains Atlas project control files: $($existingAtlasMarkers -join ', '). Use atlas_update.md from the kit for a plan-first legacy project update instead of atlas_ai.ps1."
 }
+
+$stagedReferenceItemsPath = Stage-PreExistingReferenceItems -RootPath $resolvedTargetRoot -InstallerPath $templateRoot
 
 $filesToCopy = @(
     ".github/copilot-instructions.md",
@@ -481,12 +611,16 @@ if ($IncludeScaffold) {
     New-LocalSecretsFile -RootPath $resolvedTargetRoot
 }
 
+$referenceImportPath = Finalize-PreExistingReferenceItems -RootPath $resolvedTargetRoot -StagingPath $stagedReferenceItemsPath
+if ($referenceImportPath) {
+    Write-Host "Pre-existing user material preserved under: $referenceImportPath"
+}
+
 # --- Git initialization ---
 if ($InitGit -or $GitHubRepo) {
     $gitAvailable = Get-Command git -ErrorAction SilentlyContinue
     if (-not $gitAvailable) {
-        Write-Error "git is not installed or not on PATH. Install git first."
-        return
+        throw "git is not installed or not on PATH. Install git first."
     }
 
     Push-Location $resolvedTargetRoot
@@ -513,7 +647,7 @@ if ($InitGit -or $GitHubRepo) {
                 Write-Host "Initialized git repository."
             }
         } else {
-            Write-Host "Git repository already initialized."
+            Write-Host "Adopting existing git repository."
         }
 
         # Stage and commit if there are changes
@@ -524,7 +658,8 @@ if ($InitGit -or $GitHubRepo) {
             }
             $status = git status --porcelain
             if ($status) {
-                git commit -m "chore: initialize project artifacts" 2>&1 | Out-Null
+                $commitMessage = if ($isGitRepo) { "chore: install atlas_ai project artifacts" } else { "chore: initialize project artifacts" }
+                git commit -m $commitMessage 2>&1 | Out-Null
                 Write-Host "Created initial commit."
             } else {
                 Write-Host "No changes to commit."
@@ -539,8 +674,7 @@ if ($InitGit -or $GitHubRepo) {
 if ($GitHubRepo) {
     $ghAvailable = Get-Command gh -ErrorAction SilentlyContinue
     if (-not $ghAvailable) {
-        Write-Error "GitHub CLI (gh) is not installed. Install it from https://cli.github.com/ and try again."
-        return
+        throw "GitHub CLI (gh) is not installed. Install it from https://cli.github.com/ and try again."
     }
 
     # Ensure the user is authenticated -- prompt for login if not
@@ -549,9 +683,7 @@ if ($GitHubRepo) {
         Write-Host "GitHub CLI is not authenticated. Launching login flow..."
         gh auth login
         if ($LASTEXITCODE -ne 0) {
-            Write-Error "GitHub login failed or was cancelled. Skipping repo creation."
-            Write-Host "The local git repository was still created successfully. You can create the GitHub repo manually or retry later."
-            return
+            throw "GitHub login failed or was cancelled. The local git repository was still created successfully. You can create the GitHub repo manually or retry later."
         }
     }
 
@@ -563,8 +695,7 @@ if ($GitHubRepo) {
         if ($PSCmdlet.ShouldProcess($fullRepoName, "Create GitHub repository ($visibility)")) {
             $output = gh repo create $fullRepoName $visibility --source . --push 2>&1
             if ($LASTEXITCODE -ne 0) {
-                Write-Error "Failed to create GitHub repository '$fullRepoName'. gh output: $output"
-                Write-Host "The local git repository was still created successfully. You can create the GitHub repo manually or retry later."
+                throw "Failed to create GitHub repository '$fullRepoName'. gh output: $output The local git repository was still created successfully. You can create the GitHub repo manually or retry later."
             } else {
                 Write-Host "Created GitHub repository: $fullRepoName"
             }
