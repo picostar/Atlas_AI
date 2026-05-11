@@ -84,12 +84,13 @@
 - If the user says `CGR` or `run CGR`, treat it as a request to run the governance workflow defined in `.github/prompts/cgr.prompt.md`.
 - For `CGR`: if live MRD, PRD, and ESD artifacts do not exist in `docs/cgr/`, bootstrap draft docs from `seed.md` and `docs/reference/` first, then run CGR and write `docs/cgr/CGR-results.md`.
 - For `CGR`: if live MRD, PRD, or ESD artifacts already exist in `docs/cgr/`, use them as the base and improve them using user instructions plus any new materials in `seed.md` or `docs/reference/`.
-- If the user says `newproject`, treat it as a request to run the non-interactive atlas_ai installer flow from the repository root using: `pwsh -File ./atlas_ai/atlas_ai.ps1 -IncludeScaffold -InitGit`.
+- If the user says `newproject`, treat it as a request to use root-level `atlas_newproject.md` as the prompt-first new-project bootstrap workflow.
 - Before acting, perform a brief ATLAS readiness check. Review the current state, confirm the next task is clear, and look for obvious blockers or missing planning context.
 - Use `docs/agile/status.md` for current state, `docs/agile/devcycle.md` for the active task, and `docs/agile/backlog.md` if the active cycle is empty or unclear.
 - If the repository appears to be a scaffold or template, use the next clear maintenance or adoption task rather than expecting an active live-project devcycle.
 - If the next task is clear and no blocker prevents progress, start executing it immediately rather than waiting for another confirmation.
 - If a blocker exists, call it out briefly and either resolve it or ask the minimum clarifying question needed to proceed.
+- For `newproject`, prefer the prompt-first workflow so setup works across Windows, Linux, and macOS. Use `atlas_ai.ps1` or `NewProject.bat` only when the user explicitly asks for a script-driven setup or prompt-driven setup cannot complete with the available environment.
 - For `newproject`, if the target already contains Atlas control files at the repo root, stop and tell the user to use `atlas_update.md` from the kit for a plan-first legacy project update.
 - For `newproject`, if the target contains pre-existing user files, preserve them by moving them into `docs/reference/preexisting-root/`. If `.git` already exists, adopt that repository rather than reinitializing it.
 - Keep the response short and action-oriented. The purpose of these phrases is to move from readiness review into execution.

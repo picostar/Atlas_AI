@@ -18,11 +18,10 @@ description: 'Set up a new project with atlas_ai. Use when bootstrapping a new r
    - [copilot-instructions.md](../../copilot-instructions.md)
    - [ATLAS.md](../../../ATLAS.md)
    - [AGENTS.md](../../../AGENTS.md)
-2. Run the installer: `pwsh -File ./atlas_ai/atlas_ai.ps1 -IncludeScaffold`
-   - Add `-IncludePS` for formal release stages
-   - Add `-IncludeCGR` for governance review
-   - Add `-InitGit` for git initialization
-   - Add `-GitHubRepo "name"` for GitHub repo creation
+2. Prefer the standalone prompt-first workflow in `atlas_newproject.md` for agent-driven setup
+   - Use it to bootstrap the repo without relying on Windows-only or PowerShell-only entry points
+   - Ask only the minimum setup questions, then install the selected Atlas_AI files directly
+   - Use `atlas_ai.ps1` or `NewProject.bat` only as fallback or manual setup paths
 3. If Atlas control files are already present at the repo root, stop and use `atlas_update.md` from the kit for a plan-first legacy project update instead
    - Otherwise preserve pre-existing user files by moving them into `docs/reference/preexisting-root/`
    - If `.git` already exists, adopt that repository rather than reinitializing it

@@ -69,7 +69,7 @@ Use these short chat phrases when you want the agent to run the standard ATLAS f
 - `atlas` -- run the startup project check-in flow.
 - `hi`, `hello`, `good morning`, `goodmorning`, or `ready to start` -- also run the startup project check-in flow.
 - `CGR` or `run CGR` -- run the governance workflow from `.github/prompts/cgr.prompt.md` and write `docs/cgr/CGR-results.md`.
-- `newproject` -- run the new-project installer flow, preserving pre-existing user material under `docs/reference/` and adopting `.git` when present.
+- `newproject` -- run the standalone new-project bootstrap prompt, preserving pre-existing user material under `docs/reference/` and adopting `.git` when present.
 - `good night`, `goodnight`, `goodbye`, `that's all`, or `we are done` -- run the end-of-session closeout check.
 
 The startup check-in reviews current state, active devcycle work, and obvious blockers. The closeout check reviews smoketest, UAT, retro, status, commit, and GitHub follow-up readiness before the session ends.
@@ -99,7 +99,8 @@ The startup check-in reviews current state, active devcycle work, and obvious bl
 - `.github/prompts/cgr-seed-to-cgr.prompt.md` -- generate draft MRD PRD ESD from seed and reference material, then run CGR outputs
 - `.github/prompts/cgr-iterate.prompt.md` -- iterate and improve governance docs using CGR-results and score
 
-### Legacy update prompt
+### Standalone root prompts
+- `atlas_newproject.md` -- standalone root-level guided new-project bootstrap prompt, kept outside the installed prompt catalog so users can copy it into a target project or say `newproject`
 - `atlas_update.md` -- standalone root-level guided legacy atlas update planning prompt, kept outside the installed prompt catalog so users can copy it and say `atlas update` in existing projects
 
 ### Installer
@@ -211,15 +212,12 @@ If the project root already contains user files, atlas_ai preserves them by movi
 #### Basic setup (most projects, POC, internal tools)
 
 ```text
-atlas_ai
+Use `atlas_newproject.md` from the atlas_ai kit.
 
-Set up this project with atlas_ai.
-
-Tasks:
-1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, and atlas_ai/AGENTS.md.
-2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold.
-3. If this repository already contains Atlas control files at the repo root, stop and use `atlas_update.md` for a plan-first legacy project update. Otherwise preserve pre-existing user files by moving them into `docs/reference/preexisting-root/`.
-4. Summarize what was installed.
+Bootstrap this project with the core atlas_ai workflow only.
+Preserve pre-existing user files under `docs/reference/preexisting-root/`.
+Adopt `.git` if it already exists, otherwise initialize git.
+Summarize what was installed.
 ```
 
 This installs the core workflow, AI instruction files, and docs scaffold. No release stages, no governance review. Good for POC work, internal tools, and exploratory development.
@@ -229,15 +227,12 @@ This installs the core workflow, AI instruction files, and docs scaffold. No rel
 If the project needs EVT/DVT/PVT/GA release gates and MRD/PRD/ESD document requirements, add `-IncludePS` to the install step:
 
 ```text
-atlas_ai
+Use `atlas_newproject.md` from the atlas_ai kit.
 
-Set up this project with atlas_ai including formal release stages.
-
-Tasks:
-1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, atlas_ai/docs/cgr/PS.md, and atlas_ai/AGENTS.md.
-2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold -IncludePS.
-3. If this repository already contains Atlas control files at the repo root, stop and use `atlas_update.md` for a plan-first legacy project update. Otherwise preserve pre-existing user files by moving them into `docs/reference/preexisting-root/`.
-4. Summarize what was installed.
+Bootstrap this project with atlas_ai and include formal release stages.
+Preserve pre-existing user files under `docs/reference/preexisting-root/`.
+Adopt `.git` if it already exists, otherwise initialize git.
+Summarize what was installed.
 ```
 
 #### Setup with governance review (optional)
@@ -245,15 +240,12 @@ Tasks:
 If the project needs compliance and governance review (CGR), add `-IncludeCGR`. CGR works independently -- you can use it with or without PS:
 
 ```text
-atlas_ai
+Use `atlas_newproject.md` from the atlas_ai kit.
 
-Set up this project with atlas_ai including CGR.
-
-Tasks:
-1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, atlas_ai/.github/prompts/cgr.prompt.md, and atlas_ai/AGENTS.md.
-2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold -IncludeCGR.
-3. If this repository already contains Atlas control files at the repo root, stop and use `atlas_update.md` for a plan-first legacy project update. Otherwise preserve pre-existing user files by moving them into `docs/reference/preexisting-root/`.
-4. Summarize what was installed.
+Bootstrap this project with atlas_ai and include CGR.
+Preserve pre-existing user files under `docs/reference/preexisting-root/`.
+Adopt `.git` if it already exists, otherwise initialize git.
+Summarize what was installed.
 ```
 
 #### Setup with both PS and CGR (optional)
@@ -261,15 +253,12 @@ Tasks:
 If the project needs both project stages and governance review:
 
 ```text
-atlas_ai
+Use `atlas_newproject.md` from the atlas_ai kit.
 
-Set up this project with atlas_ai including PS and CGR.
-
-Tasks:
-1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, atlas_ai/docs/cgr/PS.md, atlas_ai/.github/prompts/cgr.prompt.md, and atlas_ai/AGENTS.md.
-2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold -IncludePS -IncludeCGR.
-3. If this repository already contains Atlas control files at the repo root, stop and use `atlas_update.md` for a plan-first legacy project update. Otherwise preserve pre-existing user files by moving them into `docs/reference/preexisting-root/`.
-4. Summarize what was installed.
+Bootstrap this project with atlas_ai and include both PS and CGR.
+Preserve pre-existing user files under `docs/reference/preexisting-root/`.
+Adopt `.git` if it already exists, otherwise initialize git.
+Summarize what was installed.
 ```
 
 #### Adding release stages or CGR later
@@ -308,10 +297,10 @@ Add `-IncludePS` and/or `-IncludeCGR` to the install step if the project needs p
 
 ### Manual setup (no agent)
 
-If you do not want to use an agent prompt, run the installer directly:
+If you do not want to use the standalone new-project prompt, run the installer directly:
 
 ```powershell
-# Chat-only equivalent of NewProject.bat
+# Script equivalent of the prompt-first newproject workflow
 pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -InitGit
 
 # Basic -- core workflow and scaffold only
@@ -361,7 +350,7 @@ pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -IncludePS -IncludeCGR -Init
 
 ```
 
-Chat shortcut: in AI chat, you can say `newproject` and the agent should execute the same non-interactive installer flow.
+Chat shortcut: in AI chat, you can say `newproject` and the agent should prefer the standalone `atlas_newproject.md` workflow. Use the script commands above as manual or fallback setup paths.
 
 `-StackPattern` accepts a stack pattern template filename or template-relative path and sets `patterns/stack-patterns/active-stack-pattern.md` from that template. `-UxPattern` accepts a UX pattern template filename or template-relative path and sets `patterns/ux-patterns/active-ux-pattern.md` from that template. `-InitGit` copies the `.gitignore` from the kit, runs `git init` if needed, and makes an initial commit with project artifacts only. `-GitHubRepo` creates a GitHub repository using the `gh` CLI. Use `-GitHubOwner` to specify the GitHub account or org. If not logged in, the script runs `gh auth login` automatically. `-GitHubRepo` implies `-InitGit`.
 
@@ -411,6 +400,7 @@ The migration script `scripts/migrate-layout-v2.ps1` remains available as an opt
 
 Placement guidance:
 - `atlas_ai.ps1` stays at the kit root because setup flows and docs call it there.
+- `atlas_newproject.md` is the recommended new-project bootstrap workflow.
 - `atlas_update.md` is the recommended legacy update workflow.
 - `scripts/migrate-layout-v2.ps1` is a reusable optional migration utility and should remain in `scripts/`.
 
@@ -418,6 +408,7 @@ Or manually copy the files you want from `atlas_ai/` to the repository root:
 - `.github/copilot-instructions.md` -- always
 - `.github/prompts/atlas-realign.prompt.md` -- recommended
 - `.github/prompts/atlas-closeout.prompt.md` -- recommended
+- `atlas_newproject.md` -- recommended for guided new-project bootstrap
 - `atlas_update.md` -- recommended for guided legacy atlas updates
 - `.github/prompts/cgr.prompt.md` -- only if the project uses governance review
 - `CLAUDE.md` -- always
