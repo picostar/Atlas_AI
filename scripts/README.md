@@ -9,7 +9,7 @@ Guidelines:
 - document required inputs and expected outputs
 
 Included script:
-- `migrate-layout-v2.ps1` -- optional manual migration from legacy layout (`docs/projects`, `docs/reference/*-patterns`) to v2 layout (`docs/cgr`, `patterns/*-patterns`). Preview with `-WhatIf`, plan with `.github/prompts/atlas-update.prompt.md`, then run with `-Approved` only after human approval.
+- `migrate-layout-v2.ps1` -- optional manual migration from legacy layout (`docs/projects`, `docs/reference/*-patterns`) to v2 layout (`docs/cgr`, `patterns/*-patterns`). Preview with `-WhatIf`, plan with `atlas_update.md`, then run with `-Approved` only after human approval.
 
 Related root prompt:
-- `.github/prompts/atlas-update.prompt.md` -- guided legacy atlas update prompt. Run it from the kit, copy it into the legacy project, or paste it into an agent, use `picostar/Atlas_AI` as source of truth, and produce a human-reviewed plan before any edits.
+- `atlas_update.md` -- standalone guided legacy atlas update prompt. Run it from the kit, copy it into the legacy project, or paste it into an agent, use `picostar/Atlas_AI` as source of truth, and produce a human-reviewed plan before any edits.

@@ -8,7 +8,7 @@ echo  ------------------------
 echo.
 echo  This script installs the atlas_ai development process kit into a new project.
 echo  The project folder is the parent of the atlas_ai folder (or symlink).
-echo  If the project already has real files, use .github\prompts\atlas-update.prompt.md for a plan-first update.
+echo  If the project already has real files, use atlas_update.md for a plan-first update.
 echo.
 
 :: Resolve the project folder as the parent of wherever this .bat lives
@@ -36,7 +36,7 @@ if "%HAS_EXISTING%"=="1" (
     echo  Existing files found in project folder.
     echo  This does not look like a new project.
     echo  NewProject.bat will not move, rewrite, or reorganize existing files.
-    echo  Use .github\prompts\atlas-update.prompt.md from the kit for a plan-first legacy project update.
+    echo  Use atlas_update.md from the kit for a plan-first legacy project update.
     echo  Then run approved changes manually.
     echo.
     pause
@@ -174,15 +174,19 @@ if "%UX_PATTERN_CHOICE%"=="1" (
 echo.
 echo  -- API First --
 echo.
-echo  API-first means each DT should produce an API result when feasible,
-echo  and smoketests should verify API endpoints plus OpenAPI or Swagger docs.
-echo  This is enabled by default.
-echo.
-set /p DO_API_FIRST=Enable API-first defaults? [y/n, default y]: 
-if not defined DO_API_FIRST set "DO_API_FIRST=y"
-
-set "API_FIRST_FLAG=-ApiFirst"
-if /i "%DO_API_FIRST%"=="n" set "API_FIRST_FLAG=-NoApiFirst"
+set "API_FIRST_FLAG="
+if "%STACK_PATTERN_CHOICE%"=="0" (
+    echo  No stack pattern selected, so no API-first stack posture will be recorded.
+) else (
+    echo  API-first means each DT should produce an API result when feasible,
+    echo  and smoketests should verify API endpoints plus OpenAPI or Swagger docs.
+    echo  This posture is recorded in the active stack pattern and enabled by default.
+    echo.
+    set /p DO_API_FIRST=Enable API-first stack posture? [y/n, default y]:
+    if not defined DO_API_FIRST set "DO_API_FIRST=y"
+    set "API_FIRST_FLAG=-ApiFirst"
+    if /i "!DO_API_FIRST!"=="n" set "API_FIRST_FLAG=-NoApiFirst"
+)
 
 set "GITHUB_FLAG="
 set "GITHUB_OWNER_FLAG="

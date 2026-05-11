@@ -51,7 +51,7 @@ Perform this review in order:
 - `backlog.md` should hold future work, not current execution detail.
 - Smoketest expectations should use CLI commands or scripts.
 - Every task should have a `UAT:` section. If user validation is not needed, it should explicitly say `Not UAT-eligible` and name the internal validation.
-- If `docs/reference/api-first-policy.md` exists and API-first mode is enabled, every DT or RDT should include an API result when feasible and a smoketest that verifies API endpoints plus OpenAPI or Swagger docs when feasible.
+- If `patterns/stack-patterns/active-stack-pattern.md` says API-first mode is enabled, every DT or RDT should include an API result when feasible and a smoketest that verifies API endpoints plus OpenAPI or Swagger docs when feasible. If it says API-first mode is disabled, do not require API-first outputs unless the task itself calls for API work.
 
 4. Check current readiness against ATLAS.
 - Are we ready to begin the next task?

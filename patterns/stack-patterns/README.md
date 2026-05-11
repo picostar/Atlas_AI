@@ -6,6 +6,7 @@ This folder contains reusable architecture baselines for Azure-first projects.
 A stack pattern is a repeatable architecture reference that defines:
 - which Azure services are used for frontend, compute, data, integration, and secrets
 - how those services are expected to interact
+- whether API-first delivery posture is enabled for the selected architecture
 - baseline security and operational expectations
 - fit and non-fit boundaries, including cost and scale considerations
 
@@ -42,7 +43,7 @@ Update or re-review stack patterns when one or more of these occur:
 
 ## Guardrails
 - Keep secrets, credentials, tenant identifiers, and environment-specific tokens out of these files.
-- Keep API-first implementation details in the active stack pattern, while project-level API-first mode selection can be recorded during setup.
+- Keep API-first posture and implementation details in the active stack pattern.
 - Keep decisions at architectural level, not one-off implementation details.
 - Record rationale and constraints, not just chosen services.
 - For function-based patterns, document timeout boundaries by hosting plan and long-request behavior.

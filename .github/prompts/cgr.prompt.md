@@ -28,7 +28,7 @@ Chat shortcut: in AI chat, type `CGR` or say `run CGR` to run this workflow.
 
 The LLM will scan live MRD, PRD, and ESD artifacts in `docs/cgr/`, ignore starter templates and housekeeping files during evaluation, perform post-review template cleanup, and produce a single results file.
 
-If live MRD, PRD, and ESD artifacts do not exist yet, the workflow first bootstraps draft governance docs from `seed.md` and `docs/reference/`, then runs CGR.
+If live MRD, PRD, and ESD artifacts do not exist yet, the workflow first bootstraps draft governance docs from `seed.md` and `docs/reference/`, then runs CGR. `seed.md` may be minimal freeform input, including a single sentence.
 
 If live MRD, PRD, or ESD artifacts already exist, the workflow uses them as the base and improves them using current user instructions plus any new material found in `seed.md` and `docs/reference/`.
 
@@ -65,7 +65,7 @@ You are reviewing the live solution documents for this repository for governance
 3. If the repo root does not contain `docs/cgr/`, look one level down for a child directory that does. If exactly one child directory qualifies, use that child as the effective project root for this review. If multiple child directories qualify, stop and ask the user which one to use.
 4. If the runnable application lives in a child directory one level down, keep the review output in the selected `docs/cgr/` directory instead of placing it inside the nested application folder.
 5. Read source materials used for authoring and improvement:
-   - `seed.md` at repo root, if present.
+   - `seed.md` at repo root, if present. Treat it as freeform input, not a required template.
    - relevant markdown files under `docs/reference/`, if present.
    - any raw MRD, PRD, or ESD-like artifacts found in `docs/reference/` that can be refactored into `docs/cgr/`.
    - `accounts.md` at repo root, if present, for non-secret cloud account and deployment destination context.

@@ -25,7 +25,7 @@ Use these files as the baseline:
 Perform this workflow in order:
 
 1. Collect source material.
-- Read `seed.md` if present.
+- Read `seed.md` if present. Treat it as freeform input, not a required template. It may be as short as a single plain-language sentence.
 - Read all relevant materials under `docs/reference/`.
 - Read existing live docs in `docs/cgr/` if they exist.
 - Identify missing information explicitly instead of inventing it.
@@ -36,6 +36,7 @@ Perform this workflow in order:
   - `PRD_<PROJECT>_v0-draft.md`
   - `ESD_<PROJECT>_v0-draft.md`
 - Use template structure from `MRD_TEMPLATE.md`, `PRD_TEMPLATE.md`, and `ESD_TEMPLATE.md` when available.
+- Infer what you can from a minimal seed and keep unresolved details as `TBD`.
 - Mark unknowns as `TBD` and list clear open questions.
 
 3. Produce source mapping.

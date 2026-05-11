@@ -80,16 +80,17 @@
 
 ## Launch And Execute Behavior
 - If the user uses a short launch phrase, such as `do it`, `lets go`, `let's go`, `go ahead`, `start`, `proceed`, `make it so`, `engage`, `hit it`, or `punch it`, treat it as authorization to begin work.
+- If the user says `atlas update`, treat it as a request to use root-level `atlas_update.md` as a plan-first legacy project update prompt.
 - If the user says `CGR` or `run CGR`, treat it as a request to run the governance workflow defined in `.github/prompts/cgr.prompt.md`.
 - For `CGR`: if live MRD, PRD, and ESD artifacts do not exist in `docs/cgr/`, bootstrap draft docs from `seed.md` and `docs/reference/` first, then run CGR and write `docs/cgr/CGR-results.md`.
 - For `CGR`: if live MRD, PRD, or ESD artifacts already exist in `docs/cgr/`, use them as the base and improve them using user instructions plus any new materials in `seed.md` or `docs/reference/`.
-- If the user says `newproject`, treat it as a request to run the non-interactive atlas_ai installer flow from the repository root using: `pwsh -File ./atlas_ai/atlas_ai.ps1 -IncludeScaffold -ApiFirst -InitGit`.
+- If the user says `newproject`, treat it as a request to run the non-interactive atlas_ai installer flow from the repository root using: `pwsh -File ./atlas_ai/atlas_ai.ps1 -IncludeScaffold -InitGit`.
 - Before acting, perform a brief ATLAS readiness check. Review the current state, confirm the next task is clear, and look for obvious blockers or missing planning context.
 - Use `docs/agile/status.md` for current state, `docs/agile/devcycle.md` for the active task, and `docs/agile/backlog.md` if the active cycle is empty or unclear.
 - If the repository appears to be a scaffold or template, use the next clear maintenance or adoption task rather than expecting an active live-project devcycle.
 - If the next task is clear and no blocker prevents progress, start executing it immediately rather than waiting for another confirmation.
 - If a blocker exists, call it out briefly and either resolve it or ask the minimum clarifying question needed to proceed.
-- For `newproject`, if the target already contains real project files, stop. Do not move, rewrite, or reorganize them. Tell the user to use `.github/prompts/atlas-update.prompt.md` from the kit for a plan-first legacy project update.
+- For `newproject`, if the target already contains real project files, stop. Do not move, rewrite, or reorganize them. Tell the user to use `atlas_update.md` from the kit for a plan-first legacy project update.
 - Keep the response short and action-oriented. The purpose of these phrases is to move from readiness review into execution.
 
 ## Session Close And Sign-Off Behavior
@@ -105,7 +106,7 @@
 - Work on one dev task at a time.
 - Smoke test each task with CLI commands or a script before considering it complete.
 - Every devtask and reset devtask must include both a `Smoketest:` section and a `UAT:` section. If a task is not user-facing, the `UAT:` section must explicitly say that it is not UAT-eligible and state the required internal validation.
-- In API-first mode, every devtask and reset devtask should include an API result when feasible, and `Smoketest:` should include API endpoint verification plus OpenAPI or Swagger documentation verification when feasible.
+- When `patterns/stack-patterns/active-stack-pattern.md` says API-first mode is enabled, every devtask and reset devtask should include an API result when feasible, and `Smoketest:` should include API endpoint verification plus OpenAPI or Swagger documentation verification when feasible.
 - After each completed devtask, create a task-level git commit.
 - After each completed devtask, if a GitHub remote exists, push the branch and perform the repo's GitHub follow-up step, typically creating or updating a pull request. If no remote exists, record that blocker clearly.
 - Keep completed work out of the active task list. The active list is a burn-down, not a historical log.
@@ -114,7 +115,7 @@
 - Remove matching `*_TEMPLATE.md` files from `docs/cgr/` once live MRD, PRD, or ESD artifacts exist.
 - Do not hardcode project names, tenant values, URLs, credentials, or deployment targets in reusable kits.
 - Keep `atlas_ai.ps1` and `NewProject.bat` new-project only. They must not move, rewrite, reorganize, migrate, or delete existing project files.
-- For existing or legacy atlas projects, use `.github/prompts/atlas-update.prompt.md` as a plan-first prompt. It may recommend consolidating legacy account-binding files into committed `accounts.md`, but execution requires explicit human approval.
+- For existing or legacy atlas projects, use root-level `atlas_update.md` as a plan-first prompt. It may recommend consolidating legacy account-binding files into committed `accounts.md`, but execution requires explicit human approval.
 
 ## Recommended Repo Structure
 - `docs/agile/` -- active planning and delivery docs such as `devcycle.md`, `retro.md`, `backlog.md`, `status.md`

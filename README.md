@@ -95,17 +95,19 @@ The startup check-in reviews current state, active devcycle work, and obvious bl
 ### Workflow prompts (installed by default)
 - `.github/prompts/atlas-realign.prompt.md` -- ATLAS health check and realignment prompt
 - `.github/prompts/atlas-closeout.prompt.md` -- ATLAS closeout readiness prompt
-- `.github/prompts/atlas-update.prompt.md` -- guided legacy atlas update planning prompt
 - `.github/prompts/cgr.prompt.md` -- compliance and governance review workflow
 - `.github/prompts/cgr-seed-to-cgr.prompt.md` -- generate draft MRD PRD ESD from seed and reference material, then run CGR outputs
 - `.github/prompts/cgr-iterate.prompt.md` -- iterate and improve governance docs using CGR-results and score
+
+### Legacy update prompt
+- `atlas_update.md` -- standalone root-level guided legacy atlas update planning prompt, kept outside the installed prompt catalog so users can copy it and say `atlas update` in existing projects
 
 ### Installer
 - `atlas_ai.ps1` -- copies kit files into the target repository root
 - `.gitignore` -- default ignore patterns, copied to the target when `-InitGit` is used
 
 ### Startup seed file
-- `seed.md` -- optional startup brief and usage notes for new project setup runs.
+- `seed.md` -- optional lightweight startup note for new project setup runs. A single plain-language sentence is enough, for example: "I want to create a web app that gets the weather where I click on a map."
 - `accounts.md` -- committed non-secret cloud account and deployment destination binding. Keep credentials, keys, tokens, and secrets out of this file.
 - `secrets.md` -- local-only secrets note file stored at repo root and ignored by git. Keep credentials and keys here, not in committed files.
 
@@ -157,11 +159,11 @@ If a template is selected, setup creates `patterns/ux-patterns/active-ux-pattern
 
 ### API-first policy support
 
-`NewProject.bat` prompts for API-first defaults and uses Yes as the default.
+`NewProject.bat` prompts for API-first posture only when a stack pattern is selected, and uses Yes as the default.
 
-The installer writes `docs/reference/api-first-policy.md` to record the selected mode.
+When a stack pattern is selected, the installer records the selected API-first posture in `patterns/stack-patterns/active-stack-pattern.md`.
 
-When API-first mode is enabled, each DT or RDT should produce an API result when feasible, and smoketests should verify API endpoints plus OpenAPI or Swagger docs when feasible.
+When API-first mode is enabled in the active stack pattern, each DT or RDT should produce an API result when feasible, and smoketests should verify API endpoints plus OpenAPI or Swagger docs when feasible. When disabled, API work is still allowed when the task calls for it, but ATLAS closeout should not require API-first results by default.
 
 ### Project document templates (installed with -IncludePS or -IncludeCGR)
 - `docs/cgr/MRD_TEMPLATE.md` -- market or business requirements template
@@ -176,7 +178,7 @@ To run CGR, type `CGR` in AI chat. You can also say `run CGR`. The agent should 
 
 Optional scoring extension: teams that want numeric governance tracking can derive a scorecard from `docs/cgr/CGR-results.md` and save it as `docs/cgr/score.md`.
 
-For seeded projects, teams can bootstrap governance drafts from `seed.md` and `docs/reference/` using `.github/prompts/cgr-seed-to-cgr.prompt.md`, then iteratively improve with `.github/prompts/cgr-iterate.prompt.md` using `docs/cgr/CGR-results.md` and `docs/cgr/score.md`.
+For seeded projects, teams can bootstrap governance drafts from `seed.md` and `docs/reference/` using `.github/prompts/cgr-seed-to-cgr.prompt.md`, then iteratively improve with `.github/prompts/cgr-iterate.prompt.md` using `docs/cgr/CGR-results.md` and `docs/cgr/score.md`. `seed.md` can be as small as a one-line project idea.
 
 ### What CGR Means And Why It Matters
 
@@ -214,7 +216,7 @@ Set up this project with atlas_ai.
 Tasks:
 1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, and atlas_ai/AGENTS.md.
 2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold.
-3. If this repository already contains real project files, stop. Do not move, rewrite, reorganize, or overwrite them. Use `.github/prompts/atlas-update.prompt.md` from the kit for a plan-first legacy project update instead.
+3. If this repository already contains real project files, stop. Do not move, rewrite, reorganize, or overwrite them. Use `atlas_update.md` from the kit for a plan-first legacy project update instead.
 4. Summarize what was installed.
 ```
 
@@ -232,7 +234,7 @@ Set up this project with atlas_ai including formal release stages.
 Tasks:
 1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, atlas_ai/docs/cgr/PS.md, and atlas_ai/AGENTS.md.
 2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold -IncludePS.
-3. If this repository already contains real project files, stop. Do not move, rewrite, reorganize, or overwrite them. Use `.github/prompts/atlas-update.prompt.md` from the kit for a plan-first legacy project update instead.
+3. If this repository already contains real project files, stop. Do not move, rewrite, reorganize, or overwrite them. Use `atlas_update.md` from the kit for a plan-first legacy project update instead.
 4. Summarize what was installed.
 ```
 
@@ -248,7 +250,7 @@ Set up this project with atlas_ai including CGR.
 Tasks:
 1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, atlas_ai/.github/prompts/cgr.prompt.md, and atlas_ai/AGENTS.md.
 2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold -IncludeCGR.
-3. If this repository already contains real project files, stop. Do not move, rewrite, reorganize, or overwrite them. Use `.github/prompts/atlas-update.prompt.md` from the kit for a plan-first legacy project update instead.
+3. If this repository already contains real project files, stop. Do not move, rewrite, reorganize, or overwrite them. Use `atlas_update.md` from the kit for a plan-first legacy project update instead.
 4. Summarize what was installed.
 ```
 
@@ -264,7 +266,7 @@ Set up this project with atlas_ai including PS and CGR.
 Tasks:
 1. Read atlas_ai/README.md, atlas_ai/.github/copilot-instructions.md, atlas_ai/ATLAS.md, atlas_ai/docs/cgr/PS.md, atlas_ai/.github/prompts/cgr.prompt.md, and atlas_ai/AGENTS.md.
 2. Install the kit into the repository root using atlas_ai/atlas_ai.ps1 with -IncludeScaffold -IncludePS -IncludeCGR.
-3. If this repository already contains real project files, stop. Do not move, rewrite, reorganize, or overwrite them. Use `.github/prompts/atlas-update.prompt.md` from the kit for a plan-first legacy project update instead.
+3. If this repository already contains real project files, stop. Do not move, rewrite, reorganize, or overwrite them. Use `atlas_update.md` from the kit for a plan-first legacy project update instead.
 4. Summarize what was installed.
 ```
 
@@ -296,7 +298,7 @@ Requires `git` on PATH. For `-GitHubRepo`, install the [GitHub CLI](https://cli.
 
 ### Existing repo updates
 
-Do not use `atlas_ai.ps1` or `NewProject.bat` to update an existing repository. Those entry points are new-project only. For legacy atlas projects, run or copy `.github/prompts/atlas-update.prompt.md` from the kit and use it as a plan-first prompt. The prompt compares the target against the public `picostar/Atlas_AI` source of truth and stops before making edits until a human approves the plan.
+Do not use `atlas_ai.ps1` or `NewProject.bat` to update an existing repository. Those entry points are new-project only. For legacy atlas projects, run or copy `atlas_update.md` from the kit and use it as a plan-first prompt. The prompt compares the target against the public `picostar/Atlas_AI` source of truth and stops before making edits until a human approves the plan.
 
 If a legacy account-binding file exists, the update plan should consolidate non-secret provider binding into committed `accounts.md` after approval. Do not keep multiple active account sources.
 
@@ -308,16 +310,16 @@ If you do not want to use an agent prompt, run the installer directly:
 
 ```powershell
 # Chat-only equivalent of NewProject.bat (run from an otherwise empty project root)
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -ApiFirst -InitGit
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -InitGit
 
 # Basic -- core workflow and scaffold only
 pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold
 
-# Include scaffold with API-first defaults explicitly enabled
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -ApiFirst
+# Include scaffold with a stack pattern and API-first posture explicitly enabled
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -StackPattern "sp-01-functions-tables-swa-keyvault.md" -ApiFirst
 
-# Include scaffold and explicitly disable API-first defaults
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -NoApiFirst
+# Include scaffold with a stack pattern and API-first posture explicitly disabled
+pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -StackPattern "sp-01-functions-tables-swa-keyvault.md" -NoApiFirst
 
 # Add project stages
 pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -IncludePS
@@ -381,13 +383,13 @@ This migration is idempotent and safe to re-run, but it still moves files and re
 
 ### Guided update for older atlas projects
 
-Older atlas projects should be updated with the prompt in `.github/prompts/atlas-update.prompt.md`, not with a hard updater script.
+Older atlas projects should be updated with the root prompt `atlas_update.md`, not with a hard updater script.
 
-Run `.github/prompts/atlas-update.prompt.md` from the kit, copy it into the legacy project, or paste its prompt into the agent while the legacy project is open in VS Code. The prompt sends the agent to `picostar/Atlas_AI` as the source of truth, then asks for update suggestions as a plan. The first pass is plan-only and must stop for human review before any file changes.
+Run `atlas_update.md` from the kit, copy it into the legacy project, or paste its prompt into the agent while the legacy project is open in VS Code. You can also say `atlas update` after copying it into the legacy project root. The prompt is standalone: it sends the agent to `picostar/Atlas_AI` as the source of truth, then asks for update suggestions as a plan. The first pass is plan-only and must stop for human review before any file changes.
 
 Use this flow:
 1. Open the legacy project in VS Code.
-2. Run `.github/prompts/atlas-update.prompt.md`, copy it into the legacy project root, or paste it into the agent as the update prompt.
+2. Run `atlas_update.md`, copy it into the legacy project root, or paste it into the agent as the update prompt.
 3. Give the agent access to the current Atlas_AI kit, preferably the public `picostar/Atlas_AI` repository or a local checkout of this repo.
 4. Let the agent compare the legacy project against the Atlas_AI source of truth.
 5. Review the proposed update plan before files are moved, renamed, deleted, rewritten, or generated.
@@ -407,14 +409,14 @@ The migration script `scripts/migrate-layout-v2.ps1` remains available as an opt
 
 Placement guidance:
 - `atlas_ai.ps1` stays at the kit root because setup flows and docs call it there.
-- `.github/prompts/atlas-update.prompt.md` is the recommended legacy update workflow.
+- `atlas_update.md` is the recommended legacy update workflow.
 - `scripts/migrate-layout-v2.ps1` is a reusable optional migration utility and should remain in `scripts/`.
 
 Or manually copy the files you want from `atlas_ai/` to the repository root:
 - `.github/copilot-instructions.md` -- always
 - `.github/prompts/atlas-realign.prompt.md` -- recommended
 - `.github/prompts/atlas-closeout.prompt.md` -- recommended
-- `.github/prompts/atlas-update.prompt.md` -- recommended for guided legacy atlas updates
+- `atlas_update.md` -- recommended for guided legacy atlas updates
 - `.github/prompts/cgr.prompt.md` -- only if the project uses governance review
 - `CLAUDE.md` -- always
 - `CHATGPT.md` -- always
@@ -501,7 +503,7 @@ The atlas_ai instruction files and prompts treat that file as the source of trut
 
 ## Existing Repo Updates
 
-Use `.github/prompts/atlas-update.prompt.md` for existing repositories. The first pass is planning only and should not execute edits, migrations, moves, renames, deletes, or destructive commands until a human reviews and approves the plan.
+Use `atlas_update.md` for existing repositories. The first pass is planning only and should not execute edits, migrations, moves, renames, deletes, or destructive commands until a human reviews and approves the plan.
 
 ## AI Development Velocity
 

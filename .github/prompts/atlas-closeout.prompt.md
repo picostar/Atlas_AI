@@ -35,7 +35,7 @@ Perform this review in order:
 - Look for missing required DT or RDT commits when work appears completed.
 - Look for missing `UAT:` sections, missing UAT handoff for user-facing work, or missing explicit `Not UAT-eligible` notes for internal work.
 - Look for missing required GitHub follow-up when a remote exists.
-- If `docs/reference/api-first-policy.md` exists and API-first mode is enabled, verify each completed DT or RDT includes an API result when feasible and a smoketest that verifies API endpoints and OpenAPI or Swagger docs when feasible.
+- If `patterns/stack-patterns/active-stack-pattern.md` says API-first mode is enabled, verify each completed DT or RDT includes an API result when feasible and a smoketest that verifies API endpoints and OpenAPI or Swagger docs when feasible. If it says API-first mode is disabled, do not require API-first outputs unless the task itself calls for API work.
 - Look for completed work still left in `devcycle.md`.
 - Look for work that should have been recorded in `retro.md`.
 - Look for shipped or current-state changes that should be reflected in `status.md`.
