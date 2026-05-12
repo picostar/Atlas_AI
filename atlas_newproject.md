@@ -11,7 +11,7 @@ Use this standalone prompt when bootstrapping a new project with the current Atl
 
 Copy this file into the target project root, paste it into the agent, or say `newproject` or `atlas project` while the target project is open in VS Code and the Atlas_AI source kit is available.
 
-Do not require `NewProject.bat` or `atlas_ai.ps1` for the primary workflow. Prefer a prompt-first bootstrap that works across Windows, Linux, and macOS. The scripts remain valid fallback or manual setup paths when the user explicitly wants them.
+Do not use legacy bootstrap scripts for this workflow. Newproject is prompt-only and should bootstrap directly through agent file operations across Windows, Linux, and macOS.
 
 This file must stand alone in the target project. Do not assume the project already has Atlas_AI prompts, skills, scripts, or root instruction files. Use any Atlas_AI kit files you can inspect as source material only, not as required prompt dependencies.
 
@@ -21,7 +21,7 @@ Access model: this prompt does not itself grant repository or network access. Th
 
 You are preparing to bootstrap this repository with the current public Atlas_AI kit.
 
-Do not start with a platform-specific script. Use a prompt-driven workflow first, ask only the minimum setup questions needed, then execute the approved bootstrap directly in the repository using available file tools.
+Do not run platform-specific bootstrap scripts. Use a prompt-driven workflow, ask only the minimum setup questions needed, then execute the approved bootstrap directly in the repository using available file tools.
 
 1. Read local repository instructions first if they already exist, especially `.github/copilot-instructions.md`, `ATLAS.md`, and any root `AGENTS.md`, `CLAUDE.md`, `CHATGPT.md`, `GEMINI.md`, `GROK.md`, or `DEEPSEEK.md` files.
 2. Establish source-kit access. Use `picostar/Atlas_AI` on its default branch as the source of truth for the current kit. If the Atlas_AI repository is open locally, inspect that repo. Otherwise fetch or inspect the public repository. If the source kit cannot be reached, stop and ask for a local Atlas_AI path, permission to access GitHub, or permission to proceed with only this copied prompt. Treat `picostar/Atlas_AI` as source-only input for file comparison and copy decisions, not as a clone target.
@@ -33,15 +33,15 @@ Do not start with a platform-specific script. Use a prompt-driven workflow first
     - include PS governance artifacts? yes or no (default no)
     - include CGR governance workflow? yes or no (default no)
     - select an active stack pattern baseline now? yes or no (default no)
-    - if stack pattern is yes, ask which template:
-       - SP-01 Functions + Tables + SWA + Key Vault
-       - SP-02 Functions + Tables + SQL Serverless + SWA + Key Vault
-       - SP-03 Functions + Service Bus + Cosmos DB + SWA + Key Vault
-       - SP-04 App Service + Azure SQL + Redis + Front Door + Key Vault
-    - if stack pattern is selected, enable API-first posture? yes or no (default yes)
+    - if stack pattern is yes, present a numbered template menu and accept either number or label. Do not ask for a freeform filename or path:
+       - 1: SP-01 Functions + Tables + SWA + Key Vault
+       - 2: SP-02 Functions + Tables + SQL Serverless + SWA + Key Vault
+       - 3: SP-03 Functions + Service Bus + Cosmos DB + SWA + Key Vault
+       - 4: SP-04 App Service + Azure SQL + Redis + Front Door + Key Vault
+    - if stack pattern is selected, ask: enable API-first posture? yes or no (default yes). Explain meaning: API-first expects API results when feasible, and smoketests should verify API endpoints plus OpenAPI or Swagger docs when feasible.
     - select an active UX pattern baseline now? yes or no (default no)
-    - if UX pattern is yes, ask which template:
-       - UXP-01 Modern app shell layout
+    - if UX pattern is yes, present a numbered template menu and accept either number or label. Do not ask for a freeform filename or path:
+       - 1: UXP-01 Modern app shell layout
     - create GitHub repo now? yes or no (default no)
 6. If the user replies with "use defaults" or equivalent, apply defaults and continue. Otherwise summarize captured answers and ask for a quick confirmation before execution.
 7. Install the selected Atlas_AI files from the source kit into the target root. Include root instruction files, reusable prompts, skills when needed, and optional scaffold or governance docs according to the selected setup. Prefer merging and preserving project-specific content over overwriting user-authored files. Execute this in the current target folder, not in a newly cloned subfolder.
@@ -67,7 +67,7 @@ Do not start with a platform-specific script. Use a prompt-driven workflow first
 - Keep API-first posture in `patterns/stack-patterns/active-stack-pattern.md` when a stack pattern is selected.
 - Keep governance artifacts under `docs/cgr/`.
 - Keep user-supplied project source material under `docs/reference/`, such as old MRDs, PRDs, specifications, marketing materials, website notes, setup notes, and context for planning, devcycles, and CGR.
-- Keep `atlas_ai.ps1` and `NewProject.bat` as fallback or manual setup paths, not the primary workflow.
+- Treat legacy bootstrap scripts as deprecated paths for newproject. Do not invoke them during prompt-driven bootstrap.
 - Remove temporary source-kit folders from the target root after installation when they were used as local bootstrap inputs.
 - Treat GitHub source references for Atlas_AI as read-only source-kit input, not as clone destinations, unless the user explicitly requests a clone operation.
 - Stop and route to `atlas_update.md` instead of reinstalling when Atlas control files already exist at the repo root.

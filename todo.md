@@ -51,7 +51,4 @@ These are project-specific but the kit should ship guidance for creating them.
 
 ## Resolved
 
-- [x] CLAUDE.md and AGENTS.md duplicate response guidelines -- removed, point to source of truth only
-- [x] NewProject.bat missing pre-flight check for atlas_ai.ps1 -- added verification
-- [x] No post-install verification -- added -Verify flag to atlas_ai.ps1
-- [x] Scaffold docs example content not marked as placeholder -- added banners
+

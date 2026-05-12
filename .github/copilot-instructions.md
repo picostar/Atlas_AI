@@ -90,12 +90,14 @@
 - If the repository appears to be a scaffold or template, use the next clear maintenance or adoption task rather than expecting an active live-project devcycle.
 - If the next task is clear and no blocker prevents progress, start executing it immediately rather than waiting for another confirmation.
 - If a blocker exists, call it out briefly and either resolve it or ask the minimum clarifying question needed to proceed.
-- For `newproject`, prefer the prompt-first workflow so setup works across Windows, Linux, and macOS. Use `atlas_ai.ps1` or `NewProject.bat` only when the user explicitly asks for a script-driven setup or prompt-driven setup cannot complete with the available environment.
+- For `newproject`, use prompt-first setup only so bootstrap works across Windows, Linux, and macOS. Do not invoke deprecated legacy bootstrap scripts during prompt-driven newproject execution.
 - For `newproject`, run an explicit setup questionnaire before applying changes. Capture yes or no choices for scaffold, git init when needed, PS, CGR, stack pattern selection, UX pattern selection, and GitHub repo creation. If a stack pattern is selected, capture API-first posture as yes or no. Do not silently apply defaults unless the user explicitly says to use defaults.
+- For `newproject`, present stack and UX pattern choices as numbered menus from available templates and accept number or label answers. Do not ask users for freeform template filenames or paths. When asking API-first posture, explain that API-first expects API results when feasible and smoketest verification of endpoints plus OpenAPI or Swagger docs when feasible.
 - For `newproject`, if the target already contains Atlas control files at the repo root, stop and tell the user to use `atlas_update.md` from the kit for a plan-first legacy project update.
 - For `newproject`, if the target contains pre-existing user files, preserve them by moving them into `docs/reference/preexisting-root/`. If `.git` already exists, adopt that repository rather than reinitializing it.
 - For `newproject`, when setup uses a local source-kit folder in the target root, such as `atlas_ai` or `Atlas_AI`, treat that folder as temporary bootstrap input. Remove it after installation and do not stage or commit it.
 - For `newproject`, if the user references `github picostar/Atlas_AI`, interpret that as source-kit location only. Do not clone Atlas_AI into the target folder or a new subfolder unless the user explicitly asks to clone it. Apply bootstrap in the current target folder.
+- For `newproject`, if a user asks why legacy scripts were not used, explain that prompt-driven bootstrap is the supported path.
 - Keep the response short and action-oriented. The purpose of these phrases is to move from readiness review into execution.
 
 ## Session Close And Sign-Off Behavior
@@ -119,7 +121,7 @@
 - Prefer feature branches over direct work on `main` when working in a git repository.
 - Remove matching `*_TEMPLATE.md` files from `docs/cgr/` once live MRD, PRD, or ESD artifacts exist.
 - Do not hardcode project names, tenant values, URLs, credentials, or deployment targets in reusable kits.
-- Keep `atlas_ai.ps1` and `NewProject.bat` new-project only. They may relocate pre-existing user source material into `docs/reference/preexisting-root/` during first-time bootstrap, but they must not perform in-place legacy Atlas upgrades.
+- Keep prompt-first newproject as the supported path. Legacy scripts now live under `archive/legacy/` and are deprecated for agent-driven setup.
 - For existing or legacy atlas projects, use root-level `atlas_update.md` as a plan-first prompt. It may recommend consolidating legacy account-binding files into committed `accounts.md`, but execution requires explicit human approval.
 
 ## Recommended Repo Structure

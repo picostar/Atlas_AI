@@ -14,6 +14,17 @@ It gives you:
 - optional compliance and governance review prompt
 - a starter docs scaffold for active work, backlog, status, retro, project docs, reference docs, stack-baseline guidance, and UX-baseline guidance
 
+## AI Agent Fast Path
+
+If you are an AI coding agent using `picostar/Atlas_AI` as a remote source kit, do this before reading the full README:
+
+1. Identify the requested flow from the user's prompt.
+2. For `atlas project` or `newproject`, read `atlas_newproject.md`, then ask the required setup questions before changing files.
+3. For `atlas update`, read `atlas_update.md`, compare the target project to this kit, and produce a plan before changing files.
+4. For `CGR` or `run CGR`, read `.github/prompts/cgr.prompt.md`, bootstrap `docs/cgr/` when needed, and write `docs/cgr/CGR-results.md`.
+5. Treat `picostar/Atlas_AI` as a source kit reference. Work in the current target folder in place, do not clone Atlas_AI into a subfolder, and remove any temporary `atlas_ai` or `Atlas_AI` source-kit folder after setup.
+6. If the requested flow is unclear, read only the `Start Here` and `Short Prompt Cheatsheet` sections below before asking a clarifying question.
+
 ## Start Here
 
 The easiest way to use atlas_ai is prompt-first. Open the target project folder in a repo-aware coding agent, then ask it to use this repository as the source kit. This works best in tools that can read and write your project files and inspect `picostar/Atlas_AI`, such as VS Code with Copilot, Claude Code, Cursor, ChatGPT coding workflows, and similar agents.
@@ -25,10 +36,10 @@ VS Code is not required. If your agent cannot access GitHub directly, give it a 
 Use this when the folder is new or not already Atlas-managed. Existing files are preserved as reference material, and an existing `.git` folder is adopted.
 
 ```text
-Use github picostar/Atlas_AI and run atlas project here.
+Use github picostar/Atlas_AI, read README first, and run atlas project here.
 ```
 
-Interpretation: use `picostar/Atlas_AI` as a source kit reference and bootstrap the current folder in place. Do not clone Atlas_AI into a `newproject` subfolder unless you explicitly want a clone.
+Interpretation: use `picostar/Atlas_AI` as a source kit reference and bootstrap the current folder in place. Do not clone Atlas_AI into a `newproject` subfolder.
 
 Equivalent short form:
 
@@ -38,12 +49,15 @@ newproject
 
 The agent should use `atlas_newproject.md`, ask explicit setup questions first (scaffold, git init, PS, CGR, stack, UX, API-first when stack is selected, GitHub repo), preserve existing user files under `docs/reference/preexisting-root/`, install the selected Atlas files into the current target folder, remove any temporary local source-kit folder such as `atlas_ai` or `Atlas_AI`, and initialize or adopt git.
 
+The setup questionnaire should present stack and UX templates as numbered choices, not ask for a freeform template filename. If a stack pattern is selected, include an API-first yes or no question and state that API-first expects API results when feasible plus endpoint and OpenAPI or Swagger verification in smoketests when feasible.
+
+
 ### CGR From Marketing Or Source Files
 
 Use this when you have a new folder with marketing copy, website text, product notes, sales material, specs, discovery notes, or similar source files and want governance artifacts created from them.
 
 ```text
-Use github picostar/Atlas_AI and run CGR here
+Use github picostar/Atlas_AI, read README first, and run CGR here
 ```
 
 The agent should use `.github/prompts/cgr.prompt.md`, create `docs/cgr/` if it does not exist, draft MRD, PRD, and ESD artifacts from the available source files, then write `docs/cgr/CGR-results.md`. It does not need to install the full Atlas kit first.
@@ -53,7 +67,7 @@ The agent should use `.github/prompts/cgr.prompt.md`, create `docs/cgr/` if it d
 Use this when the project already has older Atlas files and needs to be brought up to date.
 
 ```text
-Use github picostar/Atlas_AI and run atlas update here
+Use github picostar/Atlas_AI, read README first, and run atlas update here
 ```
 
 The agent should use `atlas_update.md`, compare the older project against the current kit, and produce a plan before making changes. It should not move, rewrite, delete, or migrate files until you approve the plan.
@@ -63,6 +77,16 @@ The agent should use `atlas_update.md`, compare the older project against the cu
 - New or not Atlas-managed yet: `atlas project` or `newproject`.
 - New folder with marketing or product source files and you want governance docs: `CGR`.
 - Older Atlas-managed project: `atlas update`.
+
+### Short Prompt Cheatsheet
+
+Use these short prompts when the agent has no prior Atlas context:
+
+```text
+Use github picostar/Atlas_AI as source kit, read README first, then run atlas project here in place, no clone.
+Use github picostar/Atlas_AI as source kit, read README first, then run atlas update here.
+Use github picostar/Atlas_AI as source kit, read README first, then run CGR here.
+```
 
 ## What atlas_ai Solves
 
@@ -153,16 +177,15 @@ The startup check-in reviews current state, active devcycle work, and obvious bl
 - `atlas_newproject.md` -- standalone root-level guided new-project bootstrap prompt, kept outside the installed prompt catalog so users can copy it into a target project or say `newproject`
 - `atlas_update.md` -- standalone root-level guided legacy atlas update planning prompt, kept outside the installed prompt catalog so users can copy it and say `atlas update` in existing projects
 
-### Installer
-- `atlas_ai.ps1` -- copies kit files into the target repository root
-- `.gitignore` -- default ignore patterns, copied to the target when `-InitGit` is used
+### Prompt-First Setup Support
+- `.gitignore` -- default ignore patterns for installed projects
 
 ### Startup seed file
 - `seed.md` -- optional lightweight startup note for new project setup runs. A single plain-language sentence is enough, for example: "I want to create a web app that gets the weather where I click on a map."
 - `accounts.md` -- committed non-secret cloud account and deployment destination binding. Keep credentials, keys, tokens, and secrets out of this file.
 - `secrets.md` -- local-only secrets note file stored at repo root and ignored by git. Keep credentials and keys here, not in committed files.
 
-This `README.md` is for the kit itself. It is not copied into the target repository by the installer.
+This `README.md` is for the kit itself. Use it as the first document an agent reads when using `picostar/Atlas_AI` as a remote source kit.
 
 ### Scaffold
 - `docs/agile/devcycle.md` -- active burn-down list
@@ -180,7 +203,7 @@ This `README.md` is for the kit itself. It is not copied into the target reposit
 - `scripts/README.md` -- scripts guidance
 - `archive/README.md` -- archive guidance
 
-### Skills (installed with -IncludeSkills)
+### Skills
 - `.github/skills/azure-deploy/SKILL.md` -- Azure Functions and SWA deployment procedures
 - `.github/skills/devcycle-management/SKILL.md` -- DT/RDT task lifecycle, retro logging, CU scoring
 - `.github/skills/project-setup/SKILL.md` -- new project setup and repo bootstrapping
@@ -196,7 +219,7 @@ If a repository has an agreed architecture, hosting, deployment, infrastructure,
 
 When that file exists, the atlas_ai instruction stack reads it before stack-sensitive work so architecture changes stay consistent with the repo's approved baseline.
 
-`NewProject.bat` now prompts for a stack pattern choice during setup. You can choose a template or none.
+Prompt-driven newproject asks for stack pattern selection as numbered choices.
 If a template is selected, setup creates `patterns/stack-patterns/active-stack-pattern.md` from that template.
 
 ### UX pattern support
@@ -205,18 +228,18 @@ If a repository has an agreed layout and navigation baseline, capture it in `pat
 
 When that file exists, the atlas_ai instruction stack reads it before UX-sensitive work so generated UI and page structure stay consistent with the repo's approved baseline.
 
-`NewProject.bat` now prompts for a UX pattern choice during setup. You can choose a template or none.
+Prompt-driven newproject asks for UX pattern selection as numbered choices.
 If a template is selected, setup creates `patterns/ux-patterns/active-ux-pattern.md` from that template.
 
 ### API-first policy support
 
-`NewProject.bat` prompts for API-first posture only when a stack pattern is selected, and uses Yes as the default.
+Prompt-driven newproject asks for API-first posture only when a stack pattern is selected, and uses Yes as the default.
 
-When a stack pattern is selected, the installer records the selected API-first posture in `patterns/stack-patterns/active-stack-pattern.md`.
+When a stack pattern is selected, prompt-driven setup records the selected API-first posture in `patterns/stack-patterns/active-stack-pattern.md`.
 
 When API-first mode is enabled in the active stack pattern, each DT or RDT should produce an API result when feasible, and smoketests should verify API endpoints plus OpenAPI or Swagger docs when feasible. When disabled, API work is still allowed when the task calls for it, but ATLAS closeout should not require API-first results by default.
 
-### Project document templates (installed with -IncludePS or -IncludeCGR)
+### Project document templates
 - `docs/cgr/MRD_TEMPLATE.md` -- market or business requirements template
 - `docs/cgr/PRD_TEMPLATE.md` -- product requirements template
 - `docs/cgr/ESD_TEMPLATE.md` -- engineering design template
@@ -246,192 +269,60 @@ Why this matters:
 
 ### Quick Start -- Point a project at atlas_ai
 
-The simplest way to start a new project with atlas_ai is to copy or clone it into your project folder, then tell your AI coding agent to set it up. This works in VS Code with Copilot, Claude Code, ChatGPT-oriented workflows, or any Codex-style agent.
+The simplest way to start a new project with atlas_ai is to open the target project folder in a repo-aware coding agent and point it at `picostar/Atlas_AI` as the source kit. The agent should read this README first, use the relevant prompt from the source kit, and modify the current project in place.
 
-**Step 1:** Copy the `atlas_ai` folder into your project root. You can clone it, copy it, or drop it in manually. Your project should look like this:
-
-```
-my-project/
-  atlas_ai/          <-- the kit
-```
-
-If the project root already contains user files, atlas_ai preserves them by moving them into `docs/reference/preexisting-root/` during install. If `.git` already exists, atlas_ai adopts that repository instead of reinitializing it.
-
-**Step 2:** Open the project in VS Code (or your editor with an AI agent). Then use one of these prompts.
-
-#### Basic setup (most projects, POC, internal tools)
+For most new projects, use:
 
 ```text
-Use `atlas_newproject.md` from the atlas_ai kit.
-
-Bootstrap this project with the core atlas_ai workflow only.
-Preserve pre-existing user files under `docs/reference/preexisting-root/`.
-Adopt `.git` if it already exists, otherwise initialize git.
-Summarize what was installed.
+Use github picostar/Atlas_AI as source kit, read README first, then run atlas project here in place, no clone.
 ```
 
-This installs the core workflow, AI instruction files, and docs scaffold. No release stages, no governance review. Good for POC work, internal tools, and exploratory development.
+Prompt-driven setup asks before changing files. It should ask whether to include the docs scaffold, initialize git when needed, include PS, include CGR, select a stack pattern, select a UX pattern, enable API-first when a stack pattern is selected, and create a GitHub repo. It should present stack and UX templates as numbered menus.
 
-#### Setup with formal release stages (optional)
+If the project root already contains user files, setup preserves them by moving them into `docs/reference/preexisting-root/`. If `.git` already exists, setup adopts that repository instead of reinitializing it. If a temporary `atlas_ai` or `Atlas_AI` source-kit folder exists in the target project, remove that temporary folder after the selected files are installed.
 
-If the project needs EVT/DVT/PVT/GA release gates and MRD/PRD/ESD document requirements, add `-IncludePS` to the install step:
+### CGR From Remote Source Kit
+
+For a new folder that already contains marketing copy, website text, product notes, sales material, specs, discovery notes, or similar source material, run CGR directly from the remote source kit:
 
 ```text
-Use `atlas_newproject.md` from the atlas_ai kit.
-
-Bootstrap this project with atlas_ai and include formal release stages.
-Preserve pre-existing user files under `docs/reference/preexisting-root/`.
-Adopt `.git` if it already exists, otherwise initialize git.
-Summarize what was installed.
+Use github picostar/Atlas_AI as source kit, read README first, then run CGR here.
 ```
 
-#### Setup with governance review (optional)
+The agent should use `.github/prompts/cgr.prompt.md`, create `docs/cgr/` when needed, bootstrap draft MRD, PRD, and ESD artifacts from available source files, and write `docs/cgr/CGR-results.md`. Installing the full Atlas kit is not required before this CGR path.
 
-If the project needs compliance and governance review (CGR), add `-IncludeCGR`. CGR works independently -- you can use it with or without PS:
+### Adding PS Or CGR Later
 
-```text
-Use `atlas_newproject.md` from the atlas_ai kit.
-
-Bootstrap this project with atlas_ai and include CGR.
-Preserve pre-existing user files under `docs/reference/preexisting-root/`.
-Adopt `.git` if it already exists, otherwise initialize git.
-Summarize what was installed.
-```
-
-#### Setup with both PS and CGR (optional)
-
-If the project needs both project stages and governance review:
+You can start with core setup and add project stages or governance review later by pointing the agent at the source kit and naming the artifact to add:
 
 ```text
-Use `atlas_newproject.md` from the atlas_ai kit.
-
-Bootstrap this project with atlas_ai and include both PS and CGR.
-Preserve pre-existing user files under `docs/reference/preexisting-root/`.
-Adopt `.git` if it already exists, otherwise initialize git.
-Summarize what was installed.
-```
-
-#### Adding release stages or CGR later
-
-You can start with the basic setup and add `docs/cgr/PS.md` or `.github/prompts/cgr.prompt.md` later at any time:
-
-```text
-atlas_ai
-
-Add project stages to this project. Install docs/cgr/PS.md from the atlas_ai kit.
+Use github picostar/Atlas_AI as source kit, read README first, then add docs/cgr/PS.md to this project.
 ```
 
 ```text
-atlas_ai
-
-Add governance review to this project. Install .github/prompts/cgr.prompt.md from the atlas_ai kit.
+Use github picostar/Atlas_AI as source kit, read README first, then add .github/prompts/cgr.prompt.md to this project.
 ```
-
-#### Adding git and GitHub to any setup
-
-Add `-InitGit` to any install step above to initialize a git repository with a `.gitignore` and an initial commit. Add `-GitHubRepo "repo-name"` to also create a GitHub repository and push. Use `-GitHubOwner "account-or-org"` to specify which GitHub account or organization the repo is created under. Defaults to private -- add `-Public` for a public repo. If the GitHub CLI is not authenticated, the script will launch `gh auth login` automatically. Examples:
-
-- `-IncludeScaffold -InitGit` -- scaffold plus git init
-- `-IncludeScaffold -IncludePS -InitGit -GitHubRepo "my-project" -GitHubOwner "myusername"` -- scaffold, PS, git, private GitHub repo under a specific account
-- `-IncludeScaffold -IncludeCGR -InitGit -GitHubRepo "my-project" -GitHubOwner "my-org" -Public` -- scaffold, CGR, git, public GitHub repo under an org
-
-Requires `git` on PATH. For `-GitHubRepo`, install the [GitHub CLI](https://cli.github.com/). Login is handled automatically if needed.
 
 ### Existing repo updates
 
-Do not use `atlas_ai.ps1` or `NewProject.bat` to update an existing Atlas-managed repository. Those entry points are for first-time bootstrap. They can preserve pre-existing user source material by moving it into `docs/reference/preexisting-root/`, but they should not be used for legacy Atlas upgrades. For legacy Atlas projects, run or copy `atlas_update.md` from the kit and use it as a plan-first prompt. The prompt compares the target against the public `picostar/Atlas_AI` source of truth and stops before making edits until a human approves the plan.
+Do not use legacy bootstrap mechanisms to update an existing Atlas-managed repository. For legacy Atlas projects, run or copy `atlas_update.md` from the kit and use it as a plan-first prompt. The prompt compares the target against the public `picostar/Atlas_AI` source of truth and stops before making edits until a human approves the plan.
 
 If a legacy account-binding file exists, the update plan should consolidate non-secret provider binding into committed `accounts.md` after approval. Do not keep multiple active account sources.
 
-Add `-IncludePS` and/or `-IncludeCGR` to the install step if the project needs project stages or governance review.
-
-### Manual setup (no agent)
-
-If you do not want to use the standalone new-project prompt, run the installer directly:
-
-```powershell
-# Script equivalent of the prompt-first newproject workflow
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -InitGit
-
-# Basic -- core workflow and scaffold only
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold
-
-# Include scaffold with a stack pattern and API-first posture explicitly enabled
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -StackPattern "sp-01-functions-tables-swa-keyvault.md" -ApiFirst
-
-# Include scaffold with a stack pattern and API-first posture explicitly disabled
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -StackPattern "sp-01-functions-tables-swa-keyvault.md" -NoApiFirst
-
-# Add project stages
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -IncludePS
-
-# Add governance review
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -IncludeCGR
-
-# Everything
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -IncludePS -IncludeCGR
-
-# Include scaffold and set active stack pattern from template by filename
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -StackPattern "sp-01-functions-tables-swa-keyvault.md"
-
-# Include scaffold and set active stack pattern using full template-relative path
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -StackPattern "patterns/stack-patterns/stack-pattern-templates/sp-02-functions-tables-sqlserverless-swa-keyvault.md"
-
-# Include scaffold and set active UX pattern from template by filename
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -UxPattern "uxp-01-modern-app-shell-layout.md"
-
-# Include scaffold and set active UX pattern using full template-relative path
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -UxPattern "patterns/ux-patterns/ux-pattern-templates/uxp-01-modern-app-shell-layout.md"
-
-# Initialize git repo with .gitignore and initial commit
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -InitGit
-
-# Initialize git and create a private GitHub repo under a specific account
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -InitGit -GitHubRepo "my-project" -GitHubOwner "myusername"
-
-# Initialize git and create a public GitHub repo under an org
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -InitGit -GitHubRepo "my-project" -GitHubOwner "my-org" -Public
-
-# Everything -- scaffold, PS, CGR, git, and GitHub
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -IncludePS -IncludeCGR -InitGit -GitHubRepo "my-project" -GitHubOwner "myusername"
-
-# Preview without copying
-pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -IncludePS -IncludeCGR -InitGit -WhatIf
-
-```
-
-Chat shortcut: in AI chat, you can say `newproject` or `atlas project` and the agent should prefer the standalone `atlas_newproject.md` workflow. Use the script commands above as manual or fallback setup paths.
-
-`-StackPattern` accepts a stack pattern template filename or template-relative path and sets `patterns/stack-patterns/active-stack-pattern.md` from that template. `-UxPattern` accepts a UX pattern template filename or template-relative path and sets `patterns/ux-patterns/active-ux-pattern.md` from that template. `-InitGit` copies the `.gitignore` from the kit, runs `git init` if needed, and makes an initial commit with project artifacts only. When setup is run from a local source-kit folder inside the target root, the installer treats that folder as temporary bootstrap input and removes it after install. `-GitHubRepo` creates a GitHub repository using the `gh` CLI. Use `-GitHubOwner` to specify the GitHub account or org. If not logged in, the script runs `gh auth login` automatically. `-GitHubRepo` implies `-InitGit`.
-
-Prerequisites: `git` must be on PATH. For `-GitHubRepo`, install the [GitHub CLI](https://cli.github.com/). Login is handled automatically if needed.
-
 ### One-time layout migration (legacy repos)
 
-If an existing repo still uses legacy paths (`docs/projects/` and `docs/reference/*-patterns`), run the migration from a disposable git worktree, not the live checkout:
-
-```powershell
-pwsh -File .\scripts\migrate-layout-v2.ps1 -RepoRoot . -WhatIf
-```
-
-After the guided update plan and preview are approved, run the real migration with explicit approval:
-
-```powershell
-pwsh -File .\scripts\migrate-layout-v2.ps1 -RepoRoot . -Approved
-```
-
-This migration is idempotent and safe to re-run, but it still moves files and rewrites references. The script refuses to run real changes unless `-Approved` is provided. Preview first and use a disposable git worktree for the real migration.
+If an existing repo still uses legacy paths (`docs/projects/` and `docs/reference/*-patterns`), use the guided update plan first and perform migration only after explicit approval.
 
 ### Guided update for older atlas projects
 
-Older atlas projects should be updated with the root prompt `atlas_update.md`, not with a hard updater script.
+Older atlas projects should be updated with the root prompt `atlas_update.md` as a plan-first review, not with automatic file migration.
 
-Run `atlas_update.md` from the kit, copy it into the legacy project, or paste its prompt into the agent while the legacy project is open in VS Code. You can also say `atlas update` after copying it into the legacy project root. The prompt is standalone: it sends the agent to `picostar/Atlas_AI` as the source of truth, then asks for update suggestions as a plan. The first pass is plan-only and must stop for human review before any file changes.
+Ask the agent to use `picostar/Atlas_AI` as the source kit and run `atlas_update.md` against the open legacy project. If the agent cannot access GitHub directly, copy `atlas_update.md` into the legacy project root or paste its prompt into the agent while the legacy project is open. The prompt is standalone: it sends the agent to `picostar/Atlas_AI` as the source of truth, then asks for update suggestions as a plan. The first pass is plan-only and must stop for human review before any file changes.
 
 Use this flow:
 1. Open the legacy project in VS Code.
-2. Run `atlas_update.md`, copy it into the legacy project root, or paste it into the agent as the update prompt.
-3. Give the agent access to the current Atlas_AI kit, preferably the public `picostar/Atlas_AI` repository or a local checkout of this repo.
+2. Ask the agent to use `picostar/Atlas_AI` as source kit, read README first, and run `atlas update`.
+3. If remote repository access is unavailable, give the agent a local checkout of this repo or paste `atlas_update.md` into the session.
 4. Let the agent compare the legacy project against the Atlas_AI source of truth.
 5. Review the proposed update plan before files are moved, renamed, deleted, rewritten, or generated.
 6. Answer any questions about legacy layout paths, account binding, pattern folders, and local project-specific files.
@@ -446,15 +337,12 @@ The guided update flow is designed to catch project-specific decisions before ed
 
 The planning pass should not modify the legacy project. It should produce file-by-file recommendations, questions, and a proposed validation checklist for human approval.
 
-The migration script `scripts/migrate-layout-v2.ps1` remains available as an optional manual utility, but it should only be used after the guided update plan confirms that the layout migration is wanted.
-
 Placement guidance:
-- `atlas_ai.ps1` stays at the kit root because setup flows and docs call it there.
 - `atlas_newproject.md` is the recommended new-project bootstrap workflow.
 - `atlas_update.md` is the recommended legacy update workflow.
-- `scripts/migrate-layout-v2.ps1` is a reusable optional migration utility and should remain in `scripts/`.
+- `scripts/` is a reusable optional utility folder.
 
-Or manually copy the files you want from `atlas_ai/` to the repository root:
+If the agent cannot perform setup from the remote source kit, manually copy only the files you want from `atlas_ai/` to the repository root:
 - `.github/copilot-instructions.md` -- always
 - `.github/prompts/atlas-realign.prompt.md` -- recommended
 - `.github/prompts/atlas-closeout.prompt.md` -- recommended
@@ -474,37 +362,7 @@ Or manually copy the files you want from `atlas_ai/` to the repository root:
 
 ## Symlink and Cleanup
 
-### Using a symlink or junction instead of copying
-
-You can keep one master copy of atlas_ai and link it into any project instead of copying the folder each time:
-
-```powershell
-# From your project root
-New-Item -ItemType SymbolicLink -Path .\atlas_ai -Target "C:\path\to\your\master\atlas_ai"
-```
-
-If symbolic links are restricted on your machine, a junction also works:
-
-```powershell
-# From your project root
-New-Item -ItemType Junction -Path .\atlas_ai -Target "C:\path\to\your\master\atlas_ai"
-```
-
-The installer resolves paths through symlinks and junctions, so it works the same as a real copy. Files get installed into the project root, not into the link target.
-
-### Deleting atlas_ai after install
-
-The installer copies all selected files out of `atlas_ai/` into the repository root. After that, the `atlas_ai/` folder is no longer needed for the project to function.
-
-`NewProject.bat` treats `atlas_ai/` as a one-shot seed. During git initialization, the seed path is excluded from staging so commits contain only installed project artifacts.
-
-After a successful run, it schedules removal of the seed path it ran from, unless that seed path is currently tracked by git.
-
-If startup-oriented files were moved into `docs/reference`, decide whether to generate the initial `docs/agile/devcycle.md` from those reference files only after seed cleanup is complete.
-
-If that path is a symlink or junction, only the link is removed. The master atlas_ai folder that the link points to is left untouched.
-
-If you want to keep the seed folder or link around so you can re-run installs later, use `atlas_ai.ps1` directly instead of `NewProject.bat`.
+Prompt-first setup does not require script execution or persistent seed folders. If you copied this kit into a target project as bootstrap input, keep only the installed project artifacts and remove temporary source-kit folders after install.
 
 ## Auto-Loading Notes
 
@@ -522,7 +380,7 @@ Many Codex-style tools and repo agents check `AGENTS.md` in the repository root.
 
 ### ChatGPT
 
-ChatGPT-oriented workflows can use `CHATGPT.md` as a thin pointer to the source of truth and `ATLAS.md`. Because ChatGPT is commonly used for coding workflows, the installer copies `CHATGPT.md` by default.
+ChatGPT-oriented workflows can use `CHATGPT.md` as a thin pointer to the source of truth and `ATLAS.md`. Prompt-driven setup includes `CHATGPT.md` by default.
 
 ### Optional hosted LLMs
 
@@ -592,7 +450,7 @@ Project-specific values belong in:
 
 ## Suggested New Repo Setup
 
-After installing the kit into a new repository:
+After prompt-driven setup installs the selected kit files into a new repository:
 
 1. Create or update `.gitignore` to ignore local config overrides, `.env`, secrets, and `archive/` if desired.
 2. Create the initial `devcycle.md` items for the first build phase.
@@ -612,7 +470,7 @@ After installing the kit into a new repository:
 
 ## Maintenance
 
-If you improve the process, update these files in this kit folder first, then copy or reinstall them into target repositories.
+If you improve the process, update these files in this kit folder first, then apply the updated prompt-first flow to target repositories.
 
 ## Glossary
 
