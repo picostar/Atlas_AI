@@ -10,7 +10,19 @@ A modern app shell for enterprise portals, SaaS applications, dashboards, admin 
 This pattern provides clear navigation, strong page context, visible status, and a focused work area.
 
 ## Preferred Description
-Modern app shell layout with persistent left navigation, top utility bar, breadcrumb context, and a clear page header.
+Desktop-first app shell optimized for findability and scale: visible left-side text-labeled navigation, top utility bar for global tools, breadcrumb context above a clear page header, and responsive behavior that preserves orientation and action clarity.
+
+## Evidence-Informed Rules (Vertical Navigation)
+Use these rules when this pattern is selected:
+- Keep primary navigation visible on desktop. Do not hide global navigation behind a hamburger menu on desktop.
+- Place global navigation on the left for left-to-right languages. For right-to-left languages, mirror this placement.
+- Use text labels for primary navigation items. Do not rely on icon-only global navigation.
+- Front-load labels with meaningful keywords and keep labels specific, not overly generic.
+- Keep labels left-aligned in the navigation list to improve scan speed.
+- Do not duplicate the same global menu in both a horizontal bar and a vertical sidebar.
+- Prioritize high-value sections near the top of long menus so key destinations remain above the fold more often.
+- Keep strong visual contrast between navigation and content so the navigation is easy to notice.
+- Accept that vertical navigation uses space, then control width and spacing to keep a healthy content area.
 
 ## Preferred Structure
 1. Left sidebar for primary navigation
@@ -51,6 +63,9 @@ Guidance:
 - Keep the sidebar focused on major areas.
 - Avoid giant nested navigation trees.
 - Keep record-specific pages, deep workflow steps, and detailed settings in page content, tabs, breadcrumbs, or contextual menus.
+- Use clear text labels with high information scent.
+- Keep one active location clearly highlighted at all times.
+- Keep the default desktop state expanded enough to read labels without hover.
 
 ## Top Bar
 Use the top bar for global tools and utilities.
@@ -69,6 +84,7 @@ Examples:
 Guidance:
 - Do not overload the top bar with page-specific actions.
 - Place page-specific actions in the page header or nearby content region.
+- Do not duplicate primary navigation in the top bar.
 
 ## Breadcrumbs
 Place breadcrumbs above the page title.
@@ -83,6 +99,7 @@ Home > Customers > Acme Corp > Services > Starlink Monitoring
 Guidance:
 - Use breadcrumbs for nested accounts, products, services, configs, workflows, and admin areas.
 - Breadcrumbs provide context, they do not replace primary navigation.
+- Keep breadcrumbs directly above the page title, not separated in a distant region.
 
 ## Page Header
 Every major page should include a clear page header.
@@ -134,7 +151,7 @@ The layout must remain usable on smaller screens.
 
 Recommended behavior:
 - Desktop: sidebar visible
-- Tablet: sidebar may collapse to icons
+- Tablet: sidebar may collapse to a narrower rail, but navigation labels remain easy to reveal and scan
 - Mobile: sidebar becomes a drawer or menu button
 - Breadcrumbs may shorten or collapse on mobile
 - Page title remains visible
@@ -144,6 +161,7 @@ Recommended behavior:
 Guidance:
 - Do not remove navigation on small screens.
 - Keep navigation compact, accessible, and predictable.
+- On desktop, do not replace visible navigation with a hidden hamburger-only global nav.
 
 ## Best Fit
 - Enterprise portals
@@ -184,6 +202,24 @@ The AI should:
 - Use responsive behavior for tablet and mobile
 - Avoid excessive sidebar nesting
 - Avoid hiding important context or actions
+- Keep desktop global navigation visible and text-labeled
+- Avoid duplicate global navigation patterns
+
+## Strong Pattern Prompt (Use This)
+Use this exact prompt when you want high-quality implementation:
+
+Use a desktop-first modern app shell optimized for findability and scale. Implement a visible left sidebar for global navigation with text-labeled, keyword-frontloaded, left-aligned items. Do not use icon-only primary navigation. Do not duplicate global navigation in both a horizontal bar and a vertical sidebar. Keep the top bar for global utilities only (search, alerts, help, account, global actions). Place breadcrumbs directly above a clear page header with title, status, and one visible primary action. Keep page-specific actions in the header or content area, not in global chrome. Ensure responsive behavior: desktop keeps visible sidebar, tablet can reduce sidebar width while preserving label discoverability, and mobile can use a drawer with clear access. Preserve orientation so users can quickly identify where they are, what they are viewing, current status, and next action.
+
+## Acceptance Checklist
+Use this checklist to validate generated UI:
+- Global navigation is visible on desktop and placed on the left for left-to-right languages.
+- Primary navigation uses clear text labels, not icon-only categories.
+- Navigation labels are specific and scannable, with active state clearly shown.
+- Top bar contains only global utilities and does not duplicate global navigation.
+- Breadcrumbs appear directly above the page title.
+- Page header includes title, status context where relevant, and one primary action.
+- Main content is visually separated from global chrome and focused on the task.
+- Responsive behavior preserves navigation discoverability and action clarity.
 
 Example prompt instruction:
 Use a modern app shell layout with persistent left navigation, a top utility bar, breadcrumb context above the page title, and a clear page header with status and primary action. Keep the sidebar focused on primary navigation. Do not create a giant nested menu. Make the layout responsive so the sidebar collapses on smaller screens.

@@ -10,6 +10,18 @@ Use these templates to accelerate UX decisions and keep layout reviews consisten
   - Modern app shell with persistent left navigation and top utility bar.
   - Uses breadcrumb context plus a clear page header with status and primary action.
   - Best for enterprise portals, SaaS dashboards, and workflow-heavy admin tools.
+- [uxp-02-b2b-marketing-website-journey.md](uxp-02-b2b-marketing-website-journey.md)
+  - Narrative-first B2B website pattern for clear positioning, proof, and conversion.
+  - Uses sticky top navigation, strong hero messaging, trust signals, and structured section flow.
+  - Best for AI product sites, SaaS websites, venture studios, and platform marketing pages.
+- [uxp-03-mobile-first-touch-app-flow.md](uxp-03-mobile-first-touch-app-flow.md)
+  - Mobile-first app pattern for touch-friendly, readable, low-friction task flows.
+  - Uses large labeled controls, no-dropdown interaction for common choices, and orientation-safe behavior.
+  - Best for mobile apps built with web stacks (HTML/CSS/TS) or React Native.
+- [uxp-04-monitoring-and-incident-response-console.md](uxp-04-monitoring-and-incident-response-console.md)
+  - Operations console pattern for triage, diagnosis, and response.
+  - Uses severity-first signal hierarchy, incident queue, context timeline, and explicit action controls.
+  - Best for SRE, security, support escalation, and production monitoring workflows.
 
 ## Standard workflow
 1. Pick the closest template.

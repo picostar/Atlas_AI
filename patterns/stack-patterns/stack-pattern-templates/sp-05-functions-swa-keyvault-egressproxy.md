@@ -56,8 +56,8 @@ swa/
   index.html
   openapi.json               # only live routes, kept in sync with code
 scripts/
-  smoketest-auth
-  provision-egress-proxy
+  smoketest-auth.ps1
+  provision-egress-proxy.ps1
 ```
 
 ## Reference Flow

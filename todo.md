@@ -49,6 +49,29 @@ These are project-specific but the kit should ship guidance for creating them.
 - [ ] Add branching decision tree to git-workflow.
 - [ ] Standardize "When to Use" section format across all skills.
 
+## P6 -- Medium: Review New UX Patterns
+
+Reference patterns to evaluate for future end-to-end UXP templates.
+
+| Modern pattern | Use it when | Example links |
+| --- | --- | --- |
+| App shell: top bar + left panel | Best default for enterprise apps, dashboards, admin portals, NOC/COPS tools, and service portals | IBM Carbon UI Shell, which combines header, left panel, and right panel patterns |
+| Collapsible sidebar with grouped sections | You still want vertical nav, but with modern behavior: collapse, mobile drawer, workspace switcher, grouped nav, and footer account area | shadcn/ui Sidebar and Tailwind sidebar layouts |
+| Sidebar + breadcrumb + page title | Best for deep workflows where the user must know where they are and what record they are viewing | shadcn sidebar block includes sidebar, breadcrumb, trigger, and main content layout |
+| Navigation rail | Good for mid-size screens or apps with only 3 to 7 major destinations; cleaner than a full sidebar, but less descriptive | Material Design navigation rail |
+| Navigation drawer | Good when the nav is needed but not always visible; more common on tablet, mobile, or responsive apps | Material Design navigation drawer |
+| Top navigation with dropdowns or mega menus | Better for marketing sites, product sites, corporate websites, and shallow IA | Radix Navigation Menu for implementation, and NN/G mega-menu guidance for large site navigation |
+| Top nav + utility bar | Good when the top bar carries global utilities: search, account, alerts, help, app switcher | Carbon recommends header utilities such as profile, search, notifications, and switcher on the right side of the header |
+| Breadcrumbs as secondary navigation | Use for hierarchy, records, workflows, folders, customers, projects, orders, tickets | Fluent says breadcrumbs help people understand complex hierarchy, but should not be used alone |
+| Tabs for local page sections | Use inside a page or record: Overview, Activity, Billing, Settings, Logs, Attachments | Fluent tabs define layered sections where one panel is shown at a time |
+| Command palette or global search | Good for power users, dense apps, developer tools, admin portals, and jump to customer/order/ticket/action flows | shadcn Command and cmdk command menu examples |
+| Recent, starred, or workspace switcher navigation | Good for Jira-style, project-style, multi-tenant, or customer/account-heavy apps | Atlassian's 2024 navigation redesign emphasized customization, frequent items, Starred, and Recent |
+| List/detail navigation | Good when users move through many child records: inboxes, tickets, contacts, orders, devices, assets | Microsoft's navigation guidance calls list/details well suited for email inboxes, contact lists, and data entry |
+
+- [ ] Select which patterns should become first-class UXP templates.
+- [ ] Map selected patterns to current UXP coverage to avoid overlap.
+- [ ] Record rationale in Review History when a new UXP is added.
+
 ## Resolved
 
 
