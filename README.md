@@ -14,6 +14,56 @@ It gives you:
 - optional compliance and governance review prompt
 - a starter docs scaffold for active work, backlog, status, retro, project docs, reference docs, stack-baseline guidance, and UX-baseline guidance
 
+## Start Here
+
+The easiest way to use atlas_ai is prompt-first. Open the target project folder in a repo-aware coding agent, then ask it to use this repository as the source kit. This works best in tools that can read and write your project files and inspect `picostar/Atlas_AI`, such as VS Code with Copilot, Claude Code, Cursor, ChatGPT coding workflows, and similar agents.
+
+VS Code is not required. If your agent cannot access GitHub directly, give it a local path to an Atlas_AI checkout or copy the relevant standalone prompt into the target project.
+
+### New Project Setup
+
+Use this when the folder is new or not already Atlas-managed. Existing files are preserved as reference material, and an existing `.git` folder is adopted.
+
+```text
+Use github picostar/Atlas_AI and run atlas project here.
+```
+
+Interpretation: use `picostar/Atlas_AI` as a source kit reference and bootstrap the current folder in place. Do not clone Atlas_AI into a `newproject` subfolder unless you explicitly want a clone.
+
+Equivalent short form:
+
+```text
+newproject
+```
+
+The agent should use `atlas_newproject.md`, ask explicit setup questions first (scaffold, git init, PS, CGR, stack, UX, API-first when stack is selected, GitHub repo), preserve existing user files under `docs/reference/preexisting-root/`, install the selected Atlas files into the current target folder, remove any temporary local source-kit folder such as `atlas_ai` or `Atlas_AI`, and initialize or adopt git.
+
+### CGR From Marketing Or Source Files
+
+Use this when you have a new folder with marketing copy, website text, product notes, sales material, specs, discovery notes, or similar source files and want governance artifacts created from them.
+
+```text
+Use github picostar/Atlas_AI and run CGR here
+```
+
+The agent should use `.github/prompts/cgr.prompt.md`, create `docs/cgr/` if it does not exist, draft MRD, PRD, and ESD artifacts from the available source files, then write `docs/cgr/CGR-results.md`. It does not need to install the full Atlas kit first.
+
+### Older Atlas Project Update
+
+Use this when the project already has older Atlas files and needs to be brought up to date.
+
+```text
+Use github picostar/Atlas_AI and run atlas update here
+```
+
+The agent should use `atlas_update.md`, compare the older project against the current kit, and produce a plan before making changes. It should not move, rewrite, delete, or migrate files until you approve the plan.
+
+### Quick Rule
+
+- New or not Atlas-managed yet: `atlas project` or `newproject`.
+- New folder with marketing or product source files and you want governance docs: `CGR`.
+- Older Atlas-managed project: `atlas update`.
+
 ## What atlas_ai Solves
 
 The main problem with reusable instruction folders is that most AI tools do not reliably auto-load nested files. They usually look at the repository root.
@@ -68,8 +118,8 @@ Use these short chat phrases when you want the agent to run the standard ATLAS f
 
 - `atlas` -- run the startup project check-in flow.
 - `hi`, `hello`, `good morning`, `goodmorning`, or `ready to start` -- also run the startup project check-in flow.
-- `CGR` or `run CGR` -- run the governance workflow from `.github/prompts/cgr.prompt.md` and write `docs/cgr/CGR-results.md`.
-- `newproject` -- run the standalone new-project bootstrap prompt, preserving pre-existing user material under `docs/reference/` and adopting `.git` when present.
+- `CGR` or `run CGR` -- run the governance workflow from `.github/prompts/cgr.prompt.md`, bootstrapping `docs/cgr/` from seed, reference, or project source files when needed, and write `docs/cgr/CGR-results.md`.
+- `newproject` or `atlas project` -- run the standalone new-project bootstrap prompt, preserving pre-existing user material under `docs/reference/` and adopting `.git` when present.
 - `good night`, `goodnight`, `goodbye`, `that's all`, or `we are done` -- run the end-of-session closeout check.
 
 The startup check-in reviews current state, active devcycle work, and obvious blockers. The closeout check reviews smoketest, UAT, retro, status, commit, and GitHub follow-up readiness before the session ends.
@@ -96,7 +146,7 @@ The startup check-in reviews current state, active devcycle work, and obvious bl
 - `.github/prompts/atlas-realign.prompt.md` -- ATLAS health check and realignment prompt
 - `.github/prompts/atlas-closeout.prompt.md` -- ATLAS closeout readiness prompt
 - `.github/prompts/cgr.prompt.md` -- compliance and governance review workflow
-- `.github/prompts/cgr-seed-to-cgr.prompt.md` -- generate draft MRD PRD ESD from seed and reference material, then run CGR outputs
+- `.github/prompts/cgr-seed-to-cgr.prompt.md` -- generate draft MRD PRD ESD from seed, reference, or project source material, then run CGR outputs
 - `.github/prompts/cgr-iterate.prompt.md` -- iterate and improve governance docs using CGR-results and score
 
 ### Standalone root prompts
@@ -175,11 +225,11 @@ These are bootstrap files only. On the first CGR run, remove `MRD_TEMPLATE.md` a
 
 When a governance review runs, save the output as `docs/cgr/CGR-results.md`.
 
-To run CGR, type `CGR` in AI chat. You can also say `run CGR`. The agent should use `.github/prompts/cgr.prompt.md` and write the review to `docs/cgr/CGR-results.md`.
+To run CGR, type `CGR` in AI chat. You can also say `run CGR`. The agent should use `.github/prompts/cgr.prompt.md` and write the review to `docs/cgr/CGR-results.md`. In a new project folder with marketing files, product notes, sales material, specifications, or other source material but no Atlas docs yet, the agent should create `docs/cgr/` and bootstrap MRD, PRD, ESD, and CGR artifacts there.
 
 Optional scoring extension: teams that want numeric governance tracking can derive a scorecard from `docs/cgr/CGR-results.md` and save it as `docs/cgr/score.md`.
 
-For seeded projects, teams can bootstrap governance drafts from `seed.md` and `docs/reference/` using `.github/prompts/cgr-seed-to-cgr.prompt.md`, then iteratively improve with `.github/prompts/cgr-iterate.prompt.md` using `docs/cgr/CGR-results.md` and `docs/cgr/score.md`. `seed.md` can be as small as a one-line project idea.
+For seeded projects, teams can bootstrap governance drafts from `seed.md`, `docs/reference/`, or source files already in the project folder using `.github/prompts/cgr-seed-to-cgr.prompt.md`, then iteratively improve with `.github/prompts/cgr-iterate.prompt.md` using `docs/cgr/CGR-results.md` and `docs/cgr/score.md`. Source files can include marketing copy, website text, product notes, sales material, specifications, discovery notes, or other text-readable project context. `seed.md` can be as small as a one-line project idea.
 
 ### What CGR Means And Why It Matters
 
@@ -350,9 +400,9 @@ pwsh -File .\atlas_ai\atlas_ai.ps1 -IncludeScaffold -IncludePS -IncludeCGR -Init
 
 ```
 
-Chat shortcut: in AI chat, you can say `newproject` and the agent should prefer the standalone `atlas_newproject.md` workflow. Use the script commands above as manual or fallback setup paths.
+Chat shortcut: in AI chat, you can say `newproject` or `atlas project` and the agent should prefer the standalone `atlas_newproject.md` workflow. Use the script commands above as manual or fallback setup paths.
 
-`-StackPattern` accepts a stack pattern template filename or template-relative path and sets `patterns/stack-patterns/active-stack-pattern.md` from that template. `-UxPattern` accepts a UX pattern template filename or template-relative path and sets `patterns/ux-patterns/active-ux-pattern.md` from that template. `-InitGit` copies the `.gitignore` from the kit, runs `git init` if needed, and makes an initial commit with project artifacts only. `-GitHubRepo` creates a GitHub repository using the `gh` CLI. Use `-GitHubOwner` to specify the GitHub account or org. If not logged in, the script runs `gh auth login` automatically. `-GitHubRepo` implies `-InitGit`.
+`-StackPattern` accepts a stack pattern template filename or template-relative path and sets `patterns/stack-patterns/active-stack-pattern.md` from that template. `-UxPattern` accepts a UX pattern template filename or template-relative path and sets `patterns/ux-patterns/active-ux-pattern.md` from that template. `-InitGit` copies the `.gitignore` from the kit, runs `git init` if needed, and makes an initial commit with project artifacts only. When setup is run from a local source-kit folder inside the target root, the installer treats that folder as temporary bootstrap input and removes it after install. `-GitHubRepo` creates a GitHub repository using the `gh` CLI. Use `-GitHubOwner` to specify the GitHub account or org. If not logged in, the script runs `gh auth login` automatically. `-GitHubRepo` implies `-InitGit`.
 
 Prerequisites: `git` must be on PATH. For `-GitHubRepo`, install the [GitHub CLI](https://cli.github.com/). Login is handled automatically if needed.
 

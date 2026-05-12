@@ -230,7 +230,7 @@ echo  Done. Project is at %TARGET%
 echo  accounts.md was created for non-secret cloud destination details.
 echo  Pre-existing user files were preserved under docs\reference\preexisting-root.
 echo  Existing .git metadata was adopted when present.
-echo  The atlas_ai seed folder was not staged in the initial commit.
-echo  You can remove the seed folder manually after reviewing the generated project.
+echo  Temporary atlas_ai source folders used for local bootstrap are cleaned up automatically.
+echo  The source folder is bootstrap input only and is not staged or committed.
 echo.
 exit /b 0

@@ -1,11 +1,13 @@
 ---
 name: "CGR Bootstrap From Seed"
-description: "Use when MRD, PRD, and ESD drafts are needed from seed and reference inputs, then run CGR and optional scoring outputs."
+description: "Use when MRD, PRD, and ESD drafts are needed from seed, reference, or project source inputs, then run CGR and optional scoring outputs."
 argument-hint: "Optional project name, scope, stage target, or constraints"
 agent: "agent"
 ---
 
 Create or refresh governance drafts from startup inputs, then run CGR review outputs.
+
+This workflow can run in a brand-new project folder that has not installed the full Atlas kit yet. If `docs/cgr/` does not exist, create it in the target project root and write the generated governance artifacts there.
 
 Before asking the user for credentials, tokens, keys, or other secret values, check `secrets.md` at the repository root first if it exists. Do not place secrets in any other file by default. If the user explicitly requests an override, warn about commit and leakage risk first, then proceed only after confirmation.
 
@@ -26,8 +28,10 @@ Perform this workflow in order:
 
 1. Collect source material.
 - Read `seed.md` if present. Treat it as freeform input, not a required template. It may be as short as a single plain-language sentence.
-- Read all relevant materials under `docs/reference/`.
+- Read all relevant materials under `docs/reference/` if it exists.
+- Read relevant source files already in the project root or obvious source-material folders, including marketing copy, website content, product notes, sales notes, pitch decks converted to text or markdown, specifications, discovery notes, customer notes, README files, and other text-readable project context.
 - Read existing live docs in `docs/cgr/` if they exist.
+- Skip `.git`, dependency folders, build output, binaries that cannot be read usefully, secrets, credentials, keys, tokens, and local environment files.
 - Identify missing information explicitly instead of inventing it.
 
 2. Build draft governance docs.
@@ -36,11 +40,11 @@ Perform this workflow in order:
   - `PRD_<PROJECT>_v0-draft.md`
   - `ESD_<PROJECT>_v0-draft.md`
 - Use template structure from `MRD_TEMPLATE.md`, `PRD_TEMPLATE.md`, and `ESD_TEMPLATE.md` when available.
-- Infer what you can from a minimal seed and keep unresolved details as `TBD`.
+- Infer what you can from available seed, reference, and source files. Keep unresolved details as `TBD`.
 - Mark unknowns as `TBD` and list clear open questions.
 
 3. Produce source mapping.
-- Update `docs/cgr/seed-to-docs-mapping.md` to show which seed and reference inputs mapped into each MRD, PRD, and ESD section.
+- Update `docs/cgr/seed-to-docs-mapping.md` to show which seed, reference, and project source inputs mapped into each MRD, PRD, and ESD section.
 - Call out missing source evidence and unresolved assumptions.
 
 4. Run CGR review.

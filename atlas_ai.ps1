@@ -433,6 +433,28 @@ function Remove-InstallerChangesFromIndex {
     }
 }
 
+function Invoke-DeferredFolderCleanup {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$FolderPath
+    )
+
+    if (-not (Test-Path -LiteralPath $FolderPath)) {
+        return $false
+    }
+
+    $hostExecutable = (Get-Process -Id $PID).Path
+    if ([string]::IsNullOrWhiteSpace($hostExecutable) -or -not (Test-Path -LiteralPath $hostExecutable)) {
+        return $false
+    }
+
+    $escapedFolderPath = $FolderPath.Replace("'", "''")
+    $cleanupCommand = "Start-Sleep -Milliseconds 900; if (Test-Path -LiteralPath '$escapedFolderPath') { Remove-Item -LiteralPath '$escapedFolderPath' -Recurse -Force -ErrorAction SilentlyContinue }"
+
+    Start-Process -FilePath $hostExecutable -ArgumentList @('-NoProfile', '-Command', $cleanupCommand) -WindowStyle Hidden | Out-Null
+    return $true
+}
+
 if (-not (Test-Path -LiteralPath $resolvedTargetRoot)) {
     if ($PSCmdlet.ShouldProcess($resolvedTargetRoot, "Create new project target folder")) {
         New-Item -ItemType Directory -Path $resolvedTargetRoot -Force | Out-Null
@@ -702,6 +724,23 @@ if ($GitHubRepo) {
         }
     } finally {
         Pop-Location
+    }
+}
+
+$temporarySourceKitRemoved = $false
+if ($installerGitPath) {
+    $installerTopLevel = Get-InstallerTopLevelSegment -GitPath $installerGitPath
+    if ($installerTopLevel) {
+        $candidateSourceKitPath = Join-Path $resolvedTargetRoot $installerTopLevel
+        $knownKitFolderName = $installerTopLevel -match '^(atlas_ai|Atlas_AI|atlas\.ai)$'
+        if ($knownKitFolderName -and (Test-Path -LiteralPath $candidateSourceKitPath)) {
+            $temporarySourceKitRemoved = Invoke-DeferredFolderCleanup -FolderPath $candidateSourceKitPath
+            if ($temporarySourceKitRemoved) {
+                Write-Host "Scheduled temporary source-kit folder cleanup: $candidateSourceKitPath"
+            } else {
+                Write-Warning "Unable to schedule source-kit folder cleanup automatically: $candidateSourceKitPath"
+            }
+        }
     }
 }
 

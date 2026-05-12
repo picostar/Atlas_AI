@@ -6,7 +6,7 @@ This folder stores reusable prompt files for common atlas_ai workflows.
 - `atlas-realign.prompt.md` -- ATLAS alignment and readiness review
 - `atlas-closeout.prompt.md` -- end-of-session closeout readiness review
 - `cgr.prompt.md` -- compliance and governance review workflow
-- `cgr-seed-to-cgr.prompt.md` -- bootstrap MRD PRD ESD from seed and reference inputs, then run CGR and score outputs
+- `cgr-seed-to-cgr.prompt.md` -- bootstrap MRD PRD ESD from seed, reference, or project source inputs, then run CGR and score outputs
 - `cgr-iterate.prompt.md` -- iterate MRD PRD ESD using CGR-results and score deltas
 
 Standalone root prompts live at the repo root so they are easy to copy into another project and invoke without installing the full prompt catalog:

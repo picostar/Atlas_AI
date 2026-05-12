@@ -72,7 +72,7 @@
 - Review where the project stands before proposing work. Use the read order above, then prioritize `docs/agile/status.md` for current state, `docs/agile/devcycle.md` for active work, and `docs/agile/backlog.md` if the active cycle is empty or unclear.
 - If the user opens with `atlas`, treat it as the same startup check-in flow.
 - During startup check-in, if `.github/prompts/cgr.prompt.md` is present and governance is enabled for this project, check whether live MRD, PRD, and ESD artifacts exist in `docs/cgr/`.
-- If governance is enabled and live MRD, PRD, or ESD artifacts are missing, ask a single yes or no question: "Do you want to run CGR bootstrap now to generate draft MRD, PRD, and ESD from seed and reference materials?"
+- If governance is enabled and live MRD, PRD, or ESD artifacts are missing, ask a single yes or no question: "Do you want to run CGR bootstrap now to generate draft MRD, PRD, and ESD from seed, reference, and project source materials?"
 - If the repository appears to be a scaffold or template, review template integrity and adoption readiness instead of expecting live project status.
 - Confirm whether the project appears ready to begin the next task. Mention obvious blockers, missing planning artifacts, or stale status if they affect readiness.
 - Suggest the next step using the ATLAS dev cycle loop. Prefer the next active dev task, or if none is active, recommend pulling the next priority into a new cycle.
@@ -82,17 +82,20 @@
 - If the user uses a short launch phrase, such as `do it`, `lets go`, `let's go`, `go ahead`, `start`, `proceed`, `make it so`, `engage`, `hit it`, or `punch it`, treat it as authorization to begin work.
 - If the user says `atlas update`, treat it as a request to use root-level `atlas_update.md` as a plan-first legacy project update prompt.
 - If the user says `CGR` or `run CGR`, treat it as a request to run the governance workflow defined in `.github/prompts/cgr.prompt.md`.
-- For `CGR`: if live MRD, PRD, and ESD artifacts do not exist in `docs/cgr/`, bootstrap draft docs from `seed.md` and `docs/reference/` first, then run CGR and write `docs/cgr/CGR-results.md`.
-- For `CGR`: if live MRD, PRD, or ESD artifacts already exist in `docs/cgr/`, use them as the base and improve them using user instructions plus any new materials in `seed.md` or `docs/reference/`.
-- If the user says `newproject`, treat it as a request to use root-level `atlas_newproject.md` as the prompt-first new-project bootstrap workflow.
+- For `CGR`: if `docs/cgr/` or live MRD, PRD, and ESD artifacts do not exist yet, create `docs/cgr/` and bootstrap draft docs from `seed.md`, `docs/reference/`, and relevant source files already in the project root, such as marketing copy, product notes, sales material, website content, specs, or discovery notes. Then run CGR and write `docs/cgr/CGR-results.md`.
+- For `CGR`: if live MRD, PRD, or ESD artifacts already exist in `docs/cgr/`, use them as the base and improve them using current user instructions plus any new materials in `seed.md`, `docs/reference/`, or relevant project source files.
+- If the user says `newproject` or `atlas project`, treat it as a request to use root-level `atlas_newproject.md` as the prompt-first new-project bootstrap workflow.
 - Before acting, perform a brief ATLAS readiness check. Review the current state, confirm the next task is clear, and look for obvious blockers or missing planning context.
 - Use `docs/agile/status.md` for current state, `docs/agile/devcycle.md` for the active task, and `docs/agile/backlog.md` if the active cycle is empty or unclear.
 - If the repository appears to be a scaffold or template, use the next clear maintenance or adoption task rather than expecting an active live-project devcycle.
 - If the next task is clear and no blocker prevents progress, start executing it immediately rather than waiting for another confirmation.
 - If a blocker exists, call it out briefly and either resolve it or ask the minimum clarifying question needed to proceed.
 - For `newproject`, prefer the prompt-first workflow so setup works across Windows, Linux, and macOS. Use `atlas_ai.ps1` or `NewProject.bat` only when the user explicitly asks for a script-driven setup or prompt-driven setup cannot complete with the available environment.
+- For `newproject`, run an explicit setup questionnaire before applying changes. Capture yes or no choices for scaffold, git init when needed, PS, CGR, stack pattern selection, UX pattern selection, and GitHub repo creation. If a stack pattern is selected, capture API-first posture as yes or no. Do not silently apply defaults unless the user explicitly says to use defaults.
 - For `newproject`, if the target already contains Atlas control files at the repo root, stop and tell the user to use `atlas_update.md` from the kit for a plan-first legacy project update.
 - For `newproject`, if the target contains pre-existing user files, preserve them by moving them into `docs/reference/preexisting-root/`. If `.git` already exists, adopt that repository rather than reinitializing it.
+- For `newproject`, when setup uses a local source-kit folder in the target root, such as `atlas_ai` or `Atlas_AI`, treat that folder as temporary bootstrap input. Remove it after installation and do not stage or commit it.
+- For `newproject`, if the user references `github picostar/Atlas_AI`, interpret that as source-kit location only. Do not clone Atlas_AI into the target folder or a new subfolder unless the user explicitly asks to clone it. Apply bootstrap in the current target folder.
 - Keep the response short and action-oriented. The purpose of these phrases is to move from readiness review into execution.
 
 ## Session Close And Sign-Off Behavior

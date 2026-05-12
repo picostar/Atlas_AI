@@ -23,7 +23,7 @@ Recommended files:
 - `ESD_<PROJECT>_v1.md`
 - `CGR-results.md`
 - `score.md` (optional, derived from `CGR-results.md` scoring extension)
-- `seed-to-docs-mapping.md` (optional, maps seed and reference sources to MRD PRD ESD sections)
+- `seed-to-docs-mapping.md` (optional, maps seed, reference, and project source files to MRD PRD ESD sections)
 - `remediation-tracking.md` (optional, tracks rule-level remediation across iterations)
 - ADRs, roadmaps, decision logs, or governance records as needed
 
@@ -33,12 +33,12 @@ Keep `CGR-results.md` in this folder alongside the live MRD, PRD, and ESD artifa
 
 If your team uses numeric governance scoring, keep `score.md` in this folder as a derived artifact that references the latest `CGR-results.md`.
 
-## Bootstrap Workflow From Seed And Reference Inputs
+## Bootstrap Workflow From Seed, Reference, And Source Inputs
 
 Use this when live MRD, PRD, and ESD docs do not exist yet.
 
 1. Use prompt `.github/prompts/cgr-seed-to-cgr.prompt.md`.
-2. Read `seed.md` and relevant files under `docs/reference/`.
+2. Read `seed.md`, relevant files under `docs/reference/`, and relevant project source files such as marketing copy, website text, product notes, sales material, specifications, discovery notes, or other text-readable context.
 3. Generate draft docs in `docs/cgr/`.
 4. Update `seed-to-docs-mapping.md` to show evidence sources and missing inputs.
 5. Run CGR and produce `CGR-results.md`.

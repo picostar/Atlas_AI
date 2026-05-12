@@ -1,6 +1,6 @@
 ---
 name: "Compliance And Governance Review"
-description: "Use when running CGR against live MRD, PRD, and ESD artifacts under docs/cgr."
+description: "Use when running CGR against live MRD, PRD, and ESD artifacts under docs/cgr, or bootstrapping those artifacts from project source files."
 argument-hint: "Optional project name, stage gate, scope, or review constraints"
 agent: "agent"
 ---
@@ -28,11 +28,11 @@ Chat shortcut: in AI chat, type `CGR` or say `run CGR` to run this workflow.
 
 The LLM will scan live MRD, PRD, and ESD artifacts in `docs/cgr/`, ignore starter templates and housekeeping files during evaluation, perform post-review template cleanup, and produce a single results file.
 
-If live MRD, PRD, and ESD artifacts do not exist yet, the workflow first bootstraps draft governance docs from `seed.md` and `docs/reference/`, then runs CGR. `seed.md` may be minimal freeform input, including a single sentence.
+If `docs/cgr/` or live MRD, PRD, and ESD artifacts do not exist yet, the workflow creates `docs/cgr/`, bootstraps draft governance docs from `seed.md`, `docs/reference/`, and relevant source files already in the project, then runs CGR. Source files may include marketing copy, website text, product notes, sales material, specifications, discovery notes, or other user-provided project context. `seed.md` may be minimal freeform input, including a single sentence.
 
-If live MRD, PRD, or ESD artifacts already exist, the workflow uses them as the base and improves them using current user instructions plus any new material found in `seed.md` and `docs/reference/`.
+If live MRD, PRD, or ESD artifacts already exist, the workflow uses them as the base and improves them using current user instructions plus any new material found in `seed.md`, `docs/reference/`, or relevant project source files.
 
-Treat the directory containing `.github/copilot-instructions.md`, `ATLAS.md`, and `docs/` as the repository control root. If the runnable application lives in a child directory one level down, keep the governance review anchored to the existing `docs/cgr/` directory at the control root.
+This prompt can be run from the Atlas_AI source kit against a new project folder that has not installed Atlas yet. In that case, treat the currently open project folder as the target project root, use the Atlas_AI source kit only as the prompt and template source, and write new governance artifacts into the target project's `docs/cgr/` directory.
 
 ---
 
@@ -60,16 +60,21 @@ When used without PS, the CGR simply evaluates whatever live MRD, PRD, and ESD a
 
 You are reviewing the live solution documents for this repository for governance completeness.
 
-1. Treat the directory containing `.github/copilot-instructions.md`, `ATLAS.md`, and `docs/` as the repository control root.
-2. Use `docs/cgr/` under that control root as the authoritative location for MRD, PRD, ESD, and CGR artifacts.
-3. If the repo root does not contain `docs/cgr/`, look one level down for a child directory that does. If exactly one child directory qualifies, use that child as the effective project root for this review. If multiple child directories qualify, stop and ask the user which one to use.
-4. If the runnable application lives in a child directory one level down, keep the review output in the selected `docs/cgr/` directory instead of placing it inside the nested application folder.
+1. Select the target project root.
+   - If the current repository contains `.github/copilot-instructions.md`, `ATLAS.md`, and `docs/`, treat that directory as the repository control root.
+   - If this prompt is being used from the Atlas_AI source kit against a separate new project, treat the currently open target project folder as the project root even if it has no Atlas files yet.
+   - If neither is clear and exactly one child directory contains `docs/cgr/`, use that child as the effective project root for this review. If multiple child directories qualify, stop and ask the user which one to use.
+2. Use `docs/cgr/` under the selected project root as the authoritative location for MRD, PRD, ESD, and CGR artifacts. If it does not exist in Bootstrap mode, create it.
+3. If the runnable application lives in a child directory one level down, keep the review output in the selected `docs/cgr/` directory instead of placing it inside the nested application folder.
+4. In a new project that has no Atlas files yet, do not require a full Atlas install before CGR. Create only the governance output folders and files needed for this workflow unless the user also asks for `newproject`.
 5. Read source materials used for authoring and improvement:
    - `seed.md` at repo root, if present. Treat it as freeform input, not a required template.
    - relevant markdown files under `docs/reference/`, if present.
+   - relevant source files already in the project root or obvious source-material folders, including marketing copy, website content, product notes, sales notes, pitch decks converted to text or markdown, specifications, discovery notes, customer notes, README files, and other text-readable project context.
    - any raw MRD, PRD, or ESD-like artifacts found in `docs/reference/` that can be refactored into `docs/cgr/`.
    - `accounts.md` at repo root, if present, for non-secret cloud account and deployment destination context.
    - for local secrets, check `secrets.md` at repo root if needed, and do not place secrets in governance artifacts.
+   - Skip `.git`, dependency folders, build output, binaries that cannot be read usefully, secrets, credentials, keys, tokens, and local environment files.
 6. Determine workflow mode:
    - Bootstrap mode: no live MRD, PRD, or ESD exists in `docs/cgr/`.
    - Improve mode: one or more live MRD, PRD, or ESD artifacts already exist in `docs/cgr/`.
@@ -79,11 +84,12 @@ You are reviewing the live solution documents for this repository for governance
      - `MRD_<PROJECT>_v0-draft.md`
      - `PRD_<PROJECT>_v0-draft.md`
      - `ESD_<PROJECT>_v0-draft.md`
-   - Use `seed.md`, `docs/reference/`, and template structure when present.
-   - If core marketing or product best-practice structure is missing from repository sources, augment with reputable external public sources and clearly mark externally-derived assumptions.
+   - Use `seed.md`, `docs/reference/`, relevant project source files, and template structure when present.
+   - Prefer source evidence from the user's project files over external assumptions. If core marketing or product best-practice structure is missing from repository sources, augment with reputable external public sources only when allowed and clearly mark externally-derived assumptions.
 8. In Improve mode, treat existing MRD, PRD, and ESD artifacts as the base and improve them using:
    - current user instructions in chat,
    - new or changed materials in `docs/reference/`,
+   - relevant new or changed project source files,
    - updates from `seed.md` when relevant.
 9. Read every live project `.md` file in the selected `docs/cgr/` directory, except `README.md`, any results file, and any `*_TEMPLATE.md` file unless the user explicitly asks to review templates.
 10. Ignore `README.md` and any `*_TEMPLATE.md` file unless the user explicitly asks to review the template itself.
@@ -365,7 +371,7 @@ Save the derived score output as `docs/cgr/score.md` using a concise scorecard f
 
 ---
 
-## Optional Seed And Reference Bootstrap Extension
+## Optional Seed, Reference, And Source Bootstrap Extension
 
 This extension is optional and does not replace baseline CGR requirements.
 
@@ -373,7 +379,7 @@ Use this when live MRD, PRD, and ESD artifacts are missing and draft governance 
 
 Bootstrap flow:
 1. Read `seed.md` if present.
-2. Read relevant source material in `docs/reference/`.
+2. Read relevant source material in `docs/reference/` and relevant source files already in the project root or obvious source-material folders.
 3. Generate drafts in `docs/cgr/` using template structure:
    - `MRD_<PROJECT>_v0-draft.md`
    - `PRD_<PROJECT>_v0-draft.md`
