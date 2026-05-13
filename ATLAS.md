@@ -23,17 +23,17 @@ Keep the process stable. Customize project names, paths, tools, and integration 
 
 ## Dev Cycle Loop
 
-1. Pick the next dev task from the active task list, typically `devcycle.md`.
+1. Pick the next DT from the active task list, typically `devcycle.md`.
 2. Implement the task.
 3. Smoke test the change with CLI commands or a script.
 4. Complete the task's `UAT:` section, either by handing off clear validation instructions or by explicitly recording that the task is not UAT-eligible.
 5. Record the outcome in the retrospective log, typically `retro.md`.
-6. If the repo uses git, create a small task-level commit for the devtask.
+6. If the repo uses git, create a small task-level commit for the DT or RDT.
 7. If the repository has a GitHub remote, push the branch and complete the task's GitHub follow-up step, typically creating or updating a pull request.
 8. Remove the completed task from the active task list and update current-state docs if the repo tracks them.
 9. Repeat.
 
-When the active cycle is burned down, pull the next priority from the backlog into a new cycle.
+When the active cycle is burned down, close the cycle by confirming validation, review, and documentation are complete. If the repository uses GitHub pull requests, merge the pull request into the base branch, typically `main`, when the dev cycle, phase, or other reviewable task bundle is ready to close. Then pull the next priority from the backlog into a new cycle.
 
 ---
 
@@ -145,8 +145,9 @@ Use Complexity Units, or CU, to estimate decision complexity, unknowns, and depe
 - Smoke test with CLI commands or a script before moving on.
 - Every DT and RDT must include both `Smoketest:` and `UAT:` sections.
 - When the active stack pattern says API-first mode is enabled, every DT and RDT should include an API result when feasible.
-- Create one small, descriptive commit per completed devtask when the repo uses git.
-- If the repository has a GitHub remote, push the branch and complete the corresponding GitHub follow-up after each completed devtask.
+- Create one small, descriptive commit per completed DT or RDT when the repo uses git.
+- If the repository has a GitHub remote, push the branch and complete the corresponding GitHub follow-up after each completed DT or RDT.
+- Do not merge to `main` after every DT by default. Merge the pull request when the dev cycle, phase, or other reviewable task bundle is ready to close.
 
 ### Definition of Done
 
@@ -194,12 +195,14 @@ Reset devtasks are short, unplanned tasks that unblock or redirect the current d
 ### Git And GitHub
 
 - Prefer feature branches such as `feature/<topic>`.
-- Create at least one small, descriptive commit per completed devtask.
+- Create at least one small, descriptive commit per completed DT or RDT.
 - Include the DT or RDT identifier in the commit message when working from `devcycle.md`.
-- If the repository has a GitHub remote, push the active branch after each completed devtask.
-- If the repository uses GitHub for review, create or update the related pull request after each completed devtask.
+- If the repository has a GitHub remote, push the active branch after each completed DT or RDT.
+- If the repository uses GitHub for review, create or update the related pull request after each completed DT or RDT.
 - If no GitHub remote exists, record that blocker in the closeout or retrospective notes rather than silently skipping the step.
-- Merge to `main` only when the relevant phase or task bundle is ready.
+- Use `main` as the normal pull request base branch unless the repo defines another base branch.
+- Use the active feature, fix, chore, or reset branch as the pull request head branch.
+- Merge the pull request to `main` when the relevant dev cycle, phase, or task bundle is ready to close, after required status checks and review are complete.
 - Never force-push protected branches.
 
 ### Repo Hygiene

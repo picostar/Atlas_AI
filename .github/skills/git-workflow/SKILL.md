@@ -14,9 +14,11 @@ description: 'Git workflow conventions. Use when creating branches, writing comm
 
 ## Branch Strategy
 
-- Work on feature branches, not directly on `main`
-- Branch naming: `feature/<short-description>`, `fix/<short-description>`, `rdt/<short-description>`
-- Keep branches short-lived -- merge and delete after completion
+- Work on short-lived branches, not directly on `main`
+- Branch naming: `feature/<short-description>`, `fix/<short-description>`, `chore/<short-description>`, `rdt/<short-description>`
+- Use `main` as the normal pull request base branch unless the repo defines another base branch
+- Use the active feature, fix, chore, or reset branch as the pull request head branch
+- Keep branches short-lived -- merge the pull request and delete the branch after the dev cycle, phase, or reviewable task bundle closes
 
 ## Commit Messages
 
@@ -42,8 +44,10 @@ Examples:
 
 - Create at least one small, descriptive commit per DT or RDT instead of batching completed tasks together
 - Commit after the smoketest passes and the `UAT:` section is completed so the handoff or explicit non-UAT note is based on committed work
-- If a GitHub remote exists, push the active branch after each completed devtask
-- If the repository uses GitHub for review, create or update the related pull request after each completed devtask
+- If a GitHub remote exists, push the active branch after each completed DT or RDT
+- If the repository uses GitHub for review, create or update the related pull request after each completed DT or RDT
+- Do not merge to `main` after every DT by default. Merge the pull request when the dev cycle, phase, or reviewable task bundle is ready to close
+- A single-DT dev cycle may merge after that DT is complete, reviewed, and required status checks pass
 - If no GitHub remote exists, record that blocker instead of silently skipping the follow-up
 - Do not use `--force` push without explicit user approval
 - Do not use `--no-verify` to skip hooks
@@ -68,8 +72,6 @@ git commit -m "feat: add new feature"
 # Push branch
 git push -u origin feature/my-feature
 
-# Merge back to main
-git checkout main
-git merge feature/my-feature
-git branch -d feature/my-feature
+# Merge the pull request after review and required status checks pass
+gh pr merge --merge --delete-branch
 ```

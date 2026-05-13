@@ -116,6 +116,7 @@
 - When `patterns/stack-patterns/active-stack-pattern.md` says API-first mode is enabled, every devtask and reset devtask should include an API result when feasible, and `Smoketest:` should include API endpoint verification plus OpenAPI or Swagger documentation verification when feasible.
 - After each completed devtask, create a task-level git commit.
 - After each completed devtask, if a GitHub remote exists, push the branch and perform the repo's GitHub follow-up step, typically creating or updating a pull request. If no remote exists, record that blocker clearly.
+- Do not merge to `main` after every devtask by default. Merge the pull request when the dev cycle, phase, or other reviewable task bundle is ready to close, after required status checks and review are complete.
 - Keep completed work out of the active task list. The active list is a burn-down, not a historical log.
 - Record implementation details, issues, decisions, and lessons learned in the repo's retrospective log if one exists.
 - Prefer feature branches over direct work on `main` when working in a git repository.
