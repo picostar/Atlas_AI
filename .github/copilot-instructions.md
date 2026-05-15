@@ -81,6 +81,13 @@
 ## Launch And Execute Behavior
 - If the user uses a short launch phrase, such as `do it`, `lets go`, `let's go`, `go ahead`, `start`, `proceed`, `make it so`, `engage`, `hit it`, or `punch it`, treat it as authorization to begin work.
 - If the user says `atlas update`, treat it as a request to use root-level `atlas_update.md` as a plan-first legacy project update prompt.
+- For `atlas update`, detect local canonical layout first and preserve local naming and path conventions by default, including `ATLAS.md` versus `atlas.md`, `patterns/*` versus `docs/reference/*-patterns`, and `docs/cgr/` versus legacy CGR paths.
+- For `atlas update`, only migrate layout paths after explicit human approval. Plan-first output must mark move, rename, or delete actions as approval-gated.
+- For `atlas update`, include stack and UX pattern template availability in the plan and import guidance. Handle missing pattern families gracefully and document follow-up.
+- For `atlas update`, classify legacy account-binding versus secret material before edits. Build committed `accounts.md` from non-secret values only, keep secrets in local-only `secrets.md`, and never copy secret values to committed files.
+- For `atlas update`, prefer tracked retirement path `docs/reference/retired-docs/` for historical artifacts and warn before any move into ignored directories.
+- For `atlas update`, create and record a rollback path before any update edits. Use a pre-update git branch or tag when git exists, or a timestamped filesystem backup path when git is absent.
+- For `atlas update`, use deterministic validation criteria, including pre and post checks, reference integrity, secret leak checks, pattern availability checks, and Windows `safe.directory` fallback when needed.
 - If the user says `CGR` or `run CGR`, treat it as a request to run the governance workflow defined in `.github/prompts/cgr.prompt.md`.
 - For `CGR`: if `docs/cgr/` or live MRD, PRD, and ESD artifacts do not exist yet, create `docs/cgr/` and bootstrap draft docs from `seed.md`, `docs/reference/`, and relevant source files already in the project root, such as marketing copy, product notes, sales material, website content, specs, or discovery notes. Then run CGR and write `docs/cgr/CGR-results.md`.
 - For `CGR`: if live MRD, PRD, or ESD artifacts already exist in `docs/cgr/`, use them as the base and improve them using current user instructions plus any new materials in `seed.md`, `docs/reference/`, or relevant project source files.
@@ -93,6 +100,8 @@
 - For `newproject`, use prompt-first setup only so bootstrap works across Windows, Linux, and macOS. Do not invoke deprecated legacy bootstrap scripts during prompt-driven newproject execution.
 - For `newproject`, run an explicit setup questionnaire before applying changes. Capture yes or no choices for scaffold, git init when needed, PS, CGR, stack pattern selection, UX pattern selection, and GitHub repo creation. If a stack pattern is selected, capture API-first posture as yes or no. Do not silently apply defaults unless the user explicitly says to use defaults.
 - For `newproject`, present stack and UX pattern choices as numbered menus from available templates and accept number or label answers. Do not ask users for freeform template filenames or paths. When asking API-first posture, explain that API-first expects API results when feasible and smoketest verification of endpoints plus OpenAPI or Swagger docs when feasible.
+- For `newproject`, do not end the run with only installed-file notes, diagnostics, or generic next-step options. A successful run must either capture setup answers and apply them, or stop on a clear blocker.
+- For `newproject`, if a partial install already happened before the questionnaire, treat it as interrupted bootstrap. Ask only the missing setup questions, then continue execution to completion in the same run.
 - For `newproject`, if the target already contains Atlas control files at the repo root, stop and tell the user to use `atlas_update.md` from the kit for a plan-first legacy project update.
 - For `newproject`, if the target contains pre-existing user files, preserve them by moving them into `docs/reference/preexisting-root/`. If `.git` already exists, adopt that repository rather than reinitializing it.
 - For `newproject`, when setup uses a local source-kit folder in the target root, such as `atlas_ai` or `Atlas_AI`, treat that folder as temporary bootstrap input. Remove it after installation and do not stage or commit it.

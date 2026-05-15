@@ -49,6 +49,8 @@ newproject
 
 The agent should use `atlas_newproject.md`, ask explicit setup questions first (scaffold, git init, PS, CGR, stack, UX, API-first when stack is selected, GitHub repo), preserve existing user files under `docs/reference/preexisting-root/`, install the selected Atlas files into the current target folder, remove any temporary local source-kit folder such as `atlas_ai` or `Atlas_AI`, and initialize or adopt git.
 
+The run is not complete if it only installs prompt files and reports diagnostics. If that partial state occurs, the agent should ask the missing setup questions and continue to completion.
+
 The setup questionnaire should present stack and UX templates as numbered choices, not ask for a freeform template filename. If a stack pattern is selected, include an API-first yes or no question and state that API-first expects API results when feasible plus endpoint and OpenAPI or Swagger verification in smoketests when feasible.
 
 
@@ -335,7 +337,21 @@ The guided update flow is designed to catch project-specific decisions before ed
 - whether legacy account-binding files should be consolidated into committed `accounts.md`
 - which local instructions, prompts, skills, docs, and reference files should be preserved
 
+Compatibility-first rule: detect local canonical layout first and preserve it by default. Only migrate naming or path layout after explicit human approval.
+
+For deterministic updates, use these reference docs:
+- `docs/reference/update-path-compatibility-map.md`
+- `docs/reference/update-validation-checklist.md`
+- `docs/reference/update-runbook-legacy-reference-patterns.md`
+
 The planning pass should not modify the legacy project. It should produce file-by-file recommendations, questions, and a proposed validation checklist for human approval.
+
+On Windows or mixed-filesystem repos, if `git status` reports dubious ownership, use safe.directory fallback and rerun status before treating validation as failed:
+
+```powershell
+git config --global --add safe.directory <repo>
+git -C <repo> status
+```
 
 Placement guidance:
 - `atlas_newproject.md` is the recommended new-project bootstrap workflow.

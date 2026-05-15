@@ -44,6 +44,8 @@ Do not run platform-specific bootstrap scripts. Use a prompt-driven workflow, as
        - 1: UXP-01 Modern app shell layout
     - create GitHub repo now? yes or no (default no)
 6. If the user replies with "use defaults" or equivalent, apply defaults and continue. Otherwise summarize captured answers and ask for a quick confirmation before execution.
+   - Completion gate: do not output a final validation summary or next-step options until setup questionnaire answers are captured and applied, unless blocked.
+   - Recovery mode: if a prior run already copied some files, for example only prompt files, without collecting setup answers, ask only the missing questions and continue execution to completion in this same run.
 7. Install the selected Atlas_AI files from the source kit into the target root. Include root instruction files, reusable prompts, skills when needed, and optional scaffold or governance docs according to the selected setup. Prefer merging and preserving project-specific content over overwriting user-authored files. Execute this in the current target folder, not in a newly cloned subfolder.
 8. If a stack pattern is selected, create `patterns/stack-patterns/active-stack-pattern.md` from the chosen template and record API-first posture there.
 9. If a UX pattern is selected, create `patterns/ux-patterns/active-ux-pattern.md` from the chosen template.
@@ -52,6 +54,7 @@ Do not run platform-specific bootstrap scripts. Use a prompt-driven workflow, as
 12. If git is absent and the user keeps the default bootstrap behavior, initialize git, copy `.gitignore`, and create an initial commit containing installed project artifacts only. If git already exists, adopt it and stage only the approved Atlas project artifacts.
 13. If the user asks for GitHub repository creation, require the GitHub owner or org value and explain any missing CLI or auth prerequisite instead of inventing one.
 14. Validate with targeted file-presence checks, parser checks, or text searches. Summarize:
+   - setup questionnaire answers captured, and whether defaults were explicitly used
    - files installed
    - pre-existing user material preserved under `docs/reference/preexisting-root/`
    - whether temporary source-kit folder cleanup was completed

@@ -21,6 +21,8 @@ description: 'Set up a new project with atlas_ai. Use when bootstrapping a new r
 2. Prefer the standalone prompt-first workflow in `atlas_newproject.md` for agent-driven setup
    - Use it to bootstrap the repo without relying on Windows-only or PowerShell-only entry points
    - Ask only the minimum setup questions, then install the selected Atlas_AI files directly
+   - Treat setup as incomplete until the required questionnaire answers are captured, or the user explicitly says to use defaults
+   - Do not stop after partial file install plus diagnostics; if that state occurs, ask only missing setup questions and continue
    - Present stack and UX templates as numbered choices, accept number or label, and do not ask for freeform template filenames
    - Treat `github picostar/Atlas_AI` as source-kit reference only, not a clone destination, unless the user explicitly asks to clone it
    - Do not invoke deprecated legacy bootstrap scripts for prompt-driven newproject setup

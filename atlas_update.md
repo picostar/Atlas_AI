@@ -23,9 +23,16 @@ You are preparing to update this legacy atlas project to align with the current 
 
 Planning phase only: do not edit files, run migration scripts, move folders, rename files, delete files, or run destructive commands. Your first deliverable is an update plan for human review.
 
-1. Read the local repository instructions first, especially `.github/copilot-instructions.md`, `ATLAS.md`, and any existing `AGENTS.md`, `CLAUDE.md`, `CHATGPT.md`, `GEMINI.md`, `GROK.md`, or `DEEPSEEK.md` files.
+1. Read the local repository instructions first, especially `.github/copilot-instructions.md`, `ATLAS.md` or `atlas.md`, and any existing `AGENTS.md`, `CLAUDE.md`, `CHATGPT.md`, `GEMINI.md`, `GROK.md`, or `DEEPSEEK.md` files.
 2. Establish source-kit access. Use `picostar/Atlas_AI` on its default branch as the source of truth for the current kit. If the Atlas_AI repository is open locally, inspect that repo. Otherwise fetch or inspect the public repository. If the source kit cannot be reached, stop and ask for a local Atlas_AI path, permission to access GitHub, or permission to proceed with only this copied prompt.
-3. Compare the local legacy project against the Atlas_AI source of truth before proposing edits. Focus on:
+3. Run compatibility-first discovery and detect the local canonical layout before proposing any migration:
+   - naming variant: `ATLAS.md` versus `atlas.md`
+   - stack pattern root: `patterns/stack-patterns/` versus `docs/reference/stack-patterns/`
+   - UX pattern root: `patterns/ux-patterns/` versus `docs/reference/ux-patterns/`
+   - CGR and stages paths: `docs/cgr/` and `docs/cgr/PS.md` versus legacy `docs/projects/` and `CGR.md`
+4. Build and present a path compatibility matrix for this repository. Use `docs/reference/update-path-compatibility-map.md` when available. Show local path, SOT equivalent, and action (`keep`, `copy alongside`, `migrate later`).
+5. Apply default compatibility rule: keep local canonical paths as-is unless the user explicitly approves a migration. Never force in-place path migration by default.
+6. Compare the local project against Atlas_AI source of truth using the compatibility map. Focus on:
    - root instruction files
    - prompt files from `.github/prompts/` in the source kit, if present
    - skill files from `.github/skills/` in the source kit, if present
@@ -33,31 +40,62 @@ Planning phase only: do not edit files, run migration scripts, move folders, ren
    - `docs/agile/`, `docs/cgr/`, and `docs/reference/`
    - `patterns/stack-patterns/` and `patterns/ux-patterns/`
    - `scripts/`
-   - `accounts.md` and `secrets.md` handling
-4. Detect legacy layout paths, including `docs/projects`, `docs/reference/stack-patterns`, and `docs/reference/ux-patterns`.
-5. Detect legacy API-first policy files, including `docs/reference/api-first-policy.md`. Recommend moving API-first posture into `patterns/stack-patterns/active-stack-pattern.md` when a stack pattern is selected. Do not create a standalone API-first policy artifact when no stack pattern is active.
-6. Detect legacy account-binding files. Recommend consolidating non-secret provider binding into committed `accounts.md` after human review. `secrets.md` remains the local-only file for credentials, keys, tokens, and other secrets.
-7. Present a concise update plan that answers:
-   - which files will be copied or merged from the public kit
-   - which local project files should be preserved
-   - whether legacy layout folders should stay in place or be moved
-   - whether API-first posture should be recorded in the active stack pattern
-   - whether legacy account-binding files should be consolidated into `accounts.md`
-   - whether any project-specific values need user confirmation
-8. Ask only the questions needed to avoid losing project-specific content.
-9. Stop after presenting the plan and questions. Wait for explicit human approval before making changes.
-10. After approval, execute the approved changes in the legacy project with user interaction as needed. Apply minimal edits. Prefer merging and preserving local facts over overwriting project-specific files.
-11. Do not place secrets in committed files. Do not copy secret values from `secrets.md` into `accounts.md`, docs, prompts, scripts, or governance artifacts.
-12. Validate with targeted CLI checks, parser checks, or text searches. Summarize changed files, unresolved questions, and any manual follow-up.
+   - account and secret handling files
+7. Enforce pattern sync requirements in the plan:
+   - include both stack and UX pattern template catalogs from SOT
+   - include guidance to create or update active pattern files for project baselines
+   - if one pattern family is missing in local repo, handle gracefully by importing only what exists in SOT and recording the gap plus follow-up
+8. Detect legacy API-first policy files, including `docs/reference/api-first-policy.md`. Recommend moving API-first posture into `patterns/stack-patterns/active-stack-pattern.md` when a stack pattern is selected. Do not create a standalone API-first policy artifact when no stack pattern is active.
+9. Add explicit account and secret migration classification to the plan:
+   - inspect legacy files such as `accounts.txt`, `account.txt`, `cloud.txt`, and `notes.md` for binding versus secret content
+   - build committed `accounts.md` from non-secret bindings only
+   - build local-only `secrets.md` from secret material only and keep it gitignored
+   - redact and classify in the plan, never copy secret values into committed files
+10. Add archive safety rules to the plan:
+   - prefer tracked retirement path `docs/reference/retired-docs/` for historical artifacts
+   - warn before moving files into ignored directories such as `archive/`
+   - require post-move reference checks before closeout
+11. Present a concise plan-first update package that includes:
+   - file-by-file copy and merge actions from SOT
+   - file-by-file preserve and no-touch list
+   - explicit migration candidates marked `needs approval`
+   - compatibility matrix and known limits
+   - rollback path proposal to use before execution
+   - deterministic validation checklist with pass criteria
+12. Ask only the minimum targeted questions needed to avoid losing project-specific content.
+13. Stop after presenting the plan and questions. Wait for explicit human approval before making changes.
+14. After approval and before edits, create a rollback path and confirm it is usable:
+   - if git exists, create a pre-update rollback branch or tag at current HEAD and record its name in the summary
+   - if git does not exist, create a timestamped filesystem backup path and record restore steps
+   - do not proceed with edits until rollback path creation is confirmed or the user explicitly waives it
+15. After rollback confirmation, execute only approved changes in the legacy project with user interaction as needed. Apply minimal edits. Prefer merging and preserving local facts over overwriting project-specific files.
+16. Validate with strict checks and clear pass signals. Use `docs/reference/update-validation-checklist.md` when available:
+   - pre-update discovery checks
+   - pre-update rollback checks
+   - post-update file-presence checks
+   - reference integrity checks
+   - secret leak checks
+   - stack and UX pattern availability checks
+   - Windows and mixed-filesystem git check with safe.directory fallback when needed
+17. Windows safe.directory fallback guidance for validation and troubleshooting:
+   - check: `git -C <repo> status`
+   - if dubious ownership appears, run one of:
+      - `git config --global --add safe.directory <repo>`
+      - `git config --system --add safe.directory <repo>` when policy requires system scope
+   - rerun `git -C <repo> status` and record pass or blocker.
 
 ## Default Decisions
 
 - Keep `secrets.md` ignored and local-only.
 - Commit `accounts.md` as the non-secret cloud account binding source of truth.
+- Preserve local canonical layout paths by default. Migrate path layout only with explicit human approval.
 - Keep reusable stack and UX patterns under `patterns/`.
+- Import both stack and UX pattern template catalogs from source kit when available.
 - Keep API-first posture in `patterns/stack-patterns/active-stack-pattern.md` when a stack pattern is selected.
 - Keep governance artifacts under `docs/cgr/`.
 - Keep user-supplied project source material under `docs/reference/`, such as old MRDs, PRDs, specifications, marketing materials, website notes, setup notes, and context for planning, devcycles, and CGR.
+- Prefer tracked retired-document storage under `docs/reference/retired-docs/` for legacy artifacts that should remain visible in version control.
+- Create and record a rollback path before update edits. If rollback setup fails, stop and ask before proceeding.
 - Use manual review before any legacy layout migration.
 - Treat `.github/prompts/` files as optional workflow files to copy or merge from the source kit. This prompt does not require them to exist before the update.
 - The first run of this prompt is plan-only. Execution requires explicit human approval.
