@@ -18,5 +18,15 @@ Standalone root prompts live at the repo root so they are easy to copy into anot
 - Prefer prompts for repeatable quality checks and governance checks.
 - To run the governance workflow, type `CGR` or say `run CGR` in AI chat. The agent should use `cgr.prompt.md`.
 
+## CGR Prompt Notes
+
+`cgr.prompt.md` is designed to:
+- enforce mandatory-field completeness before `Compliant` status,
+- evaluate cross-document consistency across MRD, PRD, and ESD,
+- support balanced external reference usage when repository sources are incomplete,
+- report completeness and traceability findings in `docs/cgr/CGR-results.md`.
+
+For stronger consistency, pair CGR runs with `docs/cgr/MRD-PRD-ESD-TRACEABILITY.md`.
+
 ## Frontmatter
 Use the schema in `.github/FRONTMATTER-SCHEMA.md`.

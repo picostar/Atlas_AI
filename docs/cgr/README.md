@@ -25,11 +25,20 @@ Recommended files:
 - `score.md` (optional, derived from `CGR-results.md` scoring extension)
 - `seed-to-docs-mapping.md` (optional, maps seed, reference, and project source files to MRD PRD ESD sections)
 - `remediation-tracking.md` (optional, tracks rule-level remediation across iterations)
+- `MRD-PRD-ESD-TRACEABILITY.md` (optional but recommended, maps market problems to product requirements and engineering controls)
 - ADRs, roadmaps, decision logs, or governance records as needed
 
 Starter docs are included in this folder to help bootstrap a new project. On the first CGR run, remove `MRD_TEMPLATE.md` and `PRD_TEMPLATE.md` if they are still present. In all cases, once a live MRD, PRD, or ESD artifact exists, remove the matching `*_TEMPLATE.md` file so this folder contains live project artifacts only.
 
 Keep `CGR-results.md` in this folder alongside the live MRD, PRD, and ESD artifacts for the project being reviewed.
+
+When external references are needed to fill quality gaps, prefer a balanced source policy:
+- standards and requirement language clarity references,
+- systems security and engineering rigor references,
+- well-architected non-functional design references,
+- product artifact structure references.
+
+Always prioritize project source materials over external assumptions.
 
 If your team uses numeric governance scoring, keep `score.md` in this folder as a derived artifact that references the latest `CGR-results.md`.
 
@@ -54,3 +63,12 @@ Use this after the first CGR output exists.
 4. Update docs and rerun CGR.
 5. Refresh `score.md` and `remediation-tracking.md`.
 6. Repeat until gate targets are met for the intended stage.
+
+## Cross-Document Traceability Workflow
+
+Use `MRD-PRD-ESD-TRACEABILITY.md` to verify that each market problem is linked to:
+- PRD goals and functional requirements,
+- ESD implementation controls,
+- validation evidence.
+
+This file is especially useful before DVT and PVT gate recommendations.

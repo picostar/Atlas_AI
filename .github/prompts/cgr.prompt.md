@@ -10,6 +10,7 @@ agent: "agent"
 ## Contents
 
 - [How to Use](#how-to-use)
+- [External Source Policy](#external-source-policy)
 - [Product Release Stages](#product-release-stages)
 - [Instructions](#instructions)
 - [Base Rules (Evaluation Criteria)](#base-rules-evaluation-criteria)
@@ -33,6 +34,29 @@ If `docs/cgr/` or live MRD, PRD, and ESD artifacts do not exist yet, the workflo
 If live MRD, PRD, or ESD artifacts already exist, the workflow uses them as the base and improves them using current user instructions plus any new material found in `seed.md`, `docs/reference/`, or relevant project source files.
 
 This prompt can be run from the Atlas_AI source kit against a new project folder that has not installed Atlas yet. In that case, treat the currently open project folder as the target project root, use the Atlas_AI source kit only as the prompt and template source, and write new governance artifacts into the target project's `docs/cgr/` directory.
+
+---
+
+## External Source Policy
+
+Use external sources only to improve structure and quality where project files are incomplete.
+
+Priority order:
+1. Project source materials in the target repository.
+2. Atlas process and CGR rules in this repository.
+3. Approved external references listed below.
+
+Approved external references for this prompt:
+- IETF RFC 2119 and RFC 8174 for clear requirement language and explicit requirement levels.
+- NIST SP 800-160 concepts for engineering rigor, trustworthiness, and lifecycle-driven requirements.
+- Cloud well-architected frameworks (Azure, AWS, Google Cloud) for non-functional architecture, operations, reliability, security, and cost tradeoffs.
+- Product management references for MRD and PRD structure only when product artifact shape is missing from repository sources.
+
+When external material is used:
+- Prefer normative language (`MUST`, `SHOULD`, `MAY`) only when the requirement is truly enforceable in the target project context.
+- Mark externally derived assumptions clearly.
+- Do not replace project facts with generic external guidance.
+- Record source names or URLs in `External Source Notes`.
 
 ---
 
@@ -74,6 +98,7 @@ You are reviewing the live solution documents for this repository for governance
    - any raw MRD, PRD, or ESD-like artifacts found in `docs/reference/` that can be refactored into `docs/cgr/`.
    - `accounts.md` at repo root, if present, for non-secret cloud account and deployment destination context.
    - for local secrets, check `secrets.md` at repo root if needed, and do not place secrets in governance artifacts.
+   - `docs/cgr/MRD-PRD-ESD-TRACEABILITY.md`, if present, for cross-document mapping.
    - Skip `.git`, dependency folders, build output, binaries that cannot be read usefully, secrets, credentials, keys, tokens, and local environment files.
 6. Determine workflow mode:
    - Bootstrap mode: no live MRD, PRD, or ESD exists in `docs/cgr/`.
@@ -85,7 +110,14 @@ You are reviewing the live solution documents for this repository for governance
      - `PRD_<PROJECT>_v0-draft.md`
      - `ESD_<PROJECT>_v0-draft.md`
    - Use `seed.md`, `docs/reference/`, relevant project source files, and template structure when present.
-   - Prefer source evidence from the user's project files over external assumptions. If core marketing or product best-practice structure is missing from repository sources, augment with reputable external public sources only when allowed and clearly mark externally-derived assumptions.
+   - Prefer source evidence from the user's project files over external assumptions. If core marketing or product structure is missing from repository sources, augment with approved external references from `External Source Policy` and clearly mark externally-derived assumptions.
+   - Actively answer every section. Do not leave a section as `TBD` if a substantive draft answer can be reasoned from:
+     - the source documents,
+     - the domain implied by the project name, vendor, or industry,
+     - approved external references in `External Source Policy`.
+   - When you infer content, mark the proposed answer with `[DRAFT INFERENCE]` and a one-line basis note.
+   - Reserve `TBD` only for facts that can only come from the project owner, such as named owners, signed approvals, contract terms, or confirmed scope decisions.
+   - The bootstrap goal is a usable v0 draft that a reviewer can correct, not a placeholder skeleton.
 8. In Improve mode, treat existing MRD, PRD, and ESD artifacts as the base and improve them using:
    - current user instructions in chat,
    - new or changed materials in `docs/reference/`,
@@ -98,6 +130,21 @@ You are reviewing the live solution documents for this repository for governance
    - MRD + PRD only (no ESD) = project is in EVT
    - MRD + PRD + ESD = project is at DVT gate or beyond
 13. Evaluate each live document against the applicable rules for its type (see sections below).
+14. Enforce completeness before assigning status:
+   - Do not assign `Compliant` for a rule if any required field for that rule remains `TBD` or unresolved.
+   - If a required field is unresolved but has partial evidence, assign `Partially`.
+   - If required evidence is absent, assign `Missing`.
+15. Run cross-document consistency checks:
+   - MRD problem statements and success criteria must align with PRD goals and acceptance criteria.
+   - PRD functional requirements and acceptance criteria must map to ESD architecture, APIs, pilot, and validation plan.
+   - ESD pilot and operational plan must be capable of validating PRD acceptance criteria.
+16. In the Executive Summary, state which stage the project appears to be in and what's needed to advance.
+17. Before writing results, detect whether this is the first CGR run by checking whether `docs/cgr/CGR-results.md` already exists under the selected project root.
+18. Produce a single results file: `docs/cgr/CGR-results.md` under the selected project root.
+19. After the review:
+   - If this is the first CGR run, remove `docs/cgr/MRD_TEMPLATE.md` and `docs/cgr/PRD_TEMPLATE.md` if they are still present.
+   - If a live ESD artifact exists and `docs/cgr/ESD_TEMPLATE.md` is still present, remove it as post-review cleanup.
+   - If operating read-only, call out each stale template explicitly instead of deleting it.
 14. In the Executive Summary, state which stage the project appears to be in and what's needed to advance.
 15. Before writing results, detect whether this is the first CGR run by checking whether `docs/cgr/CGR-results.md` already exists under the selected project root.
 16. Produce a single results file: `docs/cgr/CGR-results.md` under the selected project root.
@@ -157,6 +204,9 @@ Any solution must have a post go-live review within 7 days to confirm stability,
 
 ### Rule 16 -- Customer-Hosted Infrastructure
 Any solution that requires customer-hosted infrastructure must have a written responsibility matrix accepted by the customer. If the customer will not accept operational responsibility, the provider must offer an approved alternative or the solution does not proceed.
+
+### Rule 17 -- Cross-Document Consistency
+MRD, PRD, and ESD must remain internally consistent. Market problems and success criteria in MRD must be reflected in PRD goals and acceptance criteria. PRD requirements must be implementable and testable through ESD architecture, API contracts, pilot criteria, and operational controls.
 
 ---
 
@@ -276,9 +326,9 @@ Save the output as `docs/cgr/CGR-results.md` under the selected project root usi
 
 ### Compliance Table
 
-| Rule | Status | Gap | Suggested Location |
-|---|---|---|---|
-| ... | Compliant / Partially / Missing / N/A | ... | ... |
+| Rule | Status | Field Completeness | Gap | Suggested Location |
+|---|---|---|---|---|
+| ... | Compliant / Partially / Missing / N/A | Complete / Partial / Incomplete | ... | ... |
 
 ### Top Required Additions (ordered by priority)
 
@@ -301,6 +351,14 @@ Save the output as `docs/cgr/CGR-results.md` under the selected project root usi
 
 [Issues that span multiple documents -- e.g., ownership missing from both MRD and PRD,
 vendor selection not covered anywhere, no document addresses rollback]
+
+## Completeness Findings
+
+[List mandatory fields that remain unresolved, grouped by document and rule]
+
+## Traceability Findings
+
+[State whether `docs/cgr/MRD-PRD-ESD-TRACEABILITY.md` exists and whether mappings are complete]
 
 ## Assumptions and Open Questions
 

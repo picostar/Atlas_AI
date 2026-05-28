@@ -37,10 +37,25 @@ Formula:
 - Maximum weighted points = sum of applicable rule weights
 - Overall score = (sum rule weighted points / maximum weighted points) * 100
 
+## Completeness Validation
+
+- A rule cannot be marked `Compliant` if mandatory fields for that rule remain `TBD` or unresolved.
+- If mandatory fields have partial evidence, use `Partially`.
+- Conditional fields count in the denominator only when applicable.
+- Recommended strict mode for gate decisions:
+	- DVT: no unresolved mandatory fields in Rules 2, 6, 7, 8, 9, 10, 11, 12.
+	- PVT: no unresolved mandatory fields in any Critical or High rule.
+
 ## Gate Threshold Profile (Default)
 
 - DVT target: score >= 70 and no unresolved Critical rule in Missing status
 - PVT target: score >= 85 and no unresolved Critical or High rule in Missing status
+
+## Gate Failure Conditions
+
+- `Hold` regardless of score when required ownership is missing for the stage.
+- `Hold` regardless of score when rollback plan, security review status, or operational handoff is missing.
+- `Proceed with Conditions` only when exceptions have explicit owner, approval, expiry, and revalidation date.
 
 ## Rule Score Table
 
@@ -76,3 +91,8 @@ Formula:
 | Rule | Exception Summary | Approval Owner | Expiry Date | Revalidation Date |
 |---|---|---|---|---|
 | TBD | TBD | TBD | TBD | TBD |
+
+## Scoring Notes
+
+- Record any manual scoring override and rationale.
+- Link each rule score to evidence in `docs/cgr/CGR-results.md`.

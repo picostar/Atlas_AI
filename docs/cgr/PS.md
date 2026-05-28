@@ -38,6 +38,11 @@ Gate to enter DVT:
 - Governance review run if the project uses one
 - Required signers identified, typically EVT signers plus IT or Platform Owner and Security or Compliance
 
+Additional DVT gate controls when CGR is used:
+- CGR score target met for DVT.
+- No unresolved mandatory field in Rules 2, 6, 7, 8, 9, 10, 11, 12.
+- No unresolved cross-document consistency gap that blocks pilot validation.
+
 What happens in DVT:
 - Pilot with defined acceptance criteria
 - Security review
@@ -57,6 +62,11 @@ Gate to enter PVT:
 - DVT exit criteria met
 - Governance review rerun if the project uses one
 - Go-live signers identified
+
+Additional PVT gate controls when CGR is used:
+- CGR score target met for PVT.
+- No unresolved mandatory field in any Critical or High rule.
+- Exceptions include owner, approval, expiry, and revalidation date.
 
 What happens in PVT:
 - Operational handoff to support or operations
@@ -131,6 +141,8 @@ Ownership grows with the project stage.
 - PRD before EVT.
 - ESD drafted during EVT.
 - ESD complete before DVT.
+- If CGR is used, MRD, PRD, and ESD must pass completeness checks for mandatory fields before stage advancement.
+- If CGR is used, cross-document consistency must be reviewed before DVT and PVT recommendations.
 - If the project uses governance review, run it before DVT and again before PVT.
 - Default naming convention: `MRD_<PROJECT>_v<X>.md`, `PRD_<PROJECT>_v<X>.md`, `ESD_<PROJECT>_v<X>.md`.
 - `*_TEMPLATE.md` files are bootstrap-only helpers, not live project artifacts.

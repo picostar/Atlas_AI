@@ -1,86 +1,178 @@
 # ESD Template
 
+Use this template to define how requirements are implemented, operated, secured, and validated.
+
+Field criticality markers:
+- `[MANDATORY]` required for DVT readiness.
+- `[CONDITIONAL]` required only when applicable.
+- `[OPTIONAL]` useful context that improves quality.
+
 ## Document Control
 
-- Project: TBD
-- Version: v1
-- Owner: TBD
-- Status: Draft
-- Last Updated: YYYY-MM-DD
+Guidance: keep version, owners, and linked requirements current.
+
+- `[MANDATORY]` Project: TBD
+- `[MANDATORY]` Version: v1
+- `[MANDATORY]` Owner: TBD
+- `[MANDATORY]` Status: Draft
+- `[MANDATORY]` Last Updated: YYYY-MM-DD
+- `[MANDATORY]` Related PRD: PRD_<PROJECT>_vX.md
 
 ## Architecture Overview
 
-Describe the system, components, data flow, and integration points.
+Guidance: include architecture context, boundaries, and data flow. Add a diagram link or text model.
+
+- `[MANDATORY]` System context and boundaries:
+- `[MANDATORY]` Component topology:
+- `[MANDATORY]` Data flow narrative:
+- `[CONDITIONAL]` Architecture diagram reference:
 
 ## Data Model
 
-List key entities, relationships, and storage locations.
+Guidance: define key entities and storage locations with ownership and retention assumptions.
+
+- `[MANDATORY]` Key entities:
+- `[MANDATORY]` Relationships and lifecycle:
+- `[MANDATORY]` Storage locations:
 
 ## API Contracts
 
-List external APIs, auth flows, rate limits, and error handling expectations.
+Guidance: define consumed and exposed APIs, authentication, failure handling, and limits.
+
+- `[CONDITIONAL]` External APIs used:
+- `[MANDATORY]` Auth and authorization model:
+- `[MANDATORY]` Error handling approach:
+- `[CONDITIONAL]` Rate limits and throttling behavior:
 
 ## Infrastructure And Environments
 
-- Development: TBD
-- Test: TBD
-- Production: TBD
+Guidance: define where each environment runs and how it differs.
+
+- `[MANDATORY]` Development:
+- `[MANDATORY]` Test:
+- `[MANDATORY]` Production:
+- `[OPTIONAL]` Environment parity notes:
 
 ## Vendor Selection Rationale
 
-Explain why the chosen platform or vendor was selected and what alternatives were considered.
+Guidance: include chosen option, alternatives, and decision reason.
+
+- `[CONDITIONAL]` Selected vendor or platform:
+- `[CONDITIONAL]` Alternatives considered:
+- `[CONDITIONAL]` Approval status:
 
 ## Monitoring And Alerting
 
-Describe the standard monitoring approach or the approved exception.
+Guidance: define key signals, alert routing, and response expectations.
+
+- `[MANDATORY]` Monitoring tools and dashboards:
+- `[MANDATORY]` Alert thresholds and ownership:
+- `[CONDITIONAL]` Approved exception details:
 
 ## Deployment And Configuration
 
-Describe the deployment path, CI/CD, configuration sources, and how manual one-offs are avoided.
+Guidance: describe CI/CD path and configuration strategy. Avoid manual one-off production steps.
+
+- `[MANDATORY]` Deployment pipeline path:
+- `[MANDATORY]` Configuration source of truth:
+- `[MANDATORY]` Manual step exceptions and retirement plan:
 
 ## Security And Credential Handling
 
-Describe access controls, MFA expectations, secret storage, logging, retention, and review status.
+Guidance: include security controls and review status with explicit ownership.
+
+- `[MANDATORY]` Access control model:
+- `[MANDATORY]` MFA and privileged access controls:
+- `[MANDATORY]` Secrets handling and rotation:
+- `[MANDATORY]` Security review status:
 
 ## Capacity Planning
 
-List expected user volume, throughput assumptions, and capacity limits.
+Guidance: state assumptions and expected limits, then define how they are validated.
+
+- `[MANDATORY]` Expected user volume:
+- `[MANDATORY]` Throughput assumptions:
+- `[MANDATORY]` Capacity limits and bottlenecks:
+- `[MANDATORY]` Validation method:
 
 ## Rollback Plan
 
-Describe go-back conditions, rollback steps, approvals, and data impact.
+Guidance: include trigger conditions, exact steps, and approver roles.
+
+- `[MANDATORY]` Go-back conditions:
+- `[MANDATORY]` Rollback steps:
+- `[MANDATORY]` Data impact and mitigation:
+- `[MANDATORY]` Authorization owner:
 
 ## Pilot Plan
 
-Describe pilot users, duration, scope, and measurable acceptance criteria.
+Guidance: pilot criteria must validate PRD acceptance criteria.
+
+- `[MANDATORY]` Pilot audience and scope:
+- `[MANDATORY]` Pilot duration:
+- `[MANDATORY]` Acceptance criteria mapping:
 
 ## Operational Handoff
 
-Describe support ownership, runbooks, dashboards, escalation contacts, and support hours.
+Guidance: operations team must be able to run the system without tribal knowledge.
+
+- `[MANDATORY]` Support owner:
+- `[MANDATORY]` Runbook and dashboard references:
+- `[MANDATORY]` Escalation path and support hours:
 
 ## Vendor Support Agreement
 
-Describe support tier, SLA, escalation path, and engineering access.
+Guidance: complete when a vendor is operationally critical.
+
+- `[CONDITIONAL]` Support tier:
+- `[CONDITIONAL]` SLA and response expectations:
+- `[CONDITIONAL]` Engineering escalation path:
 
 ## Ownership And Gate Approvals
 
-- Product Owner: TBD
-- Business or Commercial Owner: TBD
-- IT or Platform Owner: TBD
-- Security or Compliance: TBD
+Guidance: ownership must match stage requirements in `docs/cgr/PS.md`.
+
+- `[MANDATORY]` Product Owner:
+- `[MANDATORY]` Business or Commercial Owner:
+- `[MANDATORY]` IT or Platform Owner:
+- `[MANDATORY]` Security or Compliance:
 
 ## Post Go-Live Review
 
-Describe the 7-day review plan and what will be measured.
+Guidance: define the 7-day review and clear measurement criteria.
+
+- `[MANDATORY]` Review date window:
+- `[MANDATORY]` Metrics to evaluate:
+- `[MANDATORY]` Review owner:
 
 ## Customer Responsibility Matrix
 
-State whether customer-hosted infrastructure applies. If so, define responsibilities.
+Guidance: required only for customer-hosted responsibility splits.
+
+- `[CONDITIONAL]` Customer-hosted applicability:
+- `[CONDITIONAL]` Responsibility split and acceptance record:
 
 ## Supportability And SOP
 
-Describe how the system is operated without tribal knowledge.
+Guidance: describe how to operate, troubleshoot, and recover.
+
+- `[MANDATORY]` SOP and runbook references:
+- `[MANDATORY]` On-call and incident model:
 
 ## Platform Constraints
 
-Describe known constraints and confirm nothing is masking capacity or infrastructure issues.
+Guidance: disclose technical constraints and show how the design avoids masking underlying capacity issues.
+
+- `[MANDATORY]` Known constraints:
+- `[MANDATORY]` Constraint mitigation strategy:
+
+## Pre-Review Checklist -- ESD
+
+- [ ] Architecture model is complete and linked.
+- [ ] PRD requirements map to architecture and API contracts.
+- [ ] Security controls and review status are explicit.
+- [ ] Monitoring, alerting, and handoff ownership are defined.
+- [ ] Capacity and rollback sections have executable validation details.
+- [ ] Pilot criteria can verify PRD acceptance criteria.
+- [ ] No mandatory field remains unresolved.
+- [ ] ESD is ready for DVT gate review.

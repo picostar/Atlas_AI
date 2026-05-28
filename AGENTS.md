@@ -14,6 +14,8 @@ If the user opens with `atlas`, treat it as the same startup check-in request. I
 
 If the user uses a short launch phrase, such as `do it`, `lets go`, `let's go`, `go ahead`, `start`, `proceed`, `make it so`, `engage`, `hit it`, `punch it`, or `newproject`, treat it as authorization to begin work. Perform a brief ATLAS readiness check, confirm the next task is clear, then execute immediately unless a blocker requires a minimal clarification.
 
+If the user says `CGR`, `run CGR`, `atlas cgr`, or `do CGR from github picostar/Atlas_AI on folder "<localpath>"`, treat it as a CGR run against the named target folder. Use the source kit at `picostar/Atlas_AI` (local checkout if available, otherwise fetch the CGR prompt and templates from the GitHub default branch) and write all output under `<localpath>/docs/cgr/`. Do not modify the source kit folder during a remote-sourced run.
+
 If the user closes with a sign-off phrase, such as `good night`, `goodnight`, `goodbye`, `that's all`, or `we are done`, treat it as a request for a quick end-of-session check. Confirm whether the current state appears to follow ATLAS, call out obvious closeout gaps such as missing smoketest confirmation, missing UAT handoff or explicit non-UAT note, missing task-level commit, missing GitHub follow-up, or missing doc updates, and confirm whether any required git or GitHub follow-up step is still pending.
 
 Then read `ATLAS.md` for the default development process.
