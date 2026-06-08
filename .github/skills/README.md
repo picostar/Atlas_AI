@@ -8,6 +8,7 @@ This folder stores reusable agent skills for atlas_ai workflows.
 - `project-setup`
 - `powershell-style`
 - `git-workflow`
+- `requirements-writing`
 - `example-skill`
 
 ## Skill Authoring

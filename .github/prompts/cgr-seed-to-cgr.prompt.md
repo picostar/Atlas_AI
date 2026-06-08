@@ -34,28 +34,44 @@ Perform this workflow in order:
 - Skip `.git`, dependency folders, build output, binaries that cannot be read usefully, secrets, credentials, keys, tokens, and local environment files.
 - Identify missing information explicitly instead of inventing it.
 
-2. Build draft governance docs.
+2. Build discovery and evidence set.
+- Read project source materials first.
+- If network access is available, perform external market and competitor research for the target product category.
+- Capture product category, target segments, personas, market size assumptions or demand proxies, competitor and alternative-solution matrix, differentiation, adoption barriers, pricing or monetization signals when public, and source confidence.
+- Classify evidence as `Source Fact`, `Project Inference`, `External Best Practice`, or `Owner Required`.
+- Mark reasoned project inferences with `[DRAFT INFERENCE]` and a one-line basis note.
+- Do not invent approvals, owners, pricing decisions, contracts, customer commitments, vendor support terms, or production readiness claims.
+
+3. Build draft governance docs.
 - Create or refresh draft artifacts in `docs/cgr/`:
   - `MRD_<PROJECT>_v0-draft.md`
   - `PRD_<PROJECT>_v0-draft.md`
   - `ESD_<PROJECT>_v0-draft.md`
 - Use template structure from `MRD_TEMPLATE.md`, `PRD_TEMPLATE.md`, and `ESD_TEMPLATE.md` when available.
-- Infer what you can from available seed, reference, and source files. Keep unresolved details as `TBD`.
+- MRD must include market research, target segments, personas, competitive alternatives, differentiation, market sizing or demand proxy, business value, risks, adoption barriers, and success metrics.
+- PRD must include requirement IDs, priorities, MRD links, acceptance criteria, verification methods, non-functional requirements, UX states, instrumentation, data and API needs, dependencies, rollout constraints, supportability, and engineering handoff details needed for ESD.
+- Infer what you can from available seed, reference, source files, and public research. Keep unresolved details as `TBD` only for owner-required facts.
 - Mark unknowns as `TBD` and list clear open questions.
 
-3. Produce source mapping.
+4. Produce source mapping.
 - Update `docs/cgr/seed-to-docs-mapping.md` to show which seed, reference, and project source inputs mapped into each MRD, PRD, and ESD section.
-- Call out missing source evidence and unresolved assumptions.
+- This mapping is required during Bootstrap mode.
+- Call out external research sources, source confidence, missing source evidence, and unresolved assumptions.
 
-4. Run CGR review.
+5. Produce traceability mapping.
+- Create or update `docs/cgr/MRD-PRD-ESD-TRACEABILITY.md` when enough evidence exists to map market evidence to MRD needs, PRD requirement IDs, ESD sections, and validation evidence.
+- If there is not enough evidence, record the missing traceability inputs in `CGR-results.md`.
+
+6. Run CGR review.
 - Apply the governance evaluation process from `cgr.prompt.md` against the generated drafts.
 - Write or refresh `docs/cgr/CGR-results.md` using the required baseline output format.
+- Include market research quality, competitive awareness, differentiation clarity, PRD engineering readiness, and traceability completeness findings.
 
-5. Produce score output.
+7. Produce score output.
 - If scoring is in scope, derive and write `docs/cgr/score.md` from `CGR-results.md`.
 - Use the scoring extension in `cgr.prompt.md` and capture gate recommendation.
 
-6. Initialize remediation tracking.
+8. Initialize remediation tracking.
 - Create or refresh `docs/cgr/remediation-tracking.md` with rule-level gaps, owner placeholders, target dates, and status.
 - Prioritize unresolved Critical and High gaps first.
 

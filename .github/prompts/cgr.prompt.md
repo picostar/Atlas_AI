@@ -11,6 +11,7 @@ agent: "agent"
 
 - [How to Use](#how-to-use)
 - [External Source Policy](#external-source-policy)
+- [Discovery And Evidence Standard](#discovery-and-evidence-standard)
 - [Product Release Stages](#product-release-stages)
 - [Instructions](#instructions)
 - [Base Rules (Evaluation Criteria)](#base-rules-evaluation-criteria)
@@ -39,24 +40,47 @@ This prompt can be run from the Atlas_AI source kit against a new project folder
 
 ## External Source Policy
 
-Use external sources only to improve structure and quality where project files are incomplete.
+Use external sources to improve structure and quality where project files are incomplete, and to add market and competitive awareness when generating or improving MRD and PRD artifacts.
 
 Priority order:
 1. Project source materials in the target repository.
 2. Atlas process and CGR rules in this repository.
-3. Approved external references listed below.
+3. Public market, competitor, and product references discovered during the CGR run.
+4. Approved external references listed below.
 
 Approved external references for this prompt:
 - IETF RFC 2119 and RFC 8174 for clear requirement language and explicit requirement levels.
 - NIST SP 800-160 concepts for engineering rigor, trustworthiness, and lifecycle-driven requirements.
 - Cloud well-architected frameworks (Azure, AWS, Google Cloud) for non-functional architecture, operations, reliability, security, and cost tradeoffs.
-- Product management references for MRD and PRD structure only when product artifact shape is missing from repository sources.
+- ProductPlan, ProdPad, Aha, Atlassian, and Jama Software references for MRD and PRD structure, market analysis, competitive awareness, requirement quality, acceptance criteria, and traceability.
+- Public competitor websites, pricing pages, docs, changelogs, marketplaces, review sites, analyst summaries, and standards pages that are directly relevant to the target market.
 
 When external material is used:
+- Record source names or URLs, access date, and what claim or structure was used.
+- Assign source confidence as High, Medium, or Low.
+- Mark public market claims as external evidence, not confirmed project facts.
 - Prefer normative language (`MUST`, `SHOULD`, `MAY`) only when the requirement is truly enforceable in the target project context.
 - Mark externally derived assumptions clearly.
 - Do not replace project facts with generic external guidance.
 - Record source names or URLs in `External Source Notes`.
+
+---
+
+## Discovery And Evidence Standard
+
+Before authoring, improving, or evaluating MRD and PRD artifacts, build an evidence set.
+
+1. Read project source materials first.
+2. If network access is available, perform external market and competitor research for the target product category.
+3. If network access is unavailable or blocked, continue with repo-only evidence and record that limitation in `External Source Notes`.
+4. Separate every important claim into one of these evidence grades:
+   - `Source Fact` -- directly supported by project files.
+   - `Project Inference` -- reasoned from project files, marked with `[DRAFT INFERENCE]` and a basis note.
+   - `External Best Practice` -- supported by public references, marked with source and access date.
+   - `Owner Required` -- cannot be determined by the agent, such as named owners, signed approvals, contract terms, pricing decisions, vendor commitments, customer commitments, or confirmed scope decisions.
+5. Record research inputs in `docs/cgr/seed-to-docs-mapping.md` during Bootstrap mode.
+6. Prefer concise, decision-useful research over long copied excerpts. Summarize sources in original words.
+7. Never invent approvals, owners, pricing, contracts, vendor support terms, customer commitments, revenue claims, or production readiness claims.
 
 ---
 
@@ -103,7 +127,13 @@ You are reviewing the live solution documents for this repository for governance
 6. Determine workflow mode:
    - Bootstrap mode: no live MRD, PRD, or ESD exists in `docs/cgr/`.
    - Improve mode: one or more live MRD, PRD, or ESD artifacts already exist in `docs/cgr/`.
-7. In Bootstrap mode, generate best-practice draft artifacts in `docs/cgr/` before running evaluation:
+7. Build the discovery and evidence set before authoring or improving artifacts:
+   - Create a concise market research summary for MRD use, including product category, target segments, buyer and user personas, market size assumptions, adoption barriers, and business value signals.
+   - Create a concise competitive analysis summary for MRD and PRD use, including direct competitors, adjacent alternatives, current workarounds, key differentiators, switching costs, pricing or monetization signals when public, and known gaps.
+   - Create a PRD engineering-readiness summary, including feature behavior, requirement IDs, acceptance criteria, non-functional requirements, data or API needs, instrumentation, dependencies, rollout constraints, supportability, and open ESD inputs.
+   - Use public research when network access is available. If not available, record the limitation and continue with repo-only evidence.
+   - Do not use external research to claim confirmed customer demand, approved pricing, signed approvals, vendor commitments, or contracted support terms.
+8. In Bootstrap mode, generate best-practice draft artifacts in `docs/cgr/` before running evaluation:
    - Prefer existing naming conventions if obvious.
    - If naming is unknown, create draft files as:
      - `MRD_<PROJECT>_v0-draft.md`
@@ -118,40 +148,37 @@ You are reviewing the live solution documents for this repository for governance
    - When you infer content, mark the proposed answer with `[DRAFT INFERENCE]` and a one-line basis note.
    - Reserve `TBD` only for facts that can only come from the project owner, such as named owners, signed approvals, contract terms, or confirmed scope decisions.
    - The bootstrap goal is a usable v0 draft that a reviewer can correct, not a placeholder skeleton.
-8. In Improve mode, treat existing MRD, PRD, and ESD artifacts as the base and improve them using:
+   - Update `docs/cgr/seed-to-docs-mapping.md` with source-to-section coverage for MRD, PRD, and ESD. This mapping is required in Bootstrap mode.
+   - Create or update `docs/cgr/MRD-PRD-ESD-TRACEABILITY.md` when enough source evidence exists to map market needs to PRD requirement IDs and ESD design inputs.
+9. In Improve mode, treat existing MRD, PRD, and ESD artifacts as the base and improve them using:
    - current user instructions in chat,
    - new or changed materials in `docs/reference/`,
    - relevant new or changed project source files,
-   - updates from `seed.md` when relevant.
-9. Read every live project `.md` file in the selected `docs/cgr/` directory, except `README.md`, any results file, and any `*_TEMPLATE.md` file unless the user explicitly asks to review templates.
-10. Ignore `README.md` and any `*_TEMPLATE.md` file unless the user explicitly asks to review the template itself.
-11. Classify each live artifact by type based on its filename prefix: MRD, PRD, or ESD.
-12. Determine the current stage based on which live documents exist:
+   - updates from `seed.md` when relevant,
+   - external market and competitor research when available.
+10. Read every live project `.md` file in the selected `docs/cgr/` directory, except `README.md`, any results file, and any `*_TEMPLATE.md` file unless the user explicitly asks to review templates.
+11. Ignore `README.md` and any `*_TEMPLATE.md` file unless the user explicitly asks to review the template itself.
+12. Classify each live artifact by type based on its filename prefix: MRD, PRD, or ESD.
+13. Determine the current stage based on which live documents exist:
    - MRD + PRD only (no ESD) = project is in EVT
    - MRD + PRD + ESD = project is at DVT gate or beyond
-13. Evaluate each live document against the applicable rules for its type (see sections below).
-14. Enforce completeness before assigning status:
+14. Evaluate each live document against the applicable rules for its type (see sections below).
+15. Enforce completeness before assigning status:
    - Do not assign `Compliant` for a rule if any required field for that rule remains `TBD` or unresolved.
    - If a required field is unresolved but has partial evidence, assign `Partially`.
    - If required evidence is absent, assign `Missing`.
-15. Run cross-document consistency checks:
+16. Run cross-document consistency checks:
    - MRD problem statements and success criteria must align with PRD goals and acceptance criteria.
-   - PRD functional requirements and acceptance criteria must map to ESD architecture, APIs, pilot, and validation plan.
+   - MRD market evidence, customer needs, competitive gaps, and differentiation must map to PRD goals, requirement IDs, and acceptance criteria.
+   - PRD functional requirements, non-functional requirements, constraints, instrumentation, and acceptance criteria must map to ESD architecture, APIs, data model, pilot, validation plan, monitoring, rollback, and operational controls.
    - ESD pilot and operational plan must be capable of validating PRD acceptance criteria.
-16. In the Executive Summary, state which stage the project appears to be in and what's needed to advance.
-17. Before writing results, detect whether this is the first CGR run by checking whether `docs/cgr/CGR-results.md` already exists under the selected project root.
-18. Produce a single results file: `docs/cgr/CGR-results.md` under the selected project root.
-19. After the review:
+17. In the Executive Summary, state which stage the project appears to be in and what's needed to advance.
+18. Before writing results, detect whether this is the first CGR run by checking whether `docs/cgr/CGR-results.md` already exists under the selected project root.
+19. Produce a single results file: `docs/cgr/CGR-results.md` under the selected project root.
+20. After the review:
    - If this is the first CGR run, remove `docs/cgr/MRD_TEMPLATE.md` and `docs/cgr/PRD_TEMPLATE.md` if they are still present.
    - If a live ESD artifact exists and `docs/cgr/ESD_TEMPLATE.md` is still present, remove it as post-review cleanup.
    - If operating read-only, call out each stale template explicitly instead of deleting it.
-14. In the Executive Summary, state which stage the project appears to be in and what's needed to advance.
-15. Before writing results, detect whether this is the first CGR run by checking whether `docs/cgr/CGR-results.md` already exists under the selected project root.
-16. Produce a single results file: `docs/cgr/CGR-results.md` under the selected project root.
-17. After the review:
-   - If this is the first CGR run, remove `docs/cgr/MRD_TEMPLATE.md` and `docs/cgr/PRD_TEMPLATE.md` if they are still present
-   - If a live ESD artifact exists and `docs/cgr/ESD_TEMPLATE.md` is still present, remove it as post-review cleanup
-   - If operating read-only, call out each stale template explicitly instead of deleting it
 
 ---
 
@@ -214,6 +241,29 @@ MRD, PRD, and ESD must remain internally consistent. Market problems and success
 
 An MRD defines the market problem, users, and business justification. It is not an implementation document, so operational rules are evaluated for awareness, not full compliance.
 
+An MRD that passes quality review should be market-aware, evidence-backed, and useful to a Product Owner deciding whether the opportunity is worth pursuing. It must explain the market, customer need, competitive context, differentiation, and measurable business value before the PRD translates that intent into product behavior.
+
+### Expected MRD Sections
+
+If any section is missing or only contains placeholders, flag it in the compliance table or quality findings.
+
+| Section | What it must contain |
+|---|---|
+| Market Research And Evidence | Source facts, external research, access dates, source confidence, and project inferences |
+| Market Category And Opportunity | Product category, target market, market timing, and opportunity summary |
+| Target Segments | Buyer segments, user segments, adoption context, and segment priority |
+| Personas And Stakeholders | Buyer, user, administrator, approver, and affected internal roles |
+| Problem Statement | Clear problem, affected audience, current failure mode, and measurable impact |
+| Current Alternatives | Existing tools, manual workarounds, competitor products, and adjacent substitutes |
+| Competitive Analysis | Competitor matrix with strengths, weaknesses, pricing signals, integration posture, and source notes |
+| Differentiation And Positioning | Why this solution should win, how it compares, and what is intentionally not differentiated |
+| Market Sizing Or Demand Proxy | TAM/SAM/SOM or lightweight demand proxy with assumptions and confidence |
+| Business Model Or Value Hypothesis | Pricing, monetization, cost reduction, risk reduction, or strategic value assumptions |
+| Success Metrics | Market, adoption, revenue, efficiency, quality, risk, or customer outcome metrics |
+| Risks And Adoption Barriers | Switching costs, procurement, trust, data, workflow, regulatory, integration, or support risks |
+| Dependencies And Constraints | Vendor, platform, customer, operational, data, security, and capacity constraints |
+| Ownership And Approvals | Product Owner, Executive Sponsor, Business or Commercial Owner, and gate status |
+
 **Primary rules (must be addressed in the MRD):**
 
 | Rule | What to look for in an MRD |
@@ -235,11 +285,40 @@ An MRD defines the market problem, users, and business justification. It is not 
 **Not applicable to MRD (addressed in PRD or ESD):**
 Rules 3, 4, 7, 9, 10, 11, 14, 15
 
+**MRD quality findings must call out:**
+- Missing or weak market research.
+- Missing competitor or alternative-solution analysis.
+- Missing differentiation or positioning.
+- Market size, demand, or adoption claims without evidence or confidence notes.
+- Success metrics that do not connect to the stated market problem.
+
 ---
 
 ## PRD Evaluation (applies to PRD_*.md files)
 
 A PRD defines what the product does, acceptance criteria, personas, and dependencies. It bridges market requirements to engineering. Operational rules should at minimum be acknowledged with a plan to address them in the ESD.
+
+A PRD that passes quality review should be engineering-ready. It must define observable product behavior, requirement IDs, priorities, acceptance criteria, verification methods, non-functional expectations, dependencies, instrumentation, rollout constraints, and ESD inputs. It should not prescribe final architecture unless the architecture is already a confirmed constraint.
+
+### Expected PRD Sections
+
+If any section is missing or only contains placeholders, flag it in the compliance table or quality findings.
+
+| Section | What it must contain |
+|---|---|
+| MRD Linkage | Related MRD, source market needs, target segments, differentiation thesis, and success metrics |
+| Scope And Non-Goals | In scope, out of scope, release boundary, and explicit non-goals |
+| Personas And Use Cases | Actors, triggers, expected results, exception paths, and priority |
+| Functional Requirements | Requirement ID, priority, source MRD item, statement, rationale, acceptance criteria, and verification method |
+| Non-Functional Requirements | Performance, reliability, security, privacy, accessibility, observability, scalability, supportability, and cost expectations |
+| UX And Workflow Requirements | Key screens or flows, empty states, loading states, error states, permissions, and user-visible copy constraints |
+| Data And API Requirements | Entities, data lifecycle, API needs, integrations, auth expectations, rate limits, audit needs, and reporting needs |
+| Instrumentation And Analytics | Product metrics, event names or measurement needs, dashboards, and success metric mapping |
+| Capacity And Constraints | User volume, throughput, data volume, platform limits, compliance constraints, and known dependencies |
+| Pilot, UAT, And Rollout | Pilot audience, acceptance measures, UAT owner, rollout phases, rollback trigger, and go-live criteria |
+| Security And Operations Dependencies | Security review, support handoff, SOP, monitoring, vendor support, and operational ownership |
+| Engineering Handoff For ESD | Architecture questions, API and data model inputs, environment needs, monitoring needs, rollback requirements, pilot validation, and unresolved design decisions |
+| Open Questions | Owner-required decisions with owner, due date, and impact |
 
 **Primary rules (must be addressed in the PRD):**
 
@@ -265,6 +344,13 @@ A PRD defines what the product does, acceptance criteria, personas, and dependen
 
 **Not typically in PRD (addressed in ESD or SOP):**
 Rules 4, 5, 14
+
+**PRD quality findings must call out:**
+- Requirements without IDs, priorities, acceptance criteria, or verification methods.
+- Acceptance criteria that cannot be validated in pilot, UAT, automated tests, logs, analytics, or operational checks.
+- Missing non-functional requirements.
+- Missing data, API, integration, instrumentation, security, rollout, or supportability inputs needed for ESD.
+- Architecture decisions stated as requirements without a documented constraint or source.
 
 ---
 
@@ -335,6 +421,14 @@ Save the output as `docs/cgr/CGR-results.md` under the selected project root usi
 1. ...
 2. ...
 
+### Quality Findings
+
+- Market Research Quality: Strong / Partial / Weak / N/A
+- Competitive Awareness: Strong / Partial / Weak / N/A
+- Differentiation Clarity: Strong / Partial / Weak / N/A
+- PRD Engineering Readiness: Strong / Partial / Weak / N/A
+- Traceability Completeness: Strong / Partial / Weak / N/A
+
 ### Proposed Insert Text
 
 [Copy-ready text blocks for each gap]
@@ -358,7 +452,11 @@ vendor selection not covered anywhere, no document addresses rollback]
 
 ## Traceability Findings
 
-[State whether `docs/cgr/MRD-PRD-ESD-TRACEABILITY.md` exists and whether mappings are complete]
+[State whether `docs/cgr/MRD-PRD-ESD-TRACEABILITY.md` exists and whether mappings are complete from market evidence to MRD needs to PRD requirement IDs to ESD sections and validation evidence]
+
+## Research Findings
+
+[Summarize market research coverage, competitor coverage, differentiation evidence, source confidence, and research limitations]
 
 ## Assumptions and Open Questions
 
@@ -438,15 +536,17 @@ Use this when live MRD, PRD, and ESD artifacts are missing and draft governance 
 Bootstrap flow:
 1. Read `seed.md` if present.
 2. Read relevant source material in `docs/reference/` and relevant source files already in the project root or obvious source-material folders.
-3. Generate drafts in `docs/cgr/` using template structure:
+3. Build the discovery and evidence set, including external market and competitor research when network access is available.
+4. Generate drafts in `docs/cgr/` using template structure:
    - `MRD_<PROJECT>_v0-draft.md`
    - `PRD_<PROJECT>_v0-draft.md`
    - `ESD_<PROJECT>_v0-draft.md`
-4. Record source traceability in `docs/cgr/seed-to-docs-mapping.md`.
-5. Run baseline CGR review and produce `docs/cgr/CGR-results.md`.
-6. If scoring is enabled, derive `docs/cgr/score.md` from the latest results.
+5. Record source traceability in `docs/cgr/seed-to-docs-mapping.md`. This file is required during Bootstrap mode.
+6. Create or update `docs/cgr/MRD-PRD-ESD-TRACEABILITY.md` when enough evidence exists to map market evidence to MRD needs, PRD requirement IDs, ESD sections, and validation evidence.
+7. Run baseline CGR review and produce `docs/cgr/CGR-results.md`.
+8. If scoring is enabled, derive `docs/cgr/score.md` from the latest results.
 
-When source evidence is missing, mark it explicitly as `TBD` and list open questions. Do not invent approvals or operational claims.
+When source evidence is missing, mark it explicitly as `TBD` only for owner-required facts and list open questions. Use `[DRAFT INFERENCE]` for reasoned project inferences and record the basis. Do not invent approvals, owners, pricing, contracts, customer commitments, vendor support terms, or operational claims.
 
 ---
 
@@ -460,11 +560,12 @@ Iteration loop:
 1. Read current MRD, PRD, ESD artifacts plus `docs/cgr/CGR-results.md`.
 2. If present, read `docs/cgr/score.md` and identify score-impacting gaps.
 3. Prioritize unresolved Critical and High gaps first.
-4. Apply targeted document improvements.
-5. Re-run baseline CGR review and refresh `docs/cgr/CGR-results.md`.
-6. Refresh `docs/cgr/score.md` and compare score delta.
-7. Update `docs/cgr/remediation-tracking.md` with owner, status, and target dates.
-8. Repeat until target stage gate conditions are satisfied.
+4. Refresh the discovery and evidence set, including external market and competitor research when available.
+5. Apply targeted document improvements.
+6. Re-run baseline CGR review and refresh `docs/cgr/CGR-results.md`.
+7. Refresh `docs/cgr/score.md` and compare score delta.
+8. Update `docs/cgr/remediation-tracking.md` with owner, status, and target dates.
+9. Repeat until target stage gate conditions are satisfied.
 
 Recommended rerun triggers:
 - Before DVT gate decision.

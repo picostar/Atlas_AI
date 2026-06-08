@@ -211,6 +211,7 @@ This `README.md` is for the kit itself. Use it as the first document an agent re
 - `.github/skills/project-setup/SKILL.md` -- new project setup and repo bootstrapping
 - `.github/skills/powershell-style/SKILL.md` -- PowerShell scripting conventions
 - `.github/skills/git-workflow/SKILL.md` -- branch strategy, commit format, PR conventions
+- `.github/skills/requirements-writing/SKILL.md` -- MRD and PRD authoring quality, market research, requirements traceability
 - `.github/skills/example-skill/SKILL.md` -- template for creating new skills
 
 Skills reference existing kit files (ATLAS.md, copilot-instructions.md) rather than duplicating content. Use `-SkillsSource "path"` to copy skills from another location instead of the defaults.
