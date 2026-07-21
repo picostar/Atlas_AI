@@ -187,6 +187,26 @@ The startup check-in reviews current state, active devcycle work, and obvious bl
 - `accounts.md` -- committed non-secret cloud account and deployment destination binding. Keep credentials, keys, tokens, and secrets out of this file.
 - `secrets.md` -- local-only secrets note file stored at repo root and ignored by git. Keep credentials and keys here, not in committed files.
 
+### Seed And Discovery Review
+
+For a seeded project, review `seed.md`, relevant material under `docs/reference/`, and any discovery notes before drafting governance documents or proposing a devcycle.
+
+Interpret those inputs carefully:
+
+- `seed.md` is the owner's starting direction. It can be brief and incomplete.
+- Discovery material is exploratory evidence and a source of possible ideas. It may include alternatives, unanswered questions, assumptions, or concepts that will never become project work.
+- Discovery is not automatically an approved plan, roadmap, requirement, architecture decision, or delivery commitment.
+- Current user direction and approved live artifacts, such as the PRD and `docs/agile/devcycle.md`, control planned work.
+
+During review:
+
+1. Separate `Source Fact`, `[DRAFT INFERENCE]`, `[IDEA]`, and `Owner Required` content.
+2. Identify conflicting, duplicated, or superseded material.
+3. Present material choices as options until the owner selects a direction.
+4. Ask for an owner decision when an unresolved choice would materially change product scope, architecture, cost, risk, or schedule.
+5. Do not invent approval, priority, acceptance criteria, dates, production readiness, or customer commitment from discovery notes.
+6. Preserve traceability from each accepted requirement or design decision back to its source.
+
 This `README.md` is for the kit itself. Use it as the first document an agent reads when using `picostar/Atlas_AI` as a remote source kit.
 
 ### Scaffold
