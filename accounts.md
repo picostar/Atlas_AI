@@ -6,25 +6,25 @@ Do not store credentials, keys, tokens, passwords, connection strings, or deploy
 
 ## Status
 
-- Account binding status: Not set
-- Last reviewed: TBD
-- Owner: TBD
-- Notes: Fill in the provider sections that apply to this project. Leave unused providers as `TBD` or `Not used`.
+- Account binding status: Set for Azure MCAPS Foundry demo environment
+- Last reviewed: 2026-07-25
+- Owner: Tiannaumann MCAPS demo environment
+- Notes: Non-secret account binding only. Do not store Foundry keys, Claude keys, bearer tokens, passwords, or connection strings in this file.
 
 ## Azure
 
-- Tenant ID or name: TBD
-- Subscription ID: TBD
-- Subscription name: TBD
-- Resource group: TBD
-- Region: TBD
+- Tenant ID or name: c233258c-8c06-4734-abdd-e35de3419f97, Contoso, MngEnvMCAP529719.onmicrosoft.com
+- Subscription ID: aa0595d7-ce29-4cac-a3f0-38face8b3fda
+- Subscription name: ME-MngEnvMCAP529719-tiannaumann-1
+- Resource group: rg-hcsc-uw-poc
+- Region: eastus2
 - Function app name: TBD
 - Static Web App name: TBD
 - App Service name: TBD
 - Storage account name: TBD
 - Key Vault name: TBD
-- Other Azure resources: TBD
-- Deployment environment notes: TBD
+- Other Azure resources: Microsoft Foundry account fdy-hcsc-uw-poc; Foundry project idp-claude-code; existing model deployments gpt-4o-mini and gpt-4o; requested Anthropic quota for claude-sonnet-5.Azure at 10K TPM and claude-haiku-4-5.Azure at 5K TPM.
+- Deployment environment notes: Azure extension auth context is signed in as `admin@mngenvmcap529719.onmicrosoft.com`. Azure CLI context can differ from VS Code Azure extension context, so verify both before deployment or quota operations.
 
 ## AWS
 
@@ -56,8 +56,8 @@ Do not store credentials, keys, tokens, passwords, connection strings, or deploy
 
 ## GitHub
 
-- Owner or organization: TBD
-- Repository: TBD
+- Owner or organization: picostar
+- Repository: Atlas_AI source kit used for Atlas setup reference; HCSC project repository target TBD
 - Environment names: TBD
 - Deployment branch policy: TBD
 - Actions environment notes: TBD
