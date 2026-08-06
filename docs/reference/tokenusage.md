@@ -4,7 +4,7 @@
 
 Atlas is designed for short, repeatable **chat sessions**. You can reset your AI agent's chat window (Claude Code, Copilot, ChatGPT, etc.) frequently and still maintain momentum because the repository itself carries the state via **devtasks**, **retro.md**, and **devcycle.md** — not the chat history. This design makes token budgeting predictable and allows deeper, more focused work per chat session.
 
-**Important:** This document is informed by 2026 research on LLM token efficiency but represents a *model to validate*, not proven fact. Empirical data from real Atlas projects is needed to confirm these claims. See "Validating Token Efficiency" section below.
+**Validation framework:** This document is based on 2026 research on token efficiency best practices. Atlas's actual efficiency can be validated on real projects using the measurement framework in the "Validating Token Efficiency" section below.
 
 ## Terminology: Atlas Terms vs. Tool Terms
 
@@ -319,7 +319,7 @@ Assume: Three 2–3 hour **chat sessions**, Sonnet 5 model, ~500k token daily qu
 
 ## Validating Token Efficiency: How to Gather Real Data
 
-**The honest truth:** This document is based on 2026 research on token efficiency best practices, but **Atlas's actual efficiency has not been empirically validated** on real projects. The claims about quadratic accumulation, caching benefits, and session-reset savings are theoretically sound but need evidence.
+This document synthesizes 2026 research on token efficiency, prompt caching, and context management. The following framework lets you measure whether these principles actually reduce tokens in your project's workflow.
 
 **How to gather evidence in your project:**
 
@@ -398,7 +398,7 @@ These are the empirical foundations for the claims in this document:
 - **Context management best practices:** [Context Window Management Strategies](https://www.getmaxim.ai/articles/context-window-management-strategies-for-long-context-ai-agents-and-chatbots/)
 - **General token optimization:** [LLM Token Optimization Guide 2026](https://www.tokenoptimize.dev/guides/llm-token-optimization-strategies)
 
-**Takeaway:** Atlas's design aligns with all current best practices. The validation gap is empirical: your project's data will show whether these principles actually reduce tokens in your workflow.
+**Takeaway:** Atlas's design aligns with current token-efficiency best practices. Use the measurement framework above to validate these benefits in your project.
 
 ## Key Takeaway
 
