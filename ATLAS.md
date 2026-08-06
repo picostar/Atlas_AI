@@ -50,6 +50,7 @@ Every dev task needs a repeatable smoketest before it can be treated as complete
 - Pass/fail: the smoketest must have a clear outcome that can be recorded in the retrospective log
 - No skip: if the smoketest fails, the task is still open unless the failure is captured as an explicit blocker
 - Every DT and RDT entry must include a `Smoketest:` section
+- Full harness coverage (optional): when a repo maintains a standing regression/UAT harness and a DT or RDT changes deployed behavior, add or update rows in that harness and its coverage map before closeout. If no full-harness row is appropriate, record why in the retrospective log.
 
 ---
 
@@ -153,6 +154,7 @@ For AI-assisted workflows, the `eMOE` CU score assigned when a DT or RDT starts 
 - Smoke test with CLI commands or a script before moving on.
 - Every DT and RDT must include both `Smoketest:` and `UAT:` sections.
 - When the active stack pattern says API-first mode is enabled, every DT and RDT should include an API result when feasible.
+- If the repository maintains a full regression/UAT harness (see `docs/agile/testing/`), update its coverage when the task changes deployed behavior, or record in the retrospective log why no update applies.
 - Create one small, descriptive commit per completed DT or RDT when the repo uses git.
 - If the repository has a GitHub remote, push the branch and complete the corresponding GitHub follow-up after each completed DT or RDT.
 - Do not merge to `main` after every DT by default. Merge the pull request when the dev cycle, phase, or other reviewable task bundle is ready to close.
@@ -168,6 +170,7 @@ By default, a task is done only when:
 6. The retrospective log is updated.
 7. Current-state documentation is updated if the repo tracks it.
 8. The task is removed from the active list.
+9. If the repository maintains a full regression/UAT harness, its coverage is added or updated for deployed behavior changes, or the retrospective log records why no full-harness row applies.
 
 Optional repo-specific additions may include tagging, docs sync, deployment notes, or team notifications.
 

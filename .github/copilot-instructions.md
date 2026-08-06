@@ -56,6 +56,7 @@
 - Plain ASCII text only.
 - Standard markdown formatting is fine.
 - When generating or editing project files, follow the same rules.
+- When authoring prose docs, such as status, devcycle, retro, design notes, READMEs, and governance artifacts, also apply the writing-quality standard in `.github/tropes.md` to avoid common AI writing tells.
 
 ## Read Order
 1. `.github/copilot-instructions.md` -- this file
@@ -131,6 +132,7 @@
 - Smoke test each task with CLI commands or a script before considering it complete.
 - Every devtask and reset devtask must include both a `Smoketest:` section and a `UAT:` section. If a task is not user-facing, the `UAT:` section must explicitly say that it is not UAT-eligible and state the required internal validation.
 - When `patterns/stack-patterns/active-stack-pattern.md` says API-first mode is enabled, every devtask and reset devtask should include an API result when feasible, and `Smoketest:` should include API endpoint verification plus OpenAPI or Swagger documentation verification when feasible.
+- If the repository maintains a full regression/UAT harness (see `docs/agile/testing/README.md` if present), update its coverage before closeout when a devtask or reset devtask changes deployed behavior. If no full-harness row is appropriate, record why in the retrospective log.
 - After each completed devtask, create a task-level git commit.
 - After each completed devtask, if a GitHub remote exists, push the branch and perform the repo's GitHub follow-up step, typically creating or updating a pull request. If no remote exists, record that blocker clearly.
 - Do not merge to `main` after every devtask by default. Merge the pull request when the dev cycle, phase, or other reviewable task bundle is ready to close, after required status checks and review are complete.

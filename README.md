@@ -164,6 +164,7 @@ The startup check-in reviews current state, active devcycle work, and obvious bl
 - `ATLAS.md` -- default development process
 
 ### AI governance docs
+- `.github/tropes.md` -- writing quality standard, common AI writing tells to avoid
 - `.github/TOOLING-ASSUMPTIONS.md` -- capability and tooling assumptions
 - `.github/TOOL-CAPABILITY-MATRIX.md` -- portability matrix across agent environments
 - `.github/FRONTMATTER-SCHEMA.md` -- prompt and skill metadata contract
@@ -195,6 +196,7 @@ This `README.md` is for the kit itself. Use it as the first document an agent re
 - `docs/agile/backlog.md` -- future work queue
 - `docs/agile/status.md` -- current live state
 - `docs/agile/retro.md` -- completed work log
+- `docs/agile/testing/` -- optional regression and UAT harness, for projects whose cross-feature coverage has outgrown the inline `UAT:` field
 - `docs/cgr/README.md` -- governance document guidance
 - `docs/cgr/PS.md` -- optional project stages and document gates (EVT/DVT/PVT/GA)
 - `docs/reference/README.md` -- reference docs guidance
