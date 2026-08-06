@@ -112,6 +112,8 @@
 - For `newproject`, when setup uses a local source-kit folder in the target root, such as `atlas_ai` or `Atlas_AI`, treat that folder as temporary bootstrap input. Remove it after installation and do not stage or commit it.
 - For `newproject`, if the user references `github picostar/Atlas_AI`, interpret that as source-kit location only. Do not clone Atlas_AI into the target folder or a new subfolder unless the user explicitly asks to clone it. Apply bootstrap in the current target folder.
 - For `newproject`, if a user asks why legacy scripts were not used, explain that prompt-driven bootstrap is the supported path.
+- If the user says `atlas refresh models` or `refresh model tiers`, treat it as a request to refresh the `model-tier-advisor` skill's CU-to-model-tier mapping tables by consulting artificialanalysis.ai and ockbench.github.io (when web-fetch tools are available), update the `Verified` dates and any changed tier assignments, and report what changed.
+- When picking up a DT or RDT and assigning or confirming `eMOE`, if the active agent is a Claude model, OpenAI Codex/ChatGPT, or GitHub Copilot, apply the `model-tier-advisor` skill to state a suggested model tier for the task as advisory context.
 - Keep the response short and action-oriented. The purpose of these phrases is to move from readiness review into execution.
 
 ## Session Close And Sign-Off Behavior
@@ -120,6 +122,7 @@
 - If the repository appears to be a scaffold or template, do not treat placeholder agile docs as closeout failures unless the user was specifically editing those docs.
 - Confirm whether the working state appears ready to pause or close for the session. If there are unfinished closeout steps, call them out clearly and briefly.
 - Confirm the current devtask's commit and GitHub follow-up status as part of closeout. If the repo has no remote or the workflow cannot proceed, call that out explicitly.
+- When closing out a completed DT or RDT, include a brief self-estimated usage note (Light/Moderate/Heavy) rather than an exact token count, and point to the host tool's own precise usage feature (e.g. Claude Code's `/cost` command or status line) for exact figures.
 - Keep this sign-off response brief, operational, and focused on readiness, documentation state, and the next optional closeout action.
 
 ## Working Rules
@@ -164,3 +167,4 @@
 - Do not keep completed tasks in the active burn-down list using checkboxes, strikethroughs, or DONE labels.
 - Do not leave live project artifacts mixed with stale `*_TEMPLATE.md` files in `docs/cgr/`.
 - Do not store secrets in committed config or instruction files.
+- Do not report an exact token count as if read from a live API. Coding agents cannot query their own token meter mid-session; use a qualitative self-estimate instead (Light/Moderate/Heavy) based on observable signals, and point users to the host tool's own usage feature for precise numbers.

@@ -12,6 +12,7 @@ description: 'Manage dev tasks, devcycles, and retro logging. Use when creating 
 - Moving completed tasks from devcycle.md to retro.md
 - Updating status.md after shipping
 - Estimating effort in CU (Complexity Units)
+- Getting a model-tier suggestion when assigning eMOE, or logging a usage/model-fit note when recording aMOE (see the model-tier-advisor skill)
 
 ## Procedure
 
@@ -19,18 +20,20 @@ Refer to [ATLAS.md](../../../ATLAS.md) for the full process rules. Key steps:
 
 ### Starting a Task
 1. Pick the next DT from `docs/agile/devcycle.md`
-2. Implement the task
-3. Smoke test the change with CLI commands or a script
-4. Ensure the task entry includes both `Smoketest:` and `UAT:` sections
-5. Complete the `UAT:` section with either handoff instructions or an explicit non-UAT note
+2. Use the model-tier-advisor skill to state a suggested model tier based on eMOE, using the table for whichever AI tool is active
+3. Implement the task
+4. Smoke test the change with CLI commands or a script
+5. Ensure the task entry includes both `Smoketest:` and `UAT:` sections
+6. Complete the `UAT:` section with either handoff instructions or an explicit non-UAT note
 
 ### Completing a Task
 1. Record the outcome in `docs/agile/retro.md` with both eMOE and aMOE
-2. Create a task-level git commit
-3. If a GitHub remote exists, push the branch and perform the GitHub follow-up step
-4. Remove the task from `docs/agile/devcycle.md`
-5. Update `docs/agile/status.md` if the repo tracks live state
-6. If aMOE exceeds eMOE by 2 or more CU, capture why
+2. If using model-tier-advisor, add its optional Usage/Model Fit notes to the retro entry
+3. Create a task-level git commit
+4. If a GitHub remote exists, push the branch and perform the GitHub follow-up step
+5. Remove the task from `docs/agile/devcycle.md`
+6. Update `docs/agile/status.md` if the repo tracks live state
+7. If aMOE exceeds eMOE by 2 or more CU, capture why
 
 ### Inserting a Reset Task
 1. Add under a `Reset` section in devcycle.md
@@ -62,5 +65,6 @@ Refer to [ATLAS.md](../../../ATLAS.md) for the full process rules. Key steps:
 - Every completed task needs a task-level git commit
 - If a GitHub remote exists, every completed task needs a GitHub follow-up step
 - Break down 8-CU tasks when practical
+- Usage and Model Fit notes in retro.md are optional additions from the model-tier-advisor skill; do not block task completion on them
 - Before asking the user for credentials, tokens, keys, or other secret values, check `secrets.md` at the repository root first if it exists
 - Do not place secrets in any other file by default; if the user requests an override, warn first and proceed only after confirmation

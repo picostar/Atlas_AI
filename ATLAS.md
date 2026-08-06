@@ -138,6 +138,14 @@ Use Complexity Units, or CU, to estimate decision complexity, unknowns, and depe
 - If `aMOE` exceeds `eMOE` by 2 or more, capture why.
 - Break down 8-CU tasks when practical.
 
+### Model Tier Fit (Advisory)
+
+For AI-assisted workflows, the `eMOE` CU score assigned when a DT or RDT starts can suggest a starting model tier (e.g. Haiku, Sonnet, Opus for Claude; Luna, Terra, Sol for GPT-5.6; mini, base, strong for GitHub Copilot), and the `aMOE` CU score recorded at completion can confirm whether that tier held up. This is advisory only, it never overrides a user's explicit model choice, and it only applies when the active agent is a Claude model, OpenAI Codex/ChatGPT, or GitHub Copilot.
+
+- See the `model-tier-advisor` skill for the per-provider CU-to-tier mapping tables, tier suggestion procedure, and how to consult external benchmarks on-demand.
+- Coding agents cannot query their own live token count mid-session. Do not report an exact token figure as if read from an API. Use a qualitative usage estimate instead (e.g. Light, Moderate, Heavy) based on observable signals such as tool-call count, files touched, and turns, and point users to the host tool's own usage feature (e.g. Claude Code's `/cost` command or status line) for precise numbers.
+- Recording `Usage:` and `Model Fit:` in a retro entry is optional. See the Retro Entry Format below.
+
 ### Task Lifecycle
 
 - Keep only active work in `devcycle.md`.
@@ -225,7 +233,11 @@ What was done: ...
 Issues hit: ...
 Decisions made: ...
 Lessons learned: ...
+Usage: <Light|Moderate|Heavy> -- self-estimated (optional, see model-tier-advisor skill)
+Model Fit: <tier suggested at start> vs <tier actually used>; <matched|escalated|downgraded> (optional, see model-tier-advisor skill)
 ```
+
+`Usage:` and `Model Fit:` are optional additions from the `model-tier-advisor` skill. They apply only when working with a Claude, Codex/ChatGPT, or Copilot model and never block Definition of Done.
 
 ### Time Tracking For aMOE Analysis
 

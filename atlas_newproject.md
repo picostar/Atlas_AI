@@ -46,20 +46,25 @@ Do not run platform-specific bootstrap scripts. Use a prompt-driven workflow, as
 6. If the user replies with "use defaults" or equivalent, apply defaults and continue. Otherwise summarize captured answers and ask for a quick confirmation before execution.
    - Completion gate: do not output a final validation summary or next-step options until setup questionnaire answers are captured and applied, unless blocked.
    - Recovery mode: if a prior run already copied some files, for example only prompt files, without collecting setup answers, ask only the missing questions and continue execution to completion in this same run.
-7. Install the selected Atlas_AI files from the source kit into the target root. Include root instruction files, reusable prompts, skills when needed, and optional scaffold or governance docs according to the selected setup. Prefer merging and preserving project-specific content over overwriting user-authored files. Execute this in the current target folder, not in a newly cloned subfolder.
+7. Install the selected Atlas_AI files from the source kit into the target root. Distinguish two skill categories:
+   - Base-process skills (`devcycle-management`, `git-workflow`, `requirements-writing`, `model-tier-advisor`, `project-setup`, `powershell-style`) are installed unconditionally on every bootstrap, regardless of questionnaire answers.
+   - Stack/technology-specific skills (`azure-deploy`) are installed only when the corresponding stack pattern or setup answer calls for them.
+   Include root instruction files, reusable prompts, and optional scaffold or governance docs according to the selected setup. Prefer merging and preserving project-specific content over overwriting user-authored files. Execute this in the current target folder, not in a newly cloned subfolder.
+7a. After base-process skills are installed, if web-fetch tools are available, attempt an on-demand refresh of `model-tier-advisor`'s benchmark tables per its External Benchmark Sources trigger (a fresh bootstrap install is one of the listed triggers); if unavailable or if the refresh fails, note in the setup summary that a future `atlas refresh models` run is recommended once network access exists.
 8. If a stack pattern is selected, create `patterns/stack-patterns/active-stack-pattern.md` from the chosen template and record API-first posture there.
 9. If a UX pattern is selected, create `patterns/ux-patterns/active-ux-pattern.md` from the chosen template.
 10. Remove the temporary source-kit folder from the target root after installation when it is local to the target project, for example `atlas_ai` or `Atlas_AI`. Do not stage or commit that source-kit folder.
 11. Ensure `accounts.md` exists as the committed non-secret cloud account binding file and `secrets.md` exists as the local-only secrets note when scaffold is included.
 12. If git is absent and the user keeps the default bootstrap behavior, initialize git, copy `.gitignore`, and create an initial commit containing installed project artifacts only. If git already exists, adopt it and stage only the approved Atlas project artifacts.
 13. If the user asks for GitHub repository creation, require the GitHub owner or org value and explain any missing CLI or auth prerequisite instead of inventing one.
-14. Validate with targeted file-presence checks, parser checks, or text searches. Summarize:
+15. Validate with targeted file-presence checks, parser checks, or text searches. Summarize:
    - setup questionnaire answers captured, and whether defaults were explicitly used
-   - files installed
+   - files installed, including all base-process skills
    - pre-existing user material preserved under `docs/reference/preexisting-root/`
    - whether temporary source-kit folder cleanup was completed
    - whether git was adopted or initialized
    - optional components included
+   - whether `model-tier-advisor` benchmark tables were refreshed, or if deferred, a note that `atlas refresh models` is recommended when network access is available
    - unresolved manual follow-up
 
 ## Default Decisions

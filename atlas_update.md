@@ -57,11 +57,12 @@ Planning phase only: do not edit files, run migration scripts, move folders, ren
    - require post-move reference checks before closeout
 11. Present a concise plan-first update package that includes:
    - file-by-file copy and merge actions from SOT
-   - file-by-file preserve and no-touch list
+   - file-by-file preserve and no-touch list. When the source kit contains a skill folder not present locally (for example a newly introduced `model-tier-advisor`), the plan must explicitly propose adding it as a `copy` action — new skill folders are not to be silently omitted from the compatibility matrix as "not applicable."
    - explicit migration candidates marked `needs approval`
    - compatibility matrix and known limits
    - rollback path proposal to use before execution
    - deterministic validation checklist with pass criteria
+   - if `model-tier-advisor` is being added or updated by this run, optionally include a follow-up note that refreshing its benchmark tables (via `atlas refresh models`) is recommended once the update is approved and applied
 12. Ask only the minimum targeted questions needed to avoid losing project-specific content.
 13. Stop after presenting the plan and questions. Wait for explicit human approval before making changes.
 14. After approval and before edits, create a rollback path and confirm it is usable:

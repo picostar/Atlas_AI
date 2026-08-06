@@ -14,6 +14,7 @@ Goal: TBD
 ### DT1 -- Example Devtask
 - Goal: Replace this with the real task goal.
 - eMOE: 2 CU
+- Suggested Model: Optional. Derived from eMOE via the model-tier-advisor skill, for example "Claude Sonnet 5 (eMOE 2 CU)". Applies to Claude, Codex/ChatGPT, and Copilot model families only; omit for non-AI workflows.
 - API Result: If feasible, describe API endpoints or contract changes. If not feasible, say No API change.
 - Smoketest: Exact CLI command or script path, plus the expected pass result. When API Result is in scope, include endpoint verification and OpenAPI or Swagger documentation verification.
 - UAT: Either state what the user should test, or say `Not UAT-eligible` and name the required internal validation.
@@ -27,6 +28,7 @@ Reset devtasks use the `RDT` prefix and are inserted ahead of the remaining unfi
 ### RDT1 -- Example Reset Devtask
 - Goal: Replace or remove.
 - eMOE: 1 CU
+- Suggested Model: Optional. Derived from eMOE via the model-tier-advisor skill, for example "Claude Haiku 4.5 (eMOE 1 CU)". Applies to Claude, Codex/ChatGPT, and Copilot model families only; omit for non-AI workflows.
 - API Result: If feasible, describe API endpoints or contract changes. If not feasible, say No API change.
 - Smoketest: Exact CLI command or script path, plus the expected pass result. When API Result is in scope, include endpoint verification and OpenAPI or Swagger documentation verification.
 - UAT: Either state what the user should test, or say `Not UAT-eligible` and name the required internal validation.
@@ -40,3 +42,4 @@ Reset devtasks use the `RDT` prefix and are inserted ahead of the remaining unfi
 - Use `RDT` for reset devtasks that interrupt the current cycle.
 - Create one git commit per completed `DT` or `RDT` when the repo uses git.
 - If the repo has a GitHub remote, push the branch and update or create the related pull request after each completed `DT` or `RDT`.
+- Suggested Model is optional and advisory. Populate it from eMOE using the model-tier-advisor skill when the active agent is a Claude, Codex/ChatGPT, or Copilot model; leave it out otherwise.
