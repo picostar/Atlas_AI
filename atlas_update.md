@@ -62,7 +62,7 @@ Planning phase only: do not edit files, run migration scripts, move folders, ren
    - compatibility matrix and known limits
    - rollback path proposal to use before execution
    - deterministic validation checklist with pass criteria
-   - if `model-tier-advisor` is being added or updated by this run, optionally include a follow-up note that refreshing its benchmark tables (via `atlas refresh models`) is recommended once the update is approved and applied
+   - if `model-tier-advisor` is being added or updated by this run, optionally include a follow-up note that refreshing its benchmark tables (via `atlas refresh models`) is recommended once the update is approved and applied. If the target project's `devcycle.md` already has active DT/RDT entries, also explicitly propose backfilling `Suggested Model` onto those existing entries as part of the approved changes, not just note a future benchmark refresh.
 12. Ask only the minimum targeted questions needed to avoid losing project-specific content.
 13. Stop after presenting the plan and questions. Wait for explicit human approval before making changes.
 14. After approval and before edits, create a rollback path and confirm it is usable:

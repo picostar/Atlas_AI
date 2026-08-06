@@ -20,7 +20,7 @@ Refer to [ATLAS.md](../../../ATLAS.md) for the full process rules. Key steps:
 
 ### Starting a Task
 1. Pick the next DT from `docs/agile/devcycle.md`
-2. Use the model-tier-advisor skill to state a suggested model tier based on eMOE, using the table for whichever AI tool is active
+2. Use the model-tier-advisor skill to state a suggested model tier based on eMOE, using the table for whichever AI tool is active. If other active DT/RDT entries in `devcycle.md` also lack a `Suggested Model` field, apply the same suggestion to all of them in this pass (see model-tier-advisor's backfill procedure), not only the current task.
 3. Implement the task
 4. Smoke test the change with CLI commands or a script
 5. Ensure the task entry includes both `Smoketest:` and `UAT:` sections

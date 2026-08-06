@@ -10,6 +10,7 @@ argument-hint: 'Optional DT/RDT ID, eMOE CU value, or "refresh" for a benchmark 
 
 - Starting a DT or RDT and `eMOE` (CU) has just been assigned or confirmed
 - Completing a DT or RDT and `aMOE` (CU) is being recorded in retro.md
+- This skill becomes newly available or newly noticed in a project that already has active DT/RDT entries in `devcycle.md` missing a `Suggested Model` field (backfill scenario -- see below)
 - The user asks which model to use, about context size, token cost, or usage for a task
 - The user says `atlas refresh models` or `refresh model tiers` to refresh the benchmark tables
 - A new-project bootstrap (`newproject`/`atlas project`) installs this skill into a target repo
@@ -34,6 +35,15 @@ argument-hint: 'Optional DT/RDT ID, eMOE CU value, or "refresh" for a benchmark 
 5. If the task mixes traits of two CU bands (e.g. mostly mechanical but touching security-sensitive code), say so and suggest the higher tier.
 6. Check the table's `Verified` date. If it is more than ~60 days old, or if you believe a named model is deprecated in the host tool's picker, note that and optionally consult the external benchmark sources (see below).
 7. Treat the suggestion as advisory. If the model is already fixed for the session, note it for the record instead of repeating it as a requirement.
+
+### Backfilling Pre-Existing Active Tasks
+
+When this skill is applied for the first time in a session and `docs/agile/devcycle.md` has other active DT/RDT entries besides the one currently being discussed that lack a `Suggested Model` field:
+
+1. Apply the same suggestion procedure (read eMOE, look up CU-to-tier table for the active tool, state the suggestion) to every active entry missing the field in the same pass, not only the task named by the user.
+2. State each suggestion briefly: task ID, eMOE value, suggested tier, and one-line reason. Example: "DT51 -- 3 CU, suggested tier: GPT-5.6 Terra (minor ambiguity in cross-feature routing)."
+3. Note that all suggestions are advisory and can be edited before task start.
+4. This backfill only needs to happen once per project (or once per newly-detected gap); once every active entry has a `Suggested Model` field, treat new and future entries the normal single-task way.
 
 ### At Task Completion (Usage Report And Model Fit)
 
