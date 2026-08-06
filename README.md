@@ -9,7 +9,7 @@ In current developer terminology, atlas_ai is best described as an agentic workf
 It gives you:
 - root-level AI instruction files for Copilot, Claude Code, ChatGPT, and Codex-style agents
 - reusable ATLAS prompt files for realignment and closeout checks
-- a default workflow for task execution and delivery tracking
+- a default workflow for task execution and delivery tracking, with per-tool model-tier suggestions and qualitative token-usage tracking
 - optional release stages and document gates for formal projects
 - optional compliance and governance review prompt
 - a starter docs scaffold for active work, backlog, status, retro, project docs, reference docs, stack-baseline guidance, and UX-baseline guidance
@@ -146,9 +146,10 @@ Use these short chat phrases when you want the agent to run the standard ATLAS f
 - `hi`, `hello`, `good morning`, `goodmorning`, or `ready to start` -- also run the startup project check-in flow.
 - `CGR` or `run CGR` -- run the governance workflow from `.github/prompts/cgr.prompt.md`, bootstrapping `docs/cgr/` from seed, reference, or project source files when needed, and write `docs/cgr/CGR-results.md`.
 - `newproject` or `atlas project` -- run the standalone new-project bootstrap prompt, preserving pre-existing user material under `docs/reference/` and adopting `.git` when present.
+- `atlas refresh models` or `refresh model tiers` -- refresh the model-tier-advisor skill's CU-to-tier mappings by consulting current benchmarks (artificialanalysis.ai, ockbench.github.io) and update the Verified dates. Useful when tier tables are stale or a model is deprecated.
 - `good night`, `goodnight`, `goodbye`, `that's all`, or `we are done` -- run the end-of-session closeout check.
 
-The startup check-in reviews current state, active devcycle work, and obvious blockers. The closeout check reviews smoketest, UAT, retro, status, commit, and GitHub follow-up readiness before the session ends.
+The startup check-in reviews current state, active devcycle work, and obvious blockers. The closeout check reviews smoketest, UAT, retro, status, commit, and GitHub follow-up readiness before the session ends. The model-tier refresh updates per-tool tier recommendations based on current market offerings and token-efficiency benchmarks.
 
 ## Included Files
 
@@ -208,6 +209,7 @@ This `README.md` is for the kit itself. Use it as the first document an agent re
 ### Skills
 - `.github/skills/azure-deploy/SKILL.md` -- Azure Functions and SWA deployment procedures
 - `.github/skills/devcycle-management/SKILL.md` -- DT/RDT task lifecycle, retro logging, CU scoring
+- `.github/skills/model-tier-advisor/SKILL.md` -- per-tool model tier suggestion (Claude/Codex/Copilot), qualitative token-usage tracking, external benchmark refresh
 - `.github/skills/project-setup/SKILL.md` -- new project setup and repo bootstrapping
 - `.github/skills/powershell-style/SKILL.md` -- PowerShell scripting conventions
 - `.github/skills/git-workflow/SKILL.md` -- branch strategy, commit format, PR conventions
