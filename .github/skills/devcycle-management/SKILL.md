@@ -46,13 +46,15 @@ Refer to [ATLAS.md](../../../ATLAS.md) for the full process rules. Key steps:
 
 ## CU Scale
 
-| CU | Meaning |
-|---|---|
-| 1 | Single known step, little decision risk |
-| 2 | Multi-step, known path |
-| 3 | Multi-step, minor unknowns or dependencies |
-| 5 | Research plus implementation, real decision risk |
-| 8 | High uncertainty, multiple dependencies, likely reshaping |
+| CU | Meaning | Expected Usage |
+|---|---|---|
+| 1 | Single known step, little decision risk | Light |
+| 2 | Multi-step, known path | Light |
+| 3 | Multi-step, minor unknowns or dependencies | Moderate |
+| 5 | Research plus implementation, real decision risk | Moderate |
+| 8 | High uncertainty, multiple dependencies, likely reshaping | Heavy |
+
+Expected Usage is a rough correlation based on typical CU-to-effort patterns, not a forecast or token estimate. The actual bucket is confirmed qualitatively at task completion using the model-tier-advisor skill's Usage Self-Estimation Method, based on observed signals (tool calls, files touched, turns).
 
 ## Rules
 

@@ -31,7 +31,7 @@ argument-hint: 'Optional DT/RDT ID, eMOE CU value, or "refresh" for a benchmark 
 1. Read the task's `eMOE: X CU` value from `docs/agile/devcycle.md`.
 2. Identify which AI tool is active by checking which pointer file (`CLAUDE.md`, `AGENTS.md`/`CHATGPT.md`, `.github/copilot-instructions.md`) is in play.
 3. Look up `X` CU in the appropriate CU-to-Model-Tier table below.
-4. State the suggested tier and a one-line reason. Example: "eMOE is 3 CU (multi-step, minor unknowns) -- suggested tier: Claude Sonnet 5."
+4. State the suggested tier and a one-line reason. Example: "eMOE is 3 CU (multi-step, minor unknowns) -- suggested tier: Claude Sonnet 5." The CU value's Expected Usage column (see ATLAS.md's Measure of Effort table) gives a rough usage ballpark for the task; mention it only if useful context, not as a required addition to every task entry.
 5. If the task mixes traits of two CU bands (e.g. mostly mechanical but touching security-sensitive code), say so and suggest the higher tier.
 6. Check the table's `Verified` date. If it is more than ~60 days old, or if you believe a named model is deprecated in the host tool's picker, note that and optionally consult the external benchmark sources (see below).
 7. Treat the suggestion as advisory. If the model is already fixed for the session, note it for the record instead of repeating it as a requirement.
@@ -130,6 +130,7 @@ Do NOT consult these sources automatically on every task start. If web-fetch too
 - Never report an exact token count; always self-estimate qualitatively.
 - Always check the `Verified` date before stating a specific model name, and prefer the host tool's live picker (or the external benchmark sources, on the trigger conditions above) over a stale table entry.
 - Keep the CU meanings in each table identical to ATLAS.md and devcycle-management; if they drift, treat ATLAS.md as authoritative and fix this file.
+- The CU-linked Expected Usage bucket is a rough correlation defined once on the CU scale table, not a per-task estimate to restate in devcycle.md; never present it as a token forecast.
 - `Usage:` and `Model Fit:` retro lines are optional; omitting them does not block Definition of Done in ATLAS.md.
 - When the active agent is not Claude, Codex/ChatGPT, or Copilot (e.g. Gemini, Grok, DeepSeek), say "tier mapping not yet verified for this tool" rather than inventing model names.
 - Before asking the user for credentials, tokens, keys, or other secret values, check `secrets.md` at the repository root first if it exists.

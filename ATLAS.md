@@ -120,13 +120,15 @@ POC work, internal tools, and exploratory development do not need `docs/cgr/PS.m
 
 Use Complexity Units, or CU, to estimate decision complexity, unknowns, and dependency risk.
 
-| CU | Meaning |
-|---|---|
-| 1 | Single known step with little decision risk |
-| 2 | Multi-step work with a known path |
-| 3 | Multi-step work with minor unknowns or dependencies |
-| 5 | Research plus implementation with real decision risk |
-| 8 | High uncertainty, multiple dependencies, likely reshaping during execution |
+| CU | Meaning | Expected Usage |
+|---|---|---|
+| 1 | Single known step with little decision risk | Light |
+| 2 | Multi-step work with a known path | Light |
+| 3 | Multi-step work with minor unknowns or dependencies | Moderate |
+| 5 | Research plus implementation with real decision risk | Moderate |
+| 8 | High uncertainty, multiple dependencies, likely reshaping during execution | Heavy |
+
+Expected Usage is a rough correlation based on typical CU-to-effort patterns, not a forecast or token estimate. The actual bucket is confirmed qualitatively at task completion using the model-tier-advisor skill's Usage Self-Estimation Method, based on observed signals (tool calls, files touched, turns).
 
 - `CU` means Complexity Unit. It is the scoring unit for effort in this process.
 - `CU` replaces the old idea of MOE as mostly human time.
