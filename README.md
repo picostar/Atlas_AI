@@ -19,11 +19,12 @@ It gives you:
 If you are an AI coding agent using `picostar/Atlas_AI` as a remote source kit, do this before reading the full README:
 
 1. Identify the requested flow from the user's prompt.
-2. For `atlas project` or `newproject`, read `atlas_newproject.md`, then ask the required setup questions before changing files.
+2. For `atlas project`, `newproject`, any request to set up an Atlas project, or a setup request that references `github/picostar/Atlas_AI` or this README, read `.atlas/install-manifest.json` and `atlas_newproject.md`, then ask the required setup questions before changing files.
 3. For `atlas update`, read `atlas_update.md`, compare the target project to this kit, and produce a plan before changing files.
 4. For `CGR` or `run CGR`, read `.github/prompts/cgr.prompt.md`, bootstrap `docs/cgr/` when needed, and write `docs/cgr/CGR-results.md`.
 5. Treat `picostar/Atlas_AI` as a source kit reference. Work in the current target folder in place, do not clone Atlas_AI into a subfolder, and remove any temporary `atlas_ai` or `Atlas_AI` source-kit folder after setup.
-6. If the requested flow is unclear, read only the `Start Here` and `Short Prompt Cheatsheet` sections below before asking a clarifying question.
+6. For new-project setup, write `.atlas/setup.json` and run the required validation gate before reporting success.
+7. If the requested flow is unclear, read only the `Start Here` and `Short Prompt Cheatsheet` sections below before asking a clarifying question.
 
 ## Start Here
 
@@ -39,6 +40,8 @@ Use this when the folder is new or not already Atlas-managed. Existing files are
 Use github picostar/Atlas_AI, read README first, and run atlas project here.
 ```
 
+Natural setup requests such as `set this Atlas project up with github/picostar/Atlas_AI readme.md` invoke the same workflow.
+
 Interpretation: use `picostar/Atlas_AI` as a source kit reference and bootstrap the current folder in place. Do not clone Atlas_AI into a `newproject` subfolder.
 
 Equivalent short form:
@@ -47,11 +50,13 @@ Equivalent short form:
 newproject
 ```
 
-The agent should use `atlas_newproject.md`, ask explicit setup questions first (scaffold, git init, PS, CGR, stack, UX, API-first when stack is selected, GitHub repo), preserve existing user files under `docs/reference/preexisting-root/`, install the selected Atlas files into the current target folder, remove any temporary local source-kit folder such as `atlas_ai` or `Atlas_AI`, and initialize or adopt git.
+The agent should use `.atlas/install-manifest.json` and `atlas_newproject.md`, ask explicit setup questions first (scaffold, git init, PS, CGR, stack, UX, API-first when stack is selected, GitHub repo), preserve existing user files under `docs/reference/preexisting-root/`, install the selected Atlas files into the current target folder, write `.atlas/setup.json`, remove any temporary local source-kit folder such as `atlas_ai` or `Atlas_AI`, initialize or adopt git, and pass Atlas validation.
 
 The run is not complete if it only installs prompt files and reports diagnostics. If that partial state occurs, the agent should ask the missing setup questions and continue to completion.
 
-The setup questionnaire should present stack and UX templates as numbered choices, not ask for a freeform template filename. If a stack pattern is selected, include an API-first yes or no question and state that API-first expects API results when feasible plus endpoint and OpenAPI or Swagger verification in smoketests when feasible.
+The setup questionnaire generates stack and UX choices from the manifest catalogs instead of maintaining a second hardcoded list. It accepts a number, manifest ID, or label, not a freeform template filename. If a stack pattern is selected, include an API-first yes or no question and state that API-first expects API results when feasible plus endpoint and OpenAPI or Swagger verification in smoketests when feasible.
+
+Setup is complete only after `pwsh scripts/atlas-validate.ps1 -TargetPath <target>` passes, or the equivalent checks in `atlas_validate.md` pass when terminal execution is unavailable.
 
 
 ### CGR From Marketing Or Source Files
@@ -146,6 +151,7 @@ Use these short chat phrases when you want the agent to run the standard ATLAS f
 - `hi`, `hello`, `good morning`, `goodmorning`, or `ready to start` -- also run the startup project check-in flow.
 - `CGR` or `run CGR` -- run the governance workflow from `.github/prompts/cgr.prompt.md`, bootstrapping `docs/cgr/` from seed, reference, or project source files when needed, and write `docs/cgr/CGR-results.md`.
 - `newproject` or `atlas project` -- run the standalone new-project bootstrap prompt, preserving pre-existing user material under `docs/reference/` and adopting `.git` when present.
+- `atlas validate` -- validate a new-project installation against `.atlas/install-manifest.json` and `.atlas/setup.json` without changing it.
 - `atlas refresh models` or `refresh model tiers` -- refresh the model-tier-advisor skill's CU-to-tier mappings by consulting current benchmarks (artificialanalysis.ai, ockbench.github.io) and update the Verified dates. Useful when tier tables are stale or a model is deprecated.
 - `good night`, `goodnight`, `goodbye`, `that's all`, or `we are done` -- run the end-of-session closeout check.
 
@@ -170,9 +176,11 @@ The startup check-in reviews current state, active devcycle work, and obvious bl
 - `.github/FRONTMATTER-SCHEMA.md` -- prompt and skill metadata contract
 - `.github/INSTRUCTION-MAINTENANCE.md` -- instruction update and drift rules
 
-### Workflow prompts (installed by default)
+### Core workflow prompts (installed by default)
 - `.github/prompts/atlas-realign.prompt.md` -- ATLAS health check and realignment prompt
 - `.github/prompts/atlas-closeout.prompt.md` -- ATLAS closeout readiness prompt
+
+### CGR workflow prompts (installed only when CGR is selected)
 - `.github/prompts/cgr.prompt.md` -- compliance and governance review workflow
 - `.github/prompts/cgr-seed-to-cgr.prompt.md` -- generate draft MRD PRD ESD from seed, reference, or project source material, then run CGR outputs
 - `.github/prompts/cgr-iterate.prompt.md` -- iterate and improve governance docs using CGR-results and score
@@ -180,9 +188,14 @@ The startup check-in reviews current state, active devcycle work, and obvious bl
 ### Standalone root prompts
 - `atlas_newproject.md` -- standalone root-level guided new-project bootstrap prompt, kept outside the installed prompt catalog so users can copy it into a target project or say `newproject`
 - `atlas_update.md` -- standalone root-level guided legacy atlas update planning prompt, kept outside the installed prompt catalog so users can copy it and say `atlas update` in existing projects
+- `atlas_validate.md` -- standalone read-only validator prompt, used automatically after new-project setup and manually through `atlas validate`
 
 ### Prompt-First Setup Support
 - `.gitignore` -- default ignore patterns for installed projects
+- `.atlas/install-manifest.json` -- authoritative install groups, root allowlist, questionnaire fields, skills, and pattern catalogs
+- `.atlas/setup.json` -- generated setup receipt in installed projects, containing source revision, answers, outcomes, and relocated root entries
+- `scripts/atlas-validate.ps1` -- read-only source-kit and installed-project validator
+- `.claude/skills/atlas-newproject/SKILL.md` -- thin Claude discovery router to the shared new-project prompt
 
 ### Startup seed file
 - `seed.md` -- optional lightweight startup note for new project setup runs. A single plain-language sentence is enough, for example: "I want to create a web app that gets the weather where I click on a map."
@@ -226,7 +239,7 @@ If a repository has an agreed architecture, hosting, deployment, infrastructure,
 
 When that file exists, the atlas_ai instruction stack reads it before stack-sensitive work so architecture changes stay consistent with the repo's approved baseline.
 
-Prompt-driven newproject asks for stack pattern selection as numbered choices.
+Prompt-driven newproject builds stack pattern choices from `.atlas/install-manifest.json`.
 If a template is selected, setup creates `patterns/stack-patterns/active-stack-pattern.md` from that template.
 
 ### UX pattern support
@@ -235,7 +248,7 @@ If a repository has an agreed layout and navigation baseline, capture it in `pat
 
 When that file exists, the atlas_ai instruction stack reads it before UX-sensitive work so generated UI and page structure stay consistent with the repo's approved baseline.
 
-Prompt-driven newproject asks for UX pattern selection as numbered choices.
+Prompt-driven newproject builds UX pattern choices from `.atlas/install-manifest.json`.
 If a template is selected, setup creates `patterns/ux-patterns/active-ux-pattern.md` from that template.
 
 ### API-first policy support
@@ -284,9 +297,9 @@ For most new projects, use:
 Use github picostar/Atlas_AI as source kit, read README first, then run atlas project here in place, no clone.
 ```
 
-Prompt-driven setup asks before changing files. It should ask whether to include the docs scaffold, initialize git when needed, include PS, include CGR, select a stack pattern, select a UX pattern, enable API-first when a stack pattern is selected, and create a GitHub repo. It should present stack and UX templates as numbered menus.
+Prompt-driven setup asks before changing files. It should ask whether to include the docs scaffold, initialize git when needed, include PS, include CGR, select a stack pattern, select a UX pattern, enable API-first when a stack pattern is selected, and create a GitHub repo. It should present stack and UX templates from the install manifest as numbered menus.
 
-If the project root already contains user files, setup preserves them by moving them into `docs/reference/preexisting-root/`. If `.git` already exists, setup adopts that repository instead of reinitializing it. If a temporary `atlas_ai` or `Atlas_AI` source-kit folder exists in the target project, remove that temporary folder after the selected files are installed.
+If the project root already contains user files, setup preserves and merges manifest-approved root entries and moves every other entry into `docs/reference/preexisting-root/`. If `.git` already exists, setup adopts that repository instead of reinitializing it. If a temporary `atlas_ai` or `Atlas_AI` source-kit folder exists in the target project, remove that temporary folder after the selected files are installed. The setup records these actions in `.atlas/setup.json` and must pass Atlas validation before completion.
 
 ### CGR From Remote Source Kit
 
@@ -361,14 +374,15 @@ git -C <repo> status
 Placement guidance:
 - `atlas_newproject.md` is the recommended new-project bootstrap workflow.
 - `atlas_update.md` is the recommended legacy update workflow.
-- `scripts/` is a reusable optional utility folder.
+- `scripts/atlas-validate.ps1` is required by new-project setup. Other scripts are optional utilities.
 
-If the agent cannot perform setup from the remote source kit, manually copy only the files you want from `atlas_ai/` to the repository root:
+If the agent cannot perform setup from the remote source kit, use `.atlas/install-manifest.json` as the manual copy list. Copy every path in its `core` group, generate its `generatedPaths`, then add selected optional groups. Important entries include:
 - `.github/copilot-instructions.md` -- always
 - `.github/prompts/atlas-realign.prompt.md` -- recommended
 - `.github/prompts/atlas-closeout.prompt.md` -- recommended
 - `atlas_newproject.md` -- recommended for guided new-project bootstrap
 - `atlas_update.md` -- recommended for guided legacy atlas updates
+- `atlas_validate.md` -- required validation prompt for new-project completion and later standalone checks
 - `.github/prompts/cgr.prompt.md` -- only if the project uses governance review
 - `CLAUDE.md` -- always
 - `CHATGPT.md` -- always
@@ -378,12 +392,15 @@ If the agent cannot perform setup from the remote source kit, manually copy only
 - `AGENTS.md` -- always
 - `ATLAS.md` -- always
 - `accounts.md` -- recommended for non-secret cloud account and deployment destination binding
+- `.atlas/install-manifest.json` -- required installation contract
+- `.claude/skills/atlas-newproject/SKILL.md` -- required Claude setup router
+- `scripts/atlas-validate.ps1` -- required read-only validation command
 - `docs/cgr/PS.md` -- only if the project uses formal project stages
 - the `docs/`, `scripts/`, and `archive/` scaffold as needed
 
 ## Symlink and Cleanup
 
-Prompt-first setup does not require script execution or persistent seed folders. If you copied this kit into a target project as bootstrap input, keep only the installed project artifacts and remove temporary source-kit folders after install.
+Prompt-first setup does not run a bootstrap installer script. It uses the read-only validation script when PowerShell is available and the `atlas_validate.md` fallback otherwise. If you copied this kit into a target project as bootstrap input, keep only the installed project artifacts and remove temporary source-kit folders after install.
 
 ## Auto-Loading Notes
 
@@ -474,12 +491,13 @@ Project-specific values belong in:
 After prompt-driven setup installs the selected kit files into a new repository:
 
 1. Create or update `.gitignore` to ignore local config overrides, `.env`, secrets, and `archive/` if desired.
-2. Create the initial `devcycle.md` items for the first build phase.
-3. Add CLI or script smoketests and a `UAT:` section to each devtask. For non-user-facing work, use `Not UAT-eligible` and name the internal validation.
-4. Add repo-specific setup notes in `docs/reference/`, and if the repo has agreed architecture or UX baselines, capture them in `patterns/stack-patterns/active-stack-pattern.md` and `patterns/ux-patterns/active-ux-pattern.md`.
-5. If the repo uses git, create one commit per completed `DT` or `RDT`. If the repo has a GitHub remote, push the branch and update or create the related pull request after each completed task.
-6. Optionally, add `docs/cgr/PS.md` later if the project grows into formal release stages.
-7. Optionally, add `.github/prompts/cgr.prompt.md` later if the project needs governance review.
+2. Run `pwsh scripts/atlas-validate.ps1 -TargetPath <project>` and resolve every error before beginning delivery work.
+3. Create the initial `devcycle.md` items for the first build phase.
+4. Add CLI or script smoketests and a `UAT:` section to each devtask. For non-user-facing work, use `Not UAT-eligible` and name the internal validation.
+5. Add repo-specific setup notes in `docs/reference/`, and if the repo has agreed architecture or UX baselines, capture them in `patterns/stack-patterns/active-stack-pattern.md` and `patterns/ux-patterns/active-ux-pattern.md`.
+6. If the repo uses git, create one commit per completed `DT` or `RDT`. If the repo has a GitHub remote, push the branch and update or create the related pull request after each completed task.
+7. Optionally, add `docs/cgr/PS.md` later if the project grows into formal release stages.
+8. Optionally, add `.github/prompts/cgr.prompt.md` later if the project needs governance review. Update `.atlas/setup.json` when selected components change.
 
 ## Design Principles
 

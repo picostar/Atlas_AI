@@ -19,19 +19,24 @@ description: 'Set up a new project with atlas_ai. Use when bootstrapping a new r
    - [ATLAS.md](../../../ATLAS.md)
    - [AGENTS.md](../../../AGENTS.md)
 2. Prefer the standalone prompt-first workflow in `atlas_newproject.md` for agent-driven setup
+   - Read `.atlas/install-manifest.json` before asking questions or changing target files
+   - Treat the manifest as authoritative for install groups, allowed root entries, base skills, optional components, and pattern catalogs
    - Use it to bootstrap the repo without relying on Windows-only or PowerShell-only entry points
    - Ask only the minimum setup questions, then install the selected Atlas_AI files directly
    - Treat setup as incomplete until the required questionnaire answers are captured, or the user explicitly says to use defaults
    - Do not stop after partial file install plus diagnostics; if that state occurs, ask only missing setup questions and continue
-   - Present stack and UX templates as numbered choices, accept number or label, and do not ask for freeform template filenames
+   - Generate stack and UX menus from the manifest catalogs, accept number, ID, or label, and do not ask for freeform template filenames
    - Treat `github picostar/Atlas_AI` as source-kit reference only, not a clone destination, unless the user explicitly asks to clone it
    - Do not invoke deprecated legacy bootstrap scripts for prompt-driven newproject setup
 3. If Atlas control files are already present at the repo root, stop and use `atlas_update.md` from the kit for a plan-first legacy project update instead
-   - Otherwise preserve pre-existing user files by moving them into `docs/reference/preexisting-root/`
+   - Otherwise preserve and merge root entries named by the manifest, and move every other pre-existing root entry into `docs/reference/preexisting-root/`
    - If `.git` already exists, adopt that repository rather than reinitializing it
    - If setup used a local source-kit folder in the target root, such as `atlas_ai` or `Atlas_AI`, remove that temporary folder after install and do not stage or commit it
 4. Create committed `accounts.md` for non-secret cloud account and deployment destination binding
-5. Summarize what was installed
+5. Write `.atlas/setup.json` with all setup answers, the source revision, git and GitHub outcomes, and relocated root entries
+6. Run `pwsh scripts/atlas-validate.ps1 -TargetPath <target>` or apply `atlas_validate.md` when terminal execution is unavailable
+7. Do not report successful setup until validation passes
+8. Summarize what was installed
 
 ## File Placement Rules
 
