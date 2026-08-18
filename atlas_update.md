@@ -34,6 +34,7 @@ Planning phase only: do not edit files, run migration scripts, move folders, ren
 5. Apply default compatibility rule: keep local canonical paths as-is unless the user explicitly approves a migration. Never force in-place path migration by default.
 6. Compare the local project against Atlas_AI source of truth using the compatibility map. Focus on:
    - root instruction files
+   - new-project install contract files from `.atlas/` and the standalone `atlas_validate.md` workflow
    - prompt files from `.github/prompts/` in the source kit, if present
    - skill files from `.github/skills/` in the source kit, if present
    - `ATLAS.md`, `docs/cgr/PS.md`, and CGR workflow files from the source kit, if present
@@ -57,7 +58,7 @@ Planning phase only: do not edit files, run migration scripts, move folders, ren
    - require post-move reference checks before closeout
 11. Present a concise plan-first update package that includes:
    - file-by-file copy and merge actions from SOT
-   - file-by-file preserve and no-touch list. When the source kit contains a skill folder not present locally (for example a newly introduced `model-tier-advisor`), the plan must explicitly propose adding it as a `copy` action — new skill folders are not to be silently omitted from the compatibility matrix as "not applicable."
+   - file-by-file preserve and no-touch list. When the source kit contains a skill folder not present locally (for example a newly introduced `model-tier-advisor`), the plan must explicitly propose adding it as a `copy` action. New skill folders are not to be silently omitted from the compatibility matrix as "not applicable."
    - explicit migration candidates marked `needs approval`
    - compatibility matrix and known limits
    - rollback path proposal to use before execution
@@ -99,4 +100,5 @@ Planning phase only: do not edit files, run migration scripts, move folders, ren
 - Create and record a rollback path before update edits. If rollback setup fails, stop and ask before proceeding.
 - Use manual review before any legacy layout migration.
 - Treat `.github/prompts/` files as optional workflow files to copy or merge from the source kit. This prompt does not require them to exist before the update.
+- Treat `.atlas/install-manifest.json`, `atlas_validate.md`, and `scripts/atlas-validate.ps1` as recommended bootstrap-maintenance files. Installing them during an approved update does not make new-project validation a gate for the update itself.
 - The first run of this prompt is plan-only. Execution requires explicit human approval.

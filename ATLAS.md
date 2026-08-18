@@ -86,6 +86,8 @@ atlas_ai includes a starter scaffold for these locations. Use it as a bootstrap,
 | `docs/cgr/PS.md` | `docs/cgr/` | Optional project stages and document gates | When the project adopts formal release gates |
 | `project-config.json` | repo root | Non-secret project configuration | When infrastructure changes |
 | `accounts.md` | repo root | Non-secret cloud account and deployment destination binding | At setup and when cloud destinations change |
+| `.atlas/install-manifest.json` | `.atlas/` | New-project installation contract and component catalog | When bootstrap files or options change |
+| `.atlas/setup.json` | `.atlas/` | Generated record of new-project setup answers and outcomes | After setup or an intentional component change |
 | `MRD_*.md` | `docs/cgr/` | Market or business requirements (optional, see `docs/cgr/PS.md`) | Before PRD, when context changes |
 | `PRD_*.md` | `docs/cgr/` | Product requirements and acceptance criteria (optional, see `docs/cgr/PS.md`) | Before EVT, when scope changes |
 | `ESD_*.md` | `docs/cgr/` | Engineering design and operations model (optional, see `docs/cgr/PS.md`) | Draft in EVT, complete before DVT |
@@ -224,6 +226,7 @@ Reset devtasks are short, unplanned tasks that unblock or redirect the current d
 - Keep the top level clean.
 - Put long-lived references in `docs/reference/`.
 - Keep one concern per folder where practical.
+- For prompt-driven new-project setup, enforce the root allowlist in `.atlas/install-manifest.json`, preserve pre-existing root material under `docs/reference/preexisting-root/`, and require Atlas validation before setup completion.
 
 ### Retro Entry Format
 
@@ -267,6 +270,7 @@ Model Fit: <tier suggested at start> vs <tier actually used>; <matched|escalated
 ### AI Instruction Files
 
 - `.github/copilot-instructions.md` is the source of truth.
+- `.atlas/install-manifest.json` is the source of truth for new-project install groups, setup questions, allowed root entries, and pattern catalogs.
 - `CLAUDE.md` is a thin pointer plus duplicated response rules.
 - `CHATGPT.md` is a default thin pointer for ChatGPT-oriented coding workflows.
 - `AGENTS.md` is the equivalent thin pointer for Codex-style agents and related tooling.

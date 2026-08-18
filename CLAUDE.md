@@ -2,6 +2,8 @@
 
 Read `.github/copilot-instructions.md` first. That file is the source of truth.
 
+If the user asks to set up or bootstrap an Atlas project, including a request that references `github/picostar/Atlas_AI` or its `README.md`, read the source-kit `README.md`, `.atlas/install-manifest.json`, and `atlas_newproject.md` before changing target files. Use the `atlas-newproject` Claude skill when available. Do not report completion until Atlas validation passes.
+
 For local secrets, use `secrets.md` at repo root only. Do not place secrets in any other file by default, and only use an alternate location after explicit user override plus warning.
 
 For non-secret cloud account and deployment destination binding, use committed `accounts.md` at repo root. Check it before cloud, hosting, infrastructure, deployment, or provider CLI work, and do not put credentials or keys in it.

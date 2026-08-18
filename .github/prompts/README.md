@@ -11,6 +11,7 @@ This folder stores reusable prompt files for common atlas_ai workflows.
 
 Standalone root prompts live at the repo root so they are easy to copy into another project and invoke without installing the full prompt catalog:
 - `atlas_newproject.md` -- guided new-project bootstrap prompt for cross-platform prompt-first setup
+- `atlas_validate.md` -- read-only new-project installation validation and non-terminal fallback
 - `atlas_update.md` -- guided legacy Atlas update prompt for plan-first project updates
 
 ## Usage
