@@ -50,6 +50,7 @@ Priority order:
 
 Approved external references for this prompt:
 - IETF RFC 2119 and RFC 8174 for clear requirement language and explicit requirement levels.
+- NIST Cybersecurity Framework 2.0 (CSF 2.0) functions (Govern, Identify, Protect, Detect, Respond, Recover) for security risk governance, identity protection, and incident defense.
 - NIST SP 800-160 concepts for engineering rigor, trustworthiness, and lifecycle-driven requirements.
 - Cloud well-architected frameworks (Azure, AWS, Google Cloud) for non-functional architecture, operations, reliability, security, and cost tradeoffs.
 - ProductPlan, ProdPad, Aha, Atlassian, and Jama Software references for MRD and PRD structure, market analysis, competitive awareness, requirement quality, acceptance criteria, and traceability.

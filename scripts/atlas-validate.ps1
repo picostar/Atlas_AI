@@ -45,6 +45,24 @@ function Get-FullPath {
     return [IO.Path]::GetFullPath((Join-Path $Root $nativePath))
 }
 
+function Get-RelativePath {
+    param(
+        [string]$BasePath,
+        [string]$TargetPath
+    )
+
+    $fullBase = [System.IO.Path]::GetFullPath($BasePath).TrimEnd([System.IO.Path]::DirectorySeparatorChar, [System.IO.Path]::AltDirectorySeparatorChar)
+    $fullTarget = [System.IO.Path]::GetFullPath($TargetPath)
+
+    if ($fullTarget.StartsWith($fullBase + [System.IO.Path]::DirectorySeparatorChar, [System.StringComparison]::OrdinalIgnoreCase)) {
+        return $fullTarget.Substring($fullBase.Length + 1).Replace('\', '/')
+    }
+
+    $baseUri = [System.Uri]($fullBase + [System.IO.Path]::DirectorySeparatorChar)
+    $targetUri = [System.Uri]$fullTarget
+    return [System.Uri]::UnescapeDataString($baseUri.MakeRelativeUri($targetUri).ToString()).Replace('\', '/')
+}
+
 function Test-RequiredPath {
     param(
         [string]$Root,
@@ -102,7 +120,7 @@ try {
 if (-not (Test-ObjectProperty -Object $manifest -Name 'schemaVersion') -or $manifest.schemaVersion -ne 1) {
     Add-ValidationError 'Manifest schemaVersion must be 1.'
 }
-if (-not (Test-ObjectProperty -Object $manifest -Name 'manifestVersion') -or $manifest.manifestVersion -isnot [long] -or $manifest.manifestVersion -lt 1) {
+if (-not (Test-ObjectProperty -Object $manifest -Name 'manifestVersion') -or ($manifest.manifestVersion -isnot [int] -and $manifest.manifestVersion -isnot [long]) -or $manifest.manifestVersion -lt 1) {
     Add-ValidationError 'Manifest manifestVersion must be a positive integer.'
 }
 
@@ -210,7 +228,7 @@ if ($SourceKit) {
         $catalogPaths = @($check.Catalog | ForEach-Object { [string]$_.sourcePath })
         $catalogDirectory = Get-FullPath -Root $resolvedTarget -RelativePath $check.Directory
         foreach ($templateFile in Get-ChildItem -LiteralPath $catalogDirectory -File -Filter $check.Filter) {
-            $relativeTemplatePath = [IO.Path]::GetRelativePath($resolvedTarget, $templateFile.FullName).Replace('\', '/')
+            $relativeTemplatePath = Get-RelativePath -BasePath $resolvedTarget -TargetPath $templateFile.FullName
             if ($relativeTemplatePath -notin $catalogPaths) {
                 Add-ValidationError "Pattern template is not registered in the manifest catalog: $relativeTemplatePath"
             }
@@ -482,15 +500,19 @@ if ($SourceKit) {
 
     if (Test-Path -LiteralPath (Join-Path $resolvedTarget '.git')) {
         if (Get-Command git -ErrorAction SilentlyContinue) {
-            & git -C $resolvedTarget rev-parse --is-inside-work-tree *> $null
-            if ($LASTEXITCODE -ne 0) {
+            $prevEap = $ErrorActionPreference
+            $ErrorActionPreference = 'Continue'
+            & git -C $resolvedTarget rev-parse --is-inside-work-tree 2>$null *> $null
+            $insideWorkTree = ($LASTEXITCODE -eq 0)
+            if (-not $insideWorkTree) {
                 Add-ValidationError 'Unable to inspect git tracking state for secrets.md.'
             } else {
-                & git -C $resolvedTarget ls-files --error-unmatch secrets.md *> $null
+                & git -C $resolvedTarget ls-files --error-unmatch secrets.md 2>$null *> $null
                 if ($LASTEXITCODE -eq 0) {
                     Add-ValidationError 'secrets.md is tracked by git.'
                 }
             }
+            $ErrorActionPreference = $prevEap
         } else {
             Add-ValidationError 'Git is unavailable, so tracked secrets.md status cannot be validated.'
         }

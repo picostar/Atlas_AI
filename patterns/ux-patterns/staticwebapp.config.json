@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json.schemastore.org/staticwebapp.config.json",
+  "routes": [
+    {
+      "route": "/api/v1/health",
+      "allowedRoles": [
+        "anonymous"
+      ]
+    },
+    {
+      "route": "/api/v1/version",
+      "allowedRoles": [
+        "anonymous"
+      ]
+    },
+    {
+      "route": "/api/*",
+      "allowedRoles": [
+        "authenticated"
+      ]
+    },
+    {
+      "route": "/admin/*",
+      "allowedRoles": [
+        "administrator"
+      ]
+    },
+    {
+      "route": "/login",
+      "redirect": "/.auth/login/aad",
+      "statusCode": 302
+    },
+    {
+      "route": "/logout",
+      "redirect": "/.auth/logout",
+      "statusCode": 302
+    }
+  ],
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": [
+      "/api/*",
+      "/*.{png,jpg,jpeg,gif,svg,ico,webp}",
+      "/*.{css,scss,js,mjs,json}"
+    ]
+  },
+  "responseOverrides": {
+    "401": {
+      "redirect": "/.auth/login/aad?post_login_redirect_uri=.%2F",
+      "statusCode": 302
+    },
+    "403": {
+      "rewrite": "/403.html",
+      "statusCode": 403
+    },
+    "404": {
+      "rewrite": "/index.html"
+    }
+  },
+  "globalHeaders": {
+    "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://login.microsoftonline.com; object-src 'none'; frame-ancestors 'none';",
+    "X-Frame-Options": "DENY",
+    "X-Content-Type-Options": "nosniff",
+    "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "Permissions-Policy": "geolocation=(), camera=(), microphone=(), payment=()"
+  },
+  "mimeTypes": {
+    ".json": "application/json"
+  }
+}

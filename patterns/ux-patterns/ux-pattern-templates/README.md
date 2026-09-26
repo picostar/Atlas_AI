@@ -22,6 +22,10 @@ Use these templates to accelerate UX decisions and keep layout reviews consisten
   - Operations console pattern for triage, diagnosis, and response.
   - Uses severity-first signal hierarchy, incident queue, context timeline, and explicit action controls.
   - Best for SRE, security, support escalation, and production monitoring workflows.
+- [uxp-05-identity-auth-sso-journey.md](uxp-05-identity-auth-sso-journey.md)
+  - Authentication and identity journey for login, enterprise SSO, MFA, and session lifecycle.
+  - Uses domain discovery routing, passwordless/passkey alternatives, step-up MFA challenge, and graceful timeout warning.
+  - Best for enterprise portals, SaaS products, and regulated web applications.
 
 ## Standard workflow
 1. Pick the closest template.
@@ -29,7 +33,7 @@ Use these templates to accelerate UX decisions and keep layout reviews consisten
 3. Keep section structure intact so reviews stay comparable.
 4. Capture assumptions, constraints, and tradeoffs in the template.
 5. Record review outcomes in the template Review History section.
-6. Promote approved outcomes into [../active-ux-pattern.md](../active-ux-pattern.md).
+6. Promote approved outcomes into `patterns/ux-patterns/active-ux-pattern.md`.
 
 ## How to modify a template safely
 - Keep orientation goals explicit, avoid vague statements.
@@ -51,4 +55,4 @@ A pattern is adoption-ready when:
 - responsive behavior and accessibility expectations are documented
 - known risks and mitigations are documented
 - review history includes reviewer, notes, and decision
-- approved decisions are reflected in [../active-ux-pattern.md](../active-ux-pattern.md)
+- approved decisions are reflected in `patterns/ux-patterns/active-ux-pattern.md`

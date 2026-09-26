@@ -1,0 +1,304 @@
+openapi: 3.1.0
+info:
+  title: Atlas Project API Contract
+  version: 1.0.0
+  description: Starter OpenAPI contract for Atlas_AI projects adhering to API-First architecture, Entra ID SSO, and RFC 7807 error standards.
+
+servers:
+  - url: http://localhost:4280/api/v1
+    description: Local Static Web Apps & Functions Emulator
+  - url: https://{defaultHost}/api/v1
+    description: Cloud Staging / Production
+    variables:
+      defaultHost:
+        default: myapp.azurewebsites.net
+        description: Target Azure deployment hostname
+
+paths:
+  /health:
+    get:
+      summary: Health check probe
+      description: Returns service liveness and readiness status. Used by smoketests and monitoring.
+      operationId: getHealth
+      responses:
+        '200':
+          description: Service is healthy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '503':
+          description: Service unavailable or dependent resource failing.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+
+  /version:
+    get:
+      summary: Service version and build metadata
+      description: Returns application release version and environment identifier.
+      operationId: getVersion
+      responses:
+        '200':
+          description: Version information.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - version
+                  - environment
+                properties:
+                  version:
+                    type: string
+                    example: "1.0.0"
+                  environment:
+                    type: string
+                    example: "dev"
+                  buildCommit:
+                    type: string
+                    example: "a8f3b21"
+
+  /items:
+    get:
+      summary: List collection items
+      description: Returns a paginated list of domain items.
+      operationId: listItems
+      security:
+        - EntraIDBearerAuth:
+            - User.Read
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of items to return.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: cursor
+          in: query
+          description: Opaque pagination cursor from previous response.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Paginated collection of items.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedItemsResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+    post:
+      summary: Create a new item
+      description: Creates a new resource with idempotency support.
+      operationId: createItem
+      security:
+        - EntraIDBearerAuth:
+            - User.Read
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: false
+          description: Unique UUID v4 token to prevent duplicate creations on retries.
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateItemRequest'
+      responses:
+        '201':
+          description: Item created successfully.
+          headers:
+            Location:
+              description: URI of the newly created item.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /items/{itemId}:
+    get:
+      summary: Get an item by ID
+      operationId: getItemById
+      security:
+        - EntraIDBearerAuth:
+            - User.Read
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Item details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+components:
+  securitySchemes:
+    EntraIDBearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Microsoft Entra ID OAuth 2.0 Bearer Access Token.
+
+  responses:
+    UnauthorizedError:
+      description: Authentication is missing or invalid.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    ValidationError:
+      description: Request payload failed schema validation.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    NotFoundError:
+      description: Requested resource was not found.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+  schemas:
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - timestamp
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+          example: "healthy"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-09-25T12:00:00Z"
+        version:
+          type: string
+          example: "1.0.0"
+
+    ProblemDetails:
+      type: object
+      description: RFC 7807 Problem Details representation.
+      required:
+        - type
+        - title
+        - status
+      properties:
+        type:
+          type: string
+          format: uri
+          example: "https://api.example.com/errors/invalid-input"
+        title:
+          type: string
+          example: "Validation Error"
+        status:
+          type: integer
+          example: 400
+        detail:
+          type: string
+          example: "The request body failed validation against the schema."
+        instance:
+          type: string
+          example: "/api/v1/items"
+        invalidParams:
+          type: array
+          items:
+            type: object
+            required:
+              - name
+              - reason
+            properties:
+              name:
+                type: string
+                example: "name"
+              reason:
+                type: string
+                example: "Must not be empty."
+
+    Item:
+      type: object
+      required:
+        - id
+        - name
+        - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          example: "Example Project Item"
+        description:
+          type: string
+          nullable: true
+          example: "Detailed description of the item."
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+
+    CreateItemRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+          example: "Example Project Item"
+        description:
+          type: string
+          maxLength: 500
+          nullable: true
+
+    PaginatedItemsResponse:
+      type: object
+      required:
+        - items
+        - hasMore
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+        nextCursor:
+          type: string
+          nullable: true
+          example: "eyJpZCI6MTA0fQ=="
+        hasMore:
+          type: boolean
+          example: false
+        totalCount:
+          type: integer
+          nullable: true
+          example: 42

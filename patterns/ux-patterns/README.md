@@ -20,6 +20,7 @@ This folder creates a shared language for UX decisions so teams can:
 
 ## Folder structure
 - `active-ux-pattern.md`: the current approved baseline for layout and navigation behavior
+- `staticwebapp.config.json`: baseline Azure Static Web Apps enterprise routing, security headers, and Entra ID authentication configuration template
 - `ux-pattern-templates/`: editable candidate patterns used for review and adaptation
 
 ## How patterns are used

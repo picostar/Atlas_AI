@@ -29,7 +29,7 @@ Default rule weights:
 
 Default criticality mapping:
 - Critical: Rules 2, 7, 8, 9, 10, 11, 12, 13, 16
-- High: Rules 3, 4, 5, 6, 14, 15
+- High: Rules 3, 4, 5, 6, 14, 15, 17
 - Standard: Rule 1
 
 Formula:
@@ -77,6 +77,7 @@ Formula:
 | 14 | TBD | 2 | TBD | TBD | TBD | TBD |
 | 15 | TBD | 2 | TBD | TBD | TBD | TBD |
 | 16 | TBD | 3 | TBD | TBD | TBD | TBD |
+| 17 | TBD | 2 | TBD | TBD | TBD | TBD |
 
 ## Top Remediation Priorities
 

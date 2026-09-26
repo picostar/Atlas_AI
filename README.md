@@ -222,14 +222,19 @@ This `README.md` is for the kit itself. Use it as the first document an agent re
 - `archive/README.md` -- archive guidance
 
 ### Skills
+- `.github/skills/anti-patterns/SKILL.md` -- design, testing, security, and AI agent failure modes to avoid
+- `.github/skills/api-design/SKILL.md` -- contract-first REST API design, OpenAPI 3.1, and RFC 7807 problem details
 - `.github/skills/azure-deploy/SKILL.md` -- Azure Functions and SWA deployment procedures
+- `.github/skills/code-style/SKILL.md` -- multi-language coding conventions for TypeScript, JavaScript, Python, C#, and PowerShell
 - `.github/skills/devcycle-management/SKILL.md` -- DT/RDT task lifecycle, retro logging, CU scoring
-- `.github/skills/model-tier-advisor/SKILL.md` -- per-tool model tier suggestion (Claude/Codex/Copilot), qualitative token-usage tracking, external benchmark refresh
-- `.github/skills/project-setup/SKILL.md` -- new project setup and repo bootstrapping
-- `.github/skills/powershell-style/SKILL.md` -- PowerShell scripting conventions
-- `.github/skills/git-workflow/SKILL.md` -- branch strategy, commit format, PR conventions
-- `.github/skills/requirements-writing/SKILL.md` -- MRD and PRD authoring quality, market research, requirements traceability
 - `.github/skills/example-skill/SKILL.md` -- template for creating new skills
+- `.github/skills/git-workflow/SKILL.md` -- branch strategy, commit format, PR conventions
+- `.github/skills/model-tier-advisor/SKILL.md` -- per-tool model tier suggestion (Claude/Codex/Copilot), qualitative token-usage tracking, external benchmark refresh
+- `.github/skills/powershell-style/SKILL.md` -- PowerShell scripting conventions
+- `.github/skills/project-setup/SKILL.md` -- new project setup and repo bootstrapping
+- `.github/skills/requirements-writing/SKILL.md` -- MRD and PRD authoring quality, market research, requirements traceability
+- `.github/skills/security-patterns/SKILL.md` -- NIST CSF 2.0 implementation, secret hygiene, and OWASP defenses
+- `.github/skills/testing-patterns/SKILL.md` -- smoketest patterns, unit/integration testing, and mock verification
 
 Skills reference existing kit files (ATLAS.md, copilot-instructions.md) rather than duplicating content. Use `-SkillsSource "path"` to copy skills from another location instead of the defaults.
 
@@ -434,11 +439,49 @@ If the repository has an agreed stack baseline, create `patterns/stack-patterns/
 
 The atlas_ai instruction files and prompts treat that file as the source of truth for stack-sensitive work, such as architecture, hosting, deployment, infrastructure, and platform-selection changes.
 
+Included stack pattern templates:
+- `sp-01-functions-tables-swa-keyvault.md` -- Azure Functions + Table Storage + Static Web Apps + Key Vault (Standard Serverless baseline).
+- `sp-02-functions-tables-sqlserverless-swa-keyvault.md` -- Azure Functions + Tables + Azure SQL Database Serverless (with 60-min auto-pause) + SWA + Key Vault.
+- `sp-03-functions-servicebus-cosmos-swa-keyvault.md` -- Azure Functions + Service Bus messaging + Cosmos DB Serverless + SWA + Key Vault.
+- `sp-04-appservice-sql-redis-frontdoor-keyvault.md` -- App Service container/monolith + Azure SQL + Redis Cache + Front Door + Key Vault.
+- `sp-05-functions-swa-keyvault-egressproxy.md` -- Azure Functions + Static Web Apps + Key Vault + Egress Proxy for secure external API mediation.
+
+Infrastructure as Code:
+- `infra/main.bicep` -- Modular Azure Bicep template automating the provisioning of the full Atlas cloud footprint with built-in FinOps cost-saving controls (60-minute auto-pause for SQL Serverless, Consumption tiers, and mandatory tags).
+- `infra/parameters.dev.json` and `infra/parameters.prod.json` -- Environment parameter configurations.
+
 ## UX Patterns
 
 If the repository has an agreed UX baseline, create `patterns/ux-patterns/active-ux-pattern.md` and keep it current.
 
 The atlas_ai instruction files and prompts treat that file as the source of truth for UX-sensitive work, such as layout, navigation, page hierarchy, and UI generation changes.
+
+Included UX pattern templates:
+- `uxp-01-modern-app-shell-layout.md` -- Modern enterprise web app shell with collapsible navigation drawer and header utilities.
+- `uxp-02-b2b-marketing-website-journey.md` -- High-conversion B2B marketing website funnel with clear call-to-action flows.
+- `uxp-03-mobile-first-touch-app-flow.md` -- Mobile-responsive progressive web app layout with bottom navigation rail.
+- `uxp-04-monitoring-and-incident-response-console.md` -- High-density observability, telemetry, and incident triage dashboard.
+- `uxp-05-identity-auth-sso-journey.md` -- Enterprise identity, authentication, session lifecycle, and Single Sign-On (SSO / OIDC via Microsoft Entra ID).
+- `staticwebapp.config.json` -- Baseline Azure Static Web Apps configuration template with strict HTTP security headers (CSP, HSTS, X-Frame-Options) and Entra ID route guards.
+
+## Extending atlas_ai
+
+atlas_ai is designed to scale across teams, domains, and evolving technology stacks. You can extend the framework at three distinct levels:
+
+### 1. Authoring Custom Skills (Tier 1, Tier 2, Tier 3)
+Skills encapsulate procedural knowledge for coding agents:
+- **Tier 1 (Universal Skills):** Kit-wide engineering standards applicable to all projects (`api-design`, `code-style`, `security-patterns`, `testing-patterns`, `anti-patterns`).
+- **Tier 2 (Stack Skills):** Technology-specific deployment and integration recipes (`azure-deploy`, `deployment-patterns`, `pipeline-patterns`).
+- **Tier 3 (Domain Skills):** Business-specific domain models, entity definitions, and compliance rules (e.g. `fintech-accounting`, `hipaa-data-classification`).
+
+To create a new skill:
+1. Create a directory under `.github/skills/<skill-name>/`.
+2. Author `SKILL.md` with valid YAML frontmatter (`name`, `description`) conforming to `.github/FRONTMATTER-SCHEMA.md`.
+3. Provide concrete "When to Use", step-by-step "Procedure", and explicit "Rules".
+
+### 2. Adding Custom Stack and UX Patterns
+- To add a new stack or UX pattern, create a markdown template under `patterns/stack-patterns/stack-pattern-templates/` or `patterns/ux-patterns/ux-pattern-templates/`.
+- Register the template in `.atlas/install-manifest.json` under `catalogs.stackPatterns` or `catalogs.uxPatterns` so the setup questionnaire discovers it automatically.
 
 ## Existing Repo Updates
 

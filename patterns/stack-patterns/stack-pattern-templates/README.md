@@ -32,13 +32,18 @@ Use this quick reference when selecting or reviewing function-based patterns:
 	- Uses App Service, Azure SQL, Redis, and Front Door.
 	- Best when stable latency and stronger relational modeling are priorities.
 
+- [sp-05-functions-swa-keyvault-egressproxy.md](sp-05-functions-swa-keyvault-egressproxy.md)
+	- Lean serverless API pattern for third-party provider aggregation with fixed egress IP.
+	- Uses Azure Functions (Consumption), SWA, Key Vault, and a dedicated forward proxy VM.
+	- Best when calling external partners requiring IP whitelisting without paying for Premium plans.
+
 ## Standard workflow
 1. Pick the closest template.
 2. Copy and adapt it for your project requirements.
 3. Keep section structure intact so reviews stay comparable.
 4. Capture assumptions, constraints, and tradeoffs in the template.
 5. Record review outcomes in the template Review History section.
-6. Promote approved outcomes into [../active-stack-pattern.md](../active-stack-pattern.md).
+6. Promote approved outcomes into `patterns/stack-patterns/active-stack-pattern.md`.
 
 ## How to modify a template safely
 - Keep architecture decisions explicit, avoid vague phrases like "standard setup".
@@ -61,4 +66,4 @@ A pattern is adoption-ready when:
 - non-functional expectations are documented
 - known risks and mitigations are documented
 - review history includes reviewer, notes, and decision
-- approved decisions are reflected in [../active-stack-pattern.md](../active-stack-pattern.md)
+- approved decisions are reflected in `patterns/stack-patterns/active-stack-pattern.md`

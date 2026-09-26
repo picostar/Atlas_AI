@@ -13,6 +13,7 @@ Keep the process stable. Customize project names, paths, tools, and integration 
 ## Table of Contents
 
 - [Dev Cycle Loop](#dev-cycle-loop)
+- [Quality and Delivery Gates](#quality-and-delivery-gates)
 - [Smoketest Rules](#smoketest-rules)
 - [UAT Rules](#uat-rules)
 - [Recommended Doc Structure](#recommended-doc-structure)
@@ -34,6 +35,28 @@ Keep the process stable. Customize project names, paths, tools, and integration 
 9. Repeat.
 
 When the active cycle is burned down, close the cycle by confirming validation, review, and documentation are complete. If the repository uses GitHub pull requests, merge the pull request into the base branch, typically `main`, when the dev cycle, phase, or other reviewable task bundle is ready to close. Then pull the next priority from the backlog into a new cycle.
+
+---
+
+## Quality and Delivery Gates
+
+To maintain engineering consistency, architectural integrity, and compliance across human-agent workflows, ATLAS enforces three distinct quality gates throughout the lifecycle:
+
+1. **Requirements Gate (Before Implementation):**
+   - Work items must have clear problem statements, target personas, and verifiable acceptance criteria.
+   - For formal stages (EVT/DVT), requirements must trace to active MRD or PRD artifacts using `.github/skills/requirements-writing/SKILL.md`.
+   - Never implement ambiguous or contradictory requirements without prior clarification.
+
+2. **API-First Contract Gate (Before Coding Endpoints):**
+   - When the active stack pattern specifies `API-First: Enabled` or when defining new REST endpoints, author or update the OpenAPI contract in `docs/reference/openapi-starter.yaml` before writing backend logic.
+   - All error responses must comply with RFC 7807 Problem Details (`application/problem+json`).
+   - Refer to `.github/skills/api-design/SKILL.md` for URI naming, status code, and pagination standards.
+
+3. **Security and Governance Gate (Before Staging / Release):**
+   - Verify alignment with NIST CSF 2.0 and CGR Rule 9 (Threat Modeling & Security Review).
+   - Ensure zero credentials, keys, or tokens exist in source code or git history.
+   - Enforce Managed Identities and Azure Key Vault for cloud secrets, reserving `secrets.md` for local notes.
+   - Refer to `.github/skills/security-patterns/SKILL.md` and `docs/reference/secret-handover-ceremony.md`.
 
 ---
 

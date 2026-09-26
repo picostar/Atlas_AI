@@ -18,3 +18,22 @@ accounts.txt
 
 # Local scratch notes
 todo.txt
+
+# Local emulators and cloud session state
+.azurite/
+.azure/
+.azure-session/
+local.settings.json
+
+# Dependencies and build outputs
+node_modules/
+dist/
+build/
+bin/
+obj/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

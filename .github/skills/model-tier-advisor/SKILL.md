@@ -98,8 +98,8 @@ Coding agents cannot call a tool to read their own token usage for the current s
 
 | Bucket | Typical signals |
 |---|---|
-| Light | Roughly 1–10 tool calls, 1–2 files touched, a handful of turns |
-| Moderate | Roughly 10–30 tool calls, 3–8 files touched, sustained back-and-forth |
+| Light | Roughly 1-10 tool calls, 1-2 files touched, a handful of turns |
+| Moderate | Roughly 10-30 tool calls, 3-8 files touched, sustained back-and-forth |
 | Heavy | 30+ tool calls, broad file or codebase exploration, long multi-turn troubleshooting, or large files/search results read into context |
 
 When reporting usage:

@@ -67,6 +67,7 @@ You are running a Compliance and Governance Review on this repository.
 
 9. Approved external references for this prompt:
    - IETF RFC 2119 and RFC 8174 for requirement language clarity.
+   - NIST Cybersecurity Framework 2.0 (CSF 2.0) functions (Govern, Identify, Protect, Detect, Respond, Recover) for security risk governance, identity protection, and incident defense.
    - NIST SP 800-160 concepts for engineering rigor and trustworthiness.
    - Cloud well-architected frameworks (Azure, AWS, Google Cloud) for non-functional architecture, operations, reliability, security, and cost tradeoffs.
    - ProductPlan, ProdPad, Aha, Atlassian, and Jama Software references for MRD and PRD structure, market analysis, competitive awareness, requirement quality, acceptance criteria, and traceability.

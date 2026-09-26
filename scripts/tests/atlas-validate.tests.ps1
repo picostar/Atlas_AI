@@ -162,11 +162,18 @@ function Invoke-AtlasValidator {
         [switch]$SourceKit
     )
 
+    $powerShellCmd = if (Get-Command pwsh -ErrorAction SilentlyContinue) { 'pwsh' } else { 'powershell' }
     $arguments = @('-NoProfile', '-File', $validatorPath, '-TargetPath', $FixtureRoot)
     if ($SourceKit) { $arguments += '-SourceKit' }
-    $output = & pwsh @arguments 2>&1 | Out-String
+
+    $prevEap = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    $output = & $powerShellCmd @arguments 2>&1 | Out-String
+    $exitCode = $LASTEXITCODE
+    $ErrorActionPreference = $prevEap
+
     return [pscustomobject]@{
-        ExitCode = $LASTEXITCODE
+        ExitCode = $exitCode
         Output = $output
     }
 }
@@ -190,7 +197,8 @@ function Assert-ValidatorFails {
 
     $result = Invoke-AtlasValidator -FixtureRoot $FixtureRoot
     Assert-True -Condition ($result.ExitCode -ne 0) -Message "$CaseName should fail."
-    Assert-True -Condition ($result.Output -match [regex]::Escape($ExpectedText)) -Message "$CaseName should report '$ExpectedText'. Output: $($result.Output)"
+    $normalizedOutput = $result.Output -replace '\r?\n', ' '
+    Assert-True -Condition ($normalizedOutput -match [regex]::Escape($ExpectedText)) -Message "$CaseName should report '$ExpectedText'. Output: $($result.Output)"
 }
 
 try {

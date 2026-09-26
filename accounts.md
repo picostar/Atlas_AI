@@ -25,6 +25,7 @@ Do not store credentials, keys, tokens, passwords, connection strings, or deploy
 - Key Vault name: TBD
 - Other Azure resources: TBD
 - Deployment environment notes: TBD
+- Resource provisioning request template: docs/reference/azure-resource-request-template.md
 
 ## AWS
 

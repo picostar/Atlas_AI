@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "projectName": {
+      "value": "atlasdemo"
+    },
+    "environment": {
+      "value": "prod"
+    },
+    "costCenter": {
+      "value": "CC-Engineering-Prod"
+    },
+    "owner": {
+      "value": "techlead@company.com"
+    },
+    "swaTier": {
+      "value": "Standard"
+    },
+    "deploySql": {
+      "value": false
+    },
+    "sqlAutoPauseDelayMinutes": {
+      "value": 60
+    },
+    "sqlMinVcores": {
+      "value": "0.5"
+    },
+    "sqlMaxVcores": {
+      "value": 2
+    }
+  }
+}

@@ -14,8 +14,8 @@ For cloud, hosting, infrastructure, deployment, or provider CLI concerns, check 
 Use these files as the baseline:
 - [Source of truth](../copilot-instructions.md)
 - [ATLAS process](../../ATLAS.md)
-- [Active stack pattern](../../patterns/stack-patterns/active-stack-pattern.md), only if the file exists and the review touches architecture, hosting, deployment, infrastructure, or platform selection
-- [Active UX pattern](../../patterns/ux-patterns/active-ux-pattern.md), only if the file exists and the review touches layout, navigation, page hierarchy, interaction flow, or UI generation
+- Active stack pattern (`patterns/stack-patterns/active-stack-pattern.md`), only if the file exists and the review touches architecture, hosting, deployment, infrastructure, or platform selection
+- Active UX pattern (`patterns/ux-patterns/active-ux-pattern.md`), only if the file exists and the review touches layout, navigation, page hierarchy, interaction flow, or UI generation
 - [Project accounts](../../accounts.md), only if the review touches cloud, hosting, infrastructure, deployment, or provider account binding
 - [Claude pointer](../../CLAUDE.md)
 - [Agents pointer](../../AGENTS.md)

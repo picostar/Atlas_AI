@@ -17,7 +17,7 @@ Use these files as the baseline:
 - [Project stages](../../docs/cgr/PS.md), only if formal stages are in use
 - [Governance prompt baseline](./cgr.prompt.md)
 - [CGR docs guidance](../../docs/cgr/README.md)
-- [Current CGR review output](../../docs/cgr/CGR-results.md), if it exists
+- Current CGR review output (`docs/cgr/CGR-results.md`), if it exists
 - [Current score output](../../docs/cgr/score.md), if it exists
 - [Remediation tracker](../../docs/cgr/remediation-tracking.md), if it exists
 - [Seed and reference sources](../../seed.md), [Reference docs folder](../../docs/reference/README.md)
