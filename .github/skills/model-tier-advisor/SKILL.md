@@ -1,6 +1,6 @@
 ---
 name: model-tier-advisor
-description: 'Suggest which model tier (Haiku, Sonnet, Opus for Claude; Luna, Terra, Sol for GPT-5.6; mini/base/strong for Copilot) fits a dev task based on eMOE complexity, and produce a self-estimated usage summary for completed tasks. Use when starting or completing DT/RDT, when the user asks about model choice or token usage, or when an atlas refresh models command runs. Supports Claude Code, OpenAI Codex/ChatGPT, and GitHub Copilot model selection.'
+description: 'Suggest which model tier (Haiku, Sonnet, Opus for Claude; Luna, Sol, Astra for GPT-6; mini/base/strongest for Copilot) fits a dev task based on eMOE complexity, and produce a usage summary for completed tasks. Use when starting or completing DT/RDT, when the user asks about model choice or token usage, or when an atlas refresh models command runs. Supports Claude Code, OpenAI Codex/ChatGPT, and GitHub Copilot model selection.'
 argument-hint: 'Optional DT/RDT ID, eMOE CU value, or "refresh" for a benchmark update'
 ---
 
@@ -31,7 +31,7 @@ argument-hint: 'Optional DT/RDT ID, eMOE CU value, or "refresh" for a benchmark 
 1. Read the task's `eMOE: X CU` value from `docs/agile/devcycle.md`.
 2. Identify which AI tool is active by checking which pointer file (`CLAUDE.md`, `AGENTS.md`/`CHATGPT.md`, `.github/copilot-instructions.md`) is in play.
 3. Look up `X` CU in the appropriate CU-to-Model-Tier table below.
-4. State the suggested tier and a one-line reason. Example: "eMOE is 3 CU (multi-step, minor unknowns) -- suggested tier: Claude Sonnet 5." The CU value's Expected Usage column (see ATLAS.md's Measure of Effort table) gives a rough usage ballpark for the task; mention it only if useful context, not as a required addition to every task entry.
+4. State the suggested tier and a one-line reason. Example: "eMOE is 3 CU (multi-step, minor unknowns) -- suggested tier: Claude Sonnet 5.5." The CU value's Expected Usage column (see ATLAS.md's Measure of Effort table) gives a rough usage ballpark for the task; mention it only if useful context, not as a required addition to every task entry.
 5. If the task mixes traits of two CU bands (e.g. mostly mechanical but touching security-sensitive code), say so and suggest the higher tier.
 6. Check the table's `Verified` date. If it is more than ~60 days old, or if you believe a named model is deprecated in the host tool's picker, note that and optionally consult the external benchmark sources (see below).
 7. Treat the suggestion as advisory. If the model is already fixed for the session, note it for the record instead of repeating it as a requirement.
@@ -41,7 +41,7 @@ argument-hint: 'Optional DT/RDT ID, eMOE CU value, or "refresh" for a benchmark 
 When this skill is applied for the first time in a session and `docs/agile/devcycle.md` has other active DT/RDT entries besides the one currently being discussed that lack a `Suggested Model` field:
 
 1. Apply the same suggestion procedure (read eMOE, look up CU-to-tier table for the active tool, state the suggestion) to every active entry missing the field in the same pass, not only the task named by the user.
-2. State each suggestion briefly: task ID, eMOE value, suggested tier, and one-line reason. Example: "DT51 -- 3 CU, suggested tier: GPT-5.6 Terra (minor ambiguity in cross-feature routing)."
+2. State each suggestion briefly: task ID, eMOE value, suggested tier, and one-line reason. Example: "DT51 -- 3 CU, suggested tier: GPT-6.1 Sol (minor ambiguity in cross-feature routing)."
 3. Note that all suggestions are advisory and can be edited before task start.
 4. This backfill only needs to happen once per project (or once per newly-detected gap); once every active entry has a `Suggested Model` field, treat new and future entries the normal single-task way.
 
@@ -50,40 +50,44 @@ When this skill is applied for the first time in a session and `docs/agile/devcy
 1. Estimate usage qualitatively using the Light/Moderate/Heavy buckets below. Do not fabricate a precise token count.
 2. State the bucket plus the observable signals behind it. Example: "Usage: Moderate -- approx. 14 tool calls, 5 files touched, 6 conversation turns."
 3. Compare the tier suggested at task start against how the task actually played out (aMOE), and note one of: matched, escalated (needed a stronger tier than suggested), or downgraded (a lighter tier would likely have sufficed).
-4. Point the user to the host tool's own precise usage feature when one exists (e.g. Claude Code's `/cost` command or its status line), rather than reproducing an exact token figure here.
+4. Point the user to the host tool's own precise usage feature when one exists, rather than reproducing an exact token figure here. Claude Code: `/cost` command or status line. GitHub Copilot: org owners read per-seat and per-feature AI Credit spend at Settings > Billing > Copilot; Copilot CLI sessions can show live cost with the `copilot-cli-cost` plugin's `/cost`. When a metered figure is available, record it in the retro `Usage:` line as credits (Copilot) or dollars (Claude Code) alongside the bucket.
 5. If the repo's retro entry format includes them, add the `Usage:` and `Model Fit:` lines shown in ATLAS.md's Retro Entry Format. These are optional and never block task closeout.
 
 ## CU-to-Model-Tier Mapping
 
-### Claude (verified 2026-08-06)
+### Claude (verified 2026-10-28)
 
 | CU | Meaning | Suggested Tier | Rationale |
 |---|---|---|---|
-| 1 | Single known step, little decision risk | Haiku 4.5 | Fast, low-cost tier is sufficient for mechanical, low-risk steps |
-| 2 | Multi-step, known path | Haiku 4.5 | Still a known path; escalate to Sonnet 5 if touching shared or sensitive code |
-| 3 | Multi-step, minor unknowns or dependencies | Sonnet 5 | Enough ambiguity and cross-file reasoning to warrant a stronger default |
-| 5 | Research plus implementation, real decision risk | Sonnet 5 | Real decision risk; escalate to Opus 5 if research spans multiple subsystems or the decision is architectural |
-| 8 | High uncertainty, multiple dependencies, likely reshaping | Opus 5 | Highest uncertainty and dependency load benefits from the strongest reasoning tier |
+| 1 | Single known step, little decision risk | Haiku 5.5 | Fast, low-cost tier is sufficient for mechanical, low-risk steps |
+| 2 | Multi-step, known path | Haiku 5.5 | Still a known path; escalate to Sonnet 5.5 if touching shared or sensitive code |
+| 3 | Multi-step, minor unknowns or dependencies | Sonnet 5.5 | Enough ambiguity and cross-file reasoning to warrant a stronger default |
+| 5 | Research plus implementation, real decision risk | Sonnet 5.5 | Real decision risk; escalate to Opus 5.5 if research spans multiple subsystems or the decision is architectural |
+| 8 | High uncertainty, multiple dependencies, likely reshaping | Opus 5.5 | Highest uncertainty and dependency load benefits from the strongest reasoning tier. Fable 5.1 sits above Opus at 2.5x the output price; reserve it for 8 CU tasks that already failed at Opus. |
 
-### OpenAI Codex/ChatGPT (verified 2026-08-06 | GPT-5.4 retiring 2026-08-31)
-
-| CU | Meaning | Suggested Tier | Rationale |
-|---|---|---|---|
-| 1 | Single known step, little decision risk | GPT-5.6 Luna | Lightweight volume tier for mechanical steps; fallback: GPT-5.4 mini while available |
-| 2 | Multi-step, known path | GPT-5.6 Luna | Known path still fits the volume tier; escalate to Terra if touching shared or sensitive code |
-| 3 | Multi-step, minor unknowns or dependencies | GPT-5.6 Terra | Minor ambiguity warrants the balanced mid tier; fallback: GPT-5.4 |
-| 5 | Research plus implementation, real decision risk | GPT-5.6 Terra | Real decision risk; escalate to Sol if research spans multiple subsystems or the decision is architectural |
-| 8 | High uncertainty, multiple dependencies, likely reshaping | GPT-5.6 Sol | Highest uncertainty and dependency load benefits from the flagship reasoning tier |
-
-### GitHub Copilot (verified 2026-08-06 | Multi-vendor roster changes monthly)
+### OpenAI Codex/ChatGPT (verified 2026-10-28 | GPT-6 family released September 2026)
 
 | CU | Meaning | Suggested Tier | Rationale |
 |---|---|---|---|
-| 1 | Single known step, little decision risk | mini/fast tier | Examples: GPT-5 mini, Claude Haiku 4.5. Use whichever "mini" or fast model is currently in the picker. Fallback to the base model if no fast variant is available. |
-| 2 | Multi-step, known path | mini/fast tier | Still a known path; escalate to the base tier if touching shared or sensitive code |
-| 3 | Multi-step, minor unknowns or dependencies | base/default tier | Minor ambiguity warrants the designated base model. Examples: GPT-5.3-Codex, Claude Sonnet 4.6. Use whichever model Copilot marks as the default or baseline. |
-| 5 | Research plus implementation, real decision risk | base/default tier | Real decision risk; escalate to the strongest tier if research spans multiple subsystems or the decision is architectural |
-| 8 | High uncertainty, multiple dependencies, likely reshaping | strongest available tier | Use the strongest model currently available in Copilot's picker (typically Claude Opus, GPT-5.4 or later, or the latest model for the strongest vendor) |
+| 1 | Single known step, little decision risk | GPT-6 Luna | Lightweight volume tier for mechanical steps; fallback: GPT-5.6 Luna |
+| 2 | Multi-step, known path | GPT-6 Luna | Known path still fits the volume tier; escalate to Sol if touching shared or sensitive code |
+| 3 | Multi-step, minor unknowns or dependencies | GPT-6.1 Sol | Sol is OpenAI's designated coding tier for GPT-6; fallback: GPT-6 Sol or GPT-5.6 Terra |
+| 5 | Research plus implementation, real decision risk | GPT-6.1 Sol | Real decision risk; escalate to Astra if research spans multiple subsystems or the decision is architectural |
+| 8 | High uncertainty, multiple dependencies, likely reshaping | GPT-6 Astra | Flagship reasoning tier, 5x the output price of Sol. GPT-6.1 Terra exists in some pickers but is unverified in Codex; do not depend on it. |
+
+### GitHub Copilot (verified 2026-10-28 | Multi-vendor roster changes monthly | billed in AI Credits since 2026-06-01)
+
+Copilot bills chat, agent mode, code review and CLI per token at each model's published rate (1 AI credit = $0.01 USD). Completions and next-edit suggestions are free on all paid plans. Tier choice is the main lever on credit burn, so the Cost column is part of the rule, not a footnote. Prices are USD per 1M output tokens from the GitHub models-and-pricing page on the Verified date.
+
+| CU | Meaning | Suggested Tier | Pick (Oct 2026) | Output $/1M | Rationale |
+|---|---|---|---|---|---|
+| 1 | Single known step, little decision risk | mini/fast tier | Claude Haiku 5.5 or GPT-6 Luna | $0.50 | Both at $0.10 in / $0.50 out, the cheapest models in the picker. Gemini 3.8 Flash and MAI-Code-1.1-Flash are also in this band. |
+| 2 | Multi-step, known path | mini/fast tier | Claude Haiku 5.5 or GPT-6 Luna | $0.50 | Still a known path; escalate to the base tier if touching shared or sensitive code |
+| 3 | Multi-step, minor unknowns or dependencies | base/default tier | Claude Sonnet 5.5 or GPT-6.1 Sol | $10 | 20x the mini tier per output token. Both at $2 in / $10 out. GPT-5.3-Codex is Copilot's LTS fallback but costs $14 out; do not pick it on purpose. |
+| 5 | Research plus implementation, real decision risk | base/default tier | Claude Sonnet 5.5 or GPT-6.1 Sol | $10 | Real decision risk; escalate to the strongest tier if research spans multiple subsystems or the decision is architectural |
+| 8 | High uncertainty, multiple dependencies, likely reshaping | strongest available tier | Claude Opus 5.5 | $20 | Opus 5.5 ($4 in / $20 out) is the strongest tier at the base-tier price times two. GPT-6 Astra and Claude Fable 5.1 are $50 out, 5x the base tier; Fable is disabled by default in orgs. Use them only when an Opus run has already failed. |
+
+Copilot org policy note: when the org enables a model, the picker shows it to every seat. Leave Astra, Fable 5.1, and the Opus 4.8 fast-mode preview disabled at the org level unless a devtask retro shows an 8 CU task that Opus 5.5 could not close.
 
 ## Staleness Guard
 

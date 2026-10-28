@@ -11,7 +11,7 @@ Goal: TBD
 
 ## Active Tasks
 
-### DT1 -- Example Devtask | eMOE: 2 CU | Suggested Model: Claude Sonnet 5 (optional)
+### DT1 -- Example Devtask | eMOE: 2 CU | Suggested Model: Claude Sonnet 5.5 (optional)
 - Goal: Replace this with the real task goal.
 - API Result: If feasible, describe API endpoints or contract changes. If not feasible, say No API change.
 - Smoketest: Exact CLI command or script path, plus the expected pass result. When API Result is in scope, include endpoint verification and OpenAPI or Swagger documentation verification.
@@ -23,7 +23,7 @@ Use this section only for unplanned blocker work that interrupts the active phas
 
 Reset devtasks use the `RDT` prefix and are inserted ahead of the remaining unfinished planned devtasks.
 
-### RDT1 -- Example Reset Devtask | eMOE: 1 CU | Suggested Model: Claude Haiku 4.5 (optional)
+### RDT1 -- Example Reset Devtask | eMOE: 1 CU | Suggested Model: Claude Haiku 5.5 (optional)
 - Goal: Replace or remove.
 - API Result: If feasible, describe API endpoints or contract changes. If not feasible, say No API change.
 - Smoketest: Exact CLI command or script path, plus the expected pass result. When API Result is in scope, include endpoint verification and OpenAPI or Swagger documentation verification.
