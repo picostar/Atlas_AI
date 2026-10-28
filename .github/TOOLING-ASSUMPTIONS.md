@@ -4,8 +4,9 @@ This file defines the minimum tooling assumptions for atlas_ai workflows.
 
 ## Required for Full Workflow
 - Git CLI available on PATH
-- PowerShell available (`pwsh` preferred, `powershell` fallback)
 - File system read and write access to the repository
+
+The kit ships no scripts and assumes no shell. Validation, setup and update run as agent-executed prompts using repository file tools.
 
 ## Optional by Scenario
 - GitHub CLI (`gh`) for repo creation and PR-related follow-up

@@ -14,7 +14,7 @@ These are required in every ATLAS installation. None exist yet.
 - [ ] **requirements-writing** -- How domain experts write MRD/PRD content. Templates exist but are stubs. This is the bridge for domain-expert-led development.
 - [ ] **api-design** -- Contract-first REST design, versioning, error formats, rate limiting. ATLAS mandates API-first architecture but nothing in the kit teaches it.
 - [ ] **testing-patterns** -- Smoketest script templates, unit test structure, CI integration. Workflow defines smoketest rules but not HOW to implement them.
-- [ ] **code-style** -- Generic multi-language conventions. Only powershell-style exists today. Need TypeScript/JavaScript, Python, and general guidance.
+- [ ] **code-style** -- Generic multi-language conventions. No code-style skill exists today. Need TypeScript/JavaScript, Python, Lua, and general guidance.
 - [ ] **anti-patterns** -- Design, testing, and delivery mistakes to avoid. Common AI agent missteps, coupling issues, deployment failures.
 
 ## P2 -- High: Workflow and Template Integration
