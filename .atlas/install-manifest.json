@@ -9,6 +9,7 @@
   "allowedRootEntries": {
     "always": [
       ".atlas",
+      "CHANGELOG.md",
       ".claude",
       ".github",
       ".gitignore",

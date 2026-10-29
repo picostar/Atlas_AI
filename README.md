@@ -189,6 +189,7 @@ The startup check-in reviews current state, active devcycle work, and obvious bl
 - `atlas_newproject.md` -- standalone root-level guided new-project bootstrap prompt, kept outside the installed prompt catalog so users can copy it into a target project or say `newproject`
 - `atlas_update.md` -- standalone root-level guided legacy atlas update planning prompt, kept outside the installed prompt catalog so users can copy it and say `atlas update` in existing projects
 - `atlas_validate.md` -- standalone read-only validator prompt, used automatically after new-project setup and manually through `atlas validate`
+- `CHANGELOG.md` -- one line per merged kit pull request; read it to see what `atlas update` brings. Not installed into projects.
 
 ### Prompt-First Setup Support
 - `.gitignore` -- default ignore patterns for installed projects
