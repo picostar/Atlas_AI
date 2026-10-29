@@ -56,7 +56,7 @@ The run is not complete if it only installs prompt files and reports diagnostics
 
 The setup questionnaire generates stack and UX choices from the manifest catalogs instead of maintaining a second hardcoded list. It accepts a number, manifest ID, or label, not a freeform template filename. If a stack pattern is selected, include an API-first yes or no question and state that API-first expects API results when feasible plus endpoint and OpenAPI or Swagger verification in smoketests when feasible.
 
-Setup is complete only after `pwsh scripts/atlas-validate.ps1 -TargetPath <target>` passes, or the equivalent checks in `atlas_validate.md` pass when terminal execution is unavailable.
+Setup is complete only after every required check in `atlas_validate.md` passes and the agent writes the validation receipt it defines.
 
 
 ### CGR From Marketing Or Source Files
@@ -194,7 +194,6 @@ The startup check-in reviews current state, active devcycle work, and obvious bl
 - `.gitignore` -- default ignore patterns for installed projects
 - `.atlas/install-manifest.json` -- authoritative install groups, root allowlist, questionnaire fields, skills, and pattern catalogs
 - `.atlas/setup.json` -- generated setup receipt in installed projects, containing source revision, answers, outcomes, and relocated root entries
-- `scripts/atlas-validate.ps1` -- read-only source-kit and installed-project validator
 - `.claude/skills/atlas-newproject/SKILL.md` -- thin Claude discovery router to the shared new-project prompt
 
 ### Startup seed file
@@ -226,7 +225,6 @@ This `README.md` is for the kit itself. Use it as the first document an agent re
 - `.github/skills/devcycle-management/SKILL.md` -- DT/RDT task lifecycle, retro logging, CU scoring
 - `.github/skills/model-tier-advisor/SKILL.md` -- per-tool model tier suggestion (Claude/Codex/Copilot), qualitative token-usage tracking, external benchmark refresh
 - `.github/skills/project-setup/SKILL.md` -- new project setup and repo bootstrapping
-- `.github/skills/powershell-style/SKILL.md` -- PowerShell scripting conventions
 - `.github/skills/git-workflow/SKILL.md` -- branch strategy, commit format, PR conventions
 - `.github/skills/requirements-writing/SKILL.md` -- MRD and PRD authoring quality, market research, requirements traceability
 - `.github/skills/example-skill/SKILL.md` -- template for creating new skills
@@ -366,7 +364,7 @@ The planning pass should not modify the legacy project. It should produce file-b
 
 On Windows or mixed-filesystem repos, if `git status` reports dubious ownership, use safe.directory fallback and rerun status before treating validation as failed:
 
-```powershell
+```bash
 git config --global --add safe.directory <repo>
 git -C <repo> status
 ```
@@ -374,7 +372,7 @@ git -C <repo> status
 Placement guidance:
 - `atlas_newproject.md` is the recommended new-project bootstrap workflow.
 - `atlas_update.md` is the recommended legacy update workflow.
-- `scripts/atlas-validate.ps1` is required by new-project setup. Other scripts are optional utilities.
+- `atlas_validate.md` is the required new-project validation gate. `scripts/` holds project scripts only; the kit ships no scripts of its own.
 
 If the agent cannot perform setup from the remote source kit, use `.atlas/install-manifest.json` as the manual copy list. Copy every path in its `core` group, generate its `generatedPaths`, then add selected optional groups. Important entries include:
 - `.github/copilot-instructions.md` -- always
@@ -394,13 +392,12 @@ If the agent cannot perform setup from the remote source kit, use `.atlas/instal
 - `accounts.md` -- recommended for non-secret cloud account and deployment destination binding
 - `.atlas/install-manifest.json` -- required installation contract
 - `.claude/skills/atlas-newproject/SKILL.md` -- required Claude setup router
-- `scripts/atlas-validate.ps1` -- required read-only validation command
 - `docs/cgr/PS.md` -- only if the project uses formal project stages
 - the `docs/`, `scripts/`, and `archive/` scaffold as needed
 
 ## Symlink and Cleanup
 
-Prompt-first setup does not run a bootstrap installer script. It uses the read-only validation script when PowerShell is available and the `atlas_validate.md` fallback otherwise. If you copied this kit into a target project as bootstrap input, keep only the installed project artifacts and remove temporary source-kit folders after install.
+Prompt-first setup does not run a bootstrap installer script or a validation script. The agent runs the checks in `atlas_validate.md` with repository file tools. If you copied this kit into a target project as bootstrap input, keep only the installed project artifacts and remove temporary source-kit folders after install.
 
 ## Auto-Loading Notes
 
@@ -491,7 +488,7 @@ Project-specific values belong in:
 After prompt-driven setup installs the selected kit files into a new repository:
 
 1. Create or update `.gitignore` to ignore local config overrides, `.env`, secrets, and `archive/` if desired.
-2. Run `pwsh scripts/atlas-validate.ps1 -TargetPath <project>` and resolve every error before beginning delivery work.
+2. Run `atlas validate` and resolve every FAIL before beginning delivery work.
 3. Create the initial `devcycle.md` items for the first build phase.
 4. Add CLI or script smoketests and a `UAT:` section to each devtask. For non-user-facing work, use `Not UAT-eligible` and name the internal validation.
 5. Add repo-specific setup notes in `docs/reference/`, and if the repo has agreed architecture or UX baselines, capture them in `patterns/stack-patterns/active-stack-pattern.md` and `patterns/ux-patterns/active-ux-pattern.md`.

@@ -67,17 +67,11 @@ Minimum required outcomes:
 
 ## Step 6. Optional Migration Preview
 
-Only when user explicitly requests migration, preview first:
+Only when the user explicitly requests migration. The agent performs it with repository file tools; there is no migration script.
 
-```powershell
-pwsh -File scripts/migrate-layout-v2.ps1 -RepoRoot . -WhatIf
-```
+Preview first: list every move from legacy layout to v2 layout (`docs/projects/*` to `docs/cgr/`, `docs/reference/stack-patterns/*` to `patterns/stack-patterns/`, `docs/reference/ux-patterns/*` to `patterns/ux-patterns/`), every reference that must be rewritten, and every conflict where the destination already exists. Make no changes in the preview.
 
-After review and explicit approval:
-
-```powershell
-pwsh -File scripts/migrate-layout-v2.ps1 -RepoRoot . -Approved
-```
+After review and explicit approval: perform the moves with `git mv`, rewrite the references, and rerun the reference integrity check from `update-validation-checklist.md`.
 
 Record any unresolved conflicts and post-migration reference updates.
 

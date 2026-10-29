@@ -7,7 +7,6 @@ This folder stores reusable agent skills for atlas_ai workflows.
 - `devcycle-management`
 - `model-tier-advisor`
 - `project-setup`
-- `powershell-style`
 - `git-workflow`
 - `requirements-writing`
 - `example-skill`

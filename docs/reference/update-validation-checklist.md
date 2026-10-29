@@ -49,9 +49,9 @@ A run is complete only when each required check has a clear `Pass` signal or an 
 
 Run path and reference checks that match the chosen canonical layout.
 
-PowerShell example:
+Example:
 
-```powershell
+```bash
 rg -n "docs/projects|docs/reference/stack-patterns|docs/reference/ux-patterns|docs/cgr|patterns/stack-patterns|patterns/ux-patterns" .
 ```
 
@@ -61,9 +61,9 @@ Pass signal:
 
 ## 6. Secret Leak Checks
 
-PowerShell example:
+Example:
 
-```powershell
+```bash
 rg -n --glob "!secrets.md" "(?i)(api[_-]?key|token|client[_-]?secret|password|connection string|BEGIN PRIVATE KEY)" .
 ```
 
@@ -75,17 +75,17 @@ Pass signal:
 
 Run:
 
-```powershell
+```bash
 git -C <repo> status
 ```
 
 If dubious ownership appears, run one of:
 
-```powershell
+```bash
 git config --global --add safe.directory <repo>
 ```
 
-```powershell
+```bash
 git config --system --add safe.directory <repo>
 ```
 

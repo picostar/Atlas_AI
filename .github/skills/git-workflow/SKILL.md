@@ -59,7 +59,7 @@ Examples:
 
 ## Common Commands
 
-```powershell
+```bash
 # Create and switch to a feature branch
 git checkout -b feature/my-feature
 

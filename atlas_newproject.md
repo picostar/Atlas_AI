@@ -63,8 +63,7 @@ Do not run deprecated bootstrap scripts. Use a prompt-driven workflow, ask only 
 16. If git is absent and `initializeGit` is true, initialize it. If git exists, adopt it. Run validation before creating the initial commit, and stage only approved Atlas artifacts after validation passes.
 17. If GitHub repository creation is selected, require the owner or organization and report missing CLI or authentication prerequisites instead of inventing values.
 18. Run the mandatory validation gate:
-    - when PowerShell is available: `pwsh scripts/atlas-validate.ps1 -TargetPath <target>`
-    - otherwise: read and execute `atlas_validate.md` with repository file tools
+    - read and execute every check in `atlas_validate.md` with repository file tools, then write its validation receipt
     - fix validation errors and rerun; do not report successful setup while validation fails or remains unverified
 19. Summarize:
    - setup questionnaire answers captured, and whether defaults were explicitly used

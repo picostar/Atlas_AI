@@ -100,5 +100,5 @@ Planning phase only: do not edit files, run migration scripts, move folders, ren
 - Create and record a rollback path before update edits. If rollback setup fails, stop and ask before proceeding.
 - Use manual review before any legacy layout migration.
 - Treat `.github/prompts/` files as optional workflow files to copy or merge from the source kit. This prompt does not require them to exist before the update.
-- Treat `.atlas/install-manifest.json`, `atlas_validate.md`, and `scripts/atlas-validate.ps1` as recommended bootstrap-maintenance files. Installing them during an approved update does not make new-project validation a gate for the update itself.
+- Treat `.atlas/install-manifest.json` and `atlas_validate.md` as recommended bootstrap-maintenance files. Installing them during an approved update does not make new-project validation a gate for the update itself.
 - The first run of this prompt is plan-only. Execution requires explicit human approval.

@@ -75,7 +75,6 @@
         ".github/skills/devcycle-management/SKILL.md",
         ".github/skills/git-workflow/SKILL.md",
         ".github/skills/model-tier-advisor/SKILL.md",
-        ".github/skills/powershell-style/SKILL.md",
         ".github/skills/project-setup/SKILL.md",
         ".github/skills/requirements-writing/SKILL.md",
         ".github/tropes.md",
@@ -91,7 +90,6 @@
         "atlas_validate.md",
         "docs/reference/README.md",
         "scripts/README.md",
-        "scripts/atlas-validate.ps1",
         "seed.md"
       ],
       "generatedPaths": [

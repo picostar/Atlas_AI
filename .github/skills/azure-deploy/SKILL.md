@@ -38,31 +38,31 @@ description: 'Deploy to Azure. Use when deploying Azure Functions, Static Web Ap
 
 ## Common Commands
 
-```powershell
-$subscription = "<subscription id or name>"
-$resourceGroup = "<resource-group>"
-$appName = "<app-name>"
+```bash
+subscription="<subscription id or name>"
+resourceGroup="<resource-group>"
+appName="<app-name>"
 
 # Optional: isolate Azure CLI state for this terminal session before login
-$env:AZURE_CONFIG_DIR = Join-Path $PWD ".azure-session"
+export AZURE_CONFIG_DIR="$PWD/.azure-session"
 
 # Check current account against the target subscription
-az account show --subscription $subscription
+az account show --subscription "$subscription"
 
 # Log in if needed
 az login --use-device-code
 
 # Verify the target function app before publish
-az functionapp show --subscription $subscription --resource-group $resourceGroup --name $appName
+az functionapp show --subscription "$subscription" --resource-group "$resourceGroup" --name "$appName"
 
 # Deploy Azure Functions
-func azure functionapp publish $appName
+func azure functionapp publish "$appName"
 
 # Get a Static Web App deployment token from the target subscription
-$token = az staticwebapp secrets list --subscription $subscription --name <swa-name> --resource-group $resourceGroup --query "properties.apiKey" -o tsv
+token=$(az staticwebapp secrets list --subscription "$subscription" --name <swa-name> --resource-group "$resourceGroup" --query "properties.apiKey" -o tsv)
 
 # Deploy Static Web App
-swa deploy "<build-dir>" --deployment-token $token --env production
+swa deploy "<build-dir>" --deployment-token "$token" --env production
 ```
 
 ## Rules

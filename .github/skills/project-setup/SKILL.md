@@ -21,7 +21,7 @@ description: 'Set up a new project with atlas_ai. Use when bootstrapping a new r
 2. Prefer the standalone prompt-first workflow in `atlas_newproject.md` for agent-driven setup
    - Read `.atlas/install-manifest.json` before asking questions or changing target files
    - Treat the manifest as authoritative for install groups, allowed root entries, base skills, optional components, and pattern catalogs
-   - Use it to bootstrap the repo without relying on Windows-only or PowerShell-only entry points
+   - Use it to bootstrap the repo without relying on any platform-specific script or shell
    - Ask only the minimum setup questions, then install the selected Atlas_AI files directly
    - Treat setup as incomplete until the required questionnaire answers are captured, or the user explicitly says to use defaults
    - Do not stop after partial file install plus diagnostics; if that state occurs, ask only missing setup questions and continue
@@ -34,7 +34,7 @@ description: 'Set up a new project with atlas_ai. Use when bootstrapping a new r
    - If setup used a local source-kit folder in the target root, such as `atlas_ai` or `Atlas_AI`, remove that temporary folder after install and do not stage or commit it
 4. Create committed `accounts.md` for non-secret cloud account and deployment destination binding
 5. Write `.atlas/setup.json` with all setup answers, the source revision, git and GitHub outcomes, and relocated root entries
-6. Run `pwsh scripts/atlas-validate.ps1 -TargetPath <target>` or apply `atlas_validate.md` when terminal execution is unavailable
+6. Run every check in `atlas_validate.md` with repository file tools and write its validation receipt
 7. Do not report successful setup until validation passes
 8. Summarize what was installed
 
