@@ -63,7 +63,7 @@ These steps describe the executed checks and their expected signals. Human-opera
 
 Keep shared Atlas procedures authoritative at their existing paths. The tested Copilot routes invoked the shared probe; the tested Claude/Codex extensions needed explicit reads. Starting in a nested folder can expose a different instruction and permission boundary. Do not assume a parent-root result applies to a child workspace, or create competing production copies to repair a catalog absence. [A1] [A2] [A4]
 
-The experimental Codex harness inside Copilot Chat, nested Agent Host behavior, managed organization policies, cloud targets, permission-denial recovery, network outages, compaction and full per-runtime application delivery remain untested here. Parent parity/distribution issues remain open. Duplicate-name and procedure-update observations require the separate DT2 trial; this document makes no precedence rule. [A6]
+The experimental Codex harness inside Copilot Chat, nested Agent Host behavior, managed organization policies, cloud targets, permission-denial recovery, network outages, compaction and full per-runtime application delivery remain untested here. Parent parity/distribution issues remain open. [Separate Local collision and revision observations](skill-collision-results-2026-10-30.md) cover the bounded DT2 trial; neither result establishes a universal precedence rule. [A6]
 
 ## Evidence register
 

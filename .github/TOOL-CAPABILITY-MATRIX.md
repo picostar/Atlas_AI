@@ -43,3 +43,5 @@ Retain an authoritative shared procedure per skill and preserve existing paths. 
 Developer-level or plugin distribution requires its own tested version/update process and duplicate-name handling. Do not assume symbolic links work on Windows, remote hosts, or cloud packaging. Prefer a clear unsupported/untested result to competing authoritative copies.
 
 When docs/testing is present in the source kit, see [the baseline record](../docs/testing/baseline-2026-10-30.md) for installed versions, observed commands, and pending cases. Test docs are not installed by the current manifest. Revalidate after changes to client/runtime versions, loading routes, or policy.
+
+The [bounded Local collision trial](../docs/testing/skill-collision-results-2026-10-30.md) selected a project test copy while a same-named personal file existed, then read the updated project revision in a fresh chat. This does not establish personal-only discovery or precedence on other routes.

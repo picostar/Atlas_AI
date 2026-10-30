@@ -60,3 +60,7 @@ At the user's request, Codex orchestrated these six checks against Codex, Claude
 ## Bounded editor acceptance
 
 The [editor results and reproduction procedure](editor-results-2026-10-30.md) record separate prepared projects, actual runtime identities, exact loading routes and negative-source outcomes. Copilot/Claude checks were agent-executed at the user's request; Codex extension prompts were user-operated and native logs were audited by the controller. The accepted scope is bounded to recorded results. No repeat human run is required for that delegated scope; unexecuted policy and runtime combinations remain untested.
+
+## DC02 Local distribution acceptance
+
+[The collision and revision result](skill-collision-results-2026-10-30.md) provides exact reproduction and retained evidence. Codex executed acceptance under explicit user delegation: initial project selection, fresh project-r2 body, actual explicit file read, before/after application smoke, declared file preservation and personal-fixture cleanup passed. This accepts only the identified Local build and policy; personal-only discovery and other distribution combinations remain untested.
