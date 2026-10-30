@@ -56,3 +56,7 @@ Use a disposable linked worktree of the validated application. Follow the README
 6. Compare the full before/after fixture file set and hashes. Record the actual reads and results, not just the final assertions.
 
 At the user's request, Codex orchestrated these six checks against Codex, Claude, and Copilot CLIs. All eighteen passed with an unchanged fixture. [The native result](native-cli-results-2026-10-30.md) records the observed loading scope. These were agent-executed checks; no independent human observation, editor acceptance, compaction pass, or full per-runtime application-delivery acceptance is claimed.
+
+## Bounded editor acceptance
+
+The [editor results and reproduction procedure](editor-results-2026-10-30.md) record separate prepared projects, actual runtime identities, exact loading routes and negative-source outcomes. Copilot/Claude checks were agent-executed at the user's request; Codex extension prompts were user-operated and native logs were audited by the controller. The accepted scope is bounded to recorded results. No repeat human run is required for that delegated scope; unexecuted policy and runtime combinations remain untested.

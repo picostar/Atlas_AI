@@ -30,3 +30,7 @@
 | Secrets and account guidance | No credentials, destination binding, or secret-storage behavior changes |
 
 Review the current diff before accepting this table. New behavior or newly affected paths require an updated entry and matching smoke/UAT evidence.
+
+## DC02 editor evidence review
+
+README, the capability matrix, tooling assumptions, parity status and UAT guidance now point to editor-results-2026-10-30.md. The result separates the direct Codex extension from the untested experimental Copilot Chat harness and retains the nested Local permission blocker. The external planner retains native events, policy observations and actual-project smoke receipts. No product behavior, process, manifest, production skill, pointer, lifecycle procedure or agile template changed. Existing unaffected-category reasons above still apply. CHANGELOG will identify the reviewable DC02 PR once created.
