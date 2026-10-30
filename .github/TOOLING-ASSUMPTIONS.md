@@ -28,10 +28,12 @@ When docs/testing is present in the source kit, use [the parity fixture](../docs
 
 Keep Markdown active tasks, backlog, and history usable without GitHub. Record the kit revision, exact commands, expected result, actual output, and UAT handoff. The source-kit [baseline record](../docs/testing/baseline-2026-10-30.md), when present, reports application smoke, installed-project validation, and Taskboard UAT explicitly delegated by the user to Codex. That connected-session run alone does not establish fresh-session discovery or independent human observation.
 
-Separate [native CLI checks](../docs/testing/native-cli-results-2026-10-30.md) observed instruction discovery, skill use, nested paths, saved-session recall, and explicit absent-file blockers in identified Codex, Claude, and Copilot builds. These results do not establish editor integration, compaction, network-outage handling, or full delivery parity. They preserve the shared skill source and explicit-read fallback.
+Separate [native CLI checks](../docs/testing/native-cli-results-2026-10-30.md) observed instruction discovery, skill use, nested paths, saved-session recall, and explicit absent-file blockers in identified Codex, Claude, and Copilot builds. Those CLI results do not establish editor integration. [Separate editor checks](../docs/testing/editor-results-2026-10-30.md) observed root invocation/fallback and missing-source blocking in identified clients, plus selected fresh-session and nested behavior. Local nested ancestor reads stopped at an external-file permission request. Compaction, network-outage handling, managed-policy variants and full delivery parity remain untested. They preserve the shared skill source and explicit-read fallback.
 
 The installed-project validator remains a separate gate. Do not replace it with a passing application command, and do not apply its manifest completeness test to a manual explicit-read trial. The proposed session lifecycle is separate future work.
 
 ## Failure and recovery
 
 Report missing tools, unavailable sources, permission denials, and untested configurations explicitly. Do not change authorization policy to turn a failed test into a pass. Retain evidence and resume only after the target, task, source revision, and pending checks are identified.
+
+[Local duplicate-name and revision checks](../docs/testing/skill-collision-results-2026-10-30.md) observed the project body and a fresh-session update, with separate explicit-read evidence. Verify the actual source/revision before distributing procedures; the trial does not implement packaging or change authoritative shared paths.

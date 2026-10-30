@@ -30,3 +30,11 @@
 | Secrets and account guidance | No credentials, destination binding, or secret-storage behavior changes |
 
 Review the current diff before accepting this table. New behavior or newly affected paths require an updated entry and matching smoke/UAT evidence.
+
+## DC02 editor evidence review
+
+README, the capability matrix, tooling assumptions, parity status and UAT guidance now point to editor-results-2026-10-30.md. The result separates the direct Codex extension from the untested experimental Copilot Chat harness and retains the nested Local permission blocker. The external planner retains native events, policy observations and actual-project smoke receipts. No product behavior, process, manifest, production skill, pointer, lifecycle procedure or agile template changed. Existing unaffected-category reasons above still apply. CHANGELOG identifies DC02 PR 33.
+
+## DC02 Local distribution evidence review
+
+README, this review, UAT, editor-results, capability matrix and tooling assumptions link the new skill-collision-results-2026-10-30.md. CHANGELOG records PR 33 and task CU. The actual Taskboard smoke passed before/after; all baseline hashes were preserved and the personal test directory was safely removed. Native attachments and the distinct fallback read support delegated acceptance. Existing process, pointers, production skills/prompts, lifecycle procedures, manifests/receipts, agile/governance/stack/UX templates and secrets guidance were reviewed and remain unaffected for the reasons above. No installer, package, production distribution rule or runtime policy changed.
