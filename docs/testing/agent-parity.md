@@ -54,4 +54,4 @@ Review README.md, process and pointer files, lifecycle procedures, manifest/rece
 
 ## Baseline status
 
-The linked baseline records a successful application trial using explicit reads in a connected tool session. Installed bootstrap, fresh Codex/Claude/Copilot discovery, recovery, and user UAT are not established by that run. Keep the parity issue open until the claimed supported configurations have their required evidence.
+The linked baseline records a successful application trial using explicit reads in a connected tool session, followed by an installed-project trial with all required validation checks passed and pre-existing files preserved. Fresh Codex/Claude/Copilot discovery, recovery, and user UAT remain untested or pending. Keep the parity issue open until the claimed supported configurations have their required evidence.

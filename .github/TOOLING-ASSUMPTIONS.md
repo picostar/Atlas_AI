@@ -26,7 +26,7 @@ Codex has native .agents/skills discovery, while the experimental VS Code integr
 
 When docs/testing is present in the source kit, use [the parity fixture](../docs/testing/agent-parity.md) with an actual runnable project outside the source kit. The [Taskboard recipe](../docs/testing/taskboard-project.md), when present, is a Python standard-library example, not a mandatory Atlas dependency. Its scripts are created in the test project rather than installed from the kit manifest. These test documents are not installed by the current manifest.
 
-Keep Markdown active tasks, backlog, and history usable without GitHub. Record the kit revision, exact commands, expected result, actual output, and UAT handoff. The source-kit [baseline record](../docs/testing/baseline-2026-10-30.md), when present, reports application smoke success but does not establish installed bootstrap, fresh-session discovery, or user acceptance.
+Keep Markdown active tasks, backlog, and history usable without GitHub. Record the kit revision, exact commands, expected result, actual output, and UAT handoff. The source-kit [baseline record](../docs/testing/baseline-2026-10-30.md), when present, reports application smoke and an installed-project validation in the connected session. It does not establish fresh-session discovery or user acceptance.
 
 The installed-project validator remains a separate gate. Do not replace it with a passing application command, and do not apply its manifest completeness test to a manual explicit-read trial. The proposed session lifecycle is separate future work.
 
