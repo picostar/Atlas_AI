@@ -9,6 +9,7 @@
 | docs/testing/taskboard-project.md | Provide reproducible application and black-box test source as Markdown examples |
 | docs/testing/uat.md | Provide exact application commands and Atlas workflow acceptance steps |
 | docs/testing/baseline-2026-10-30.md | Record observed baseline, versions, results, and limitations |
+| docs/testing/native-cli-results-2026-10-30.md | Record eighteen bounded CLI observations, policies, provenance, commands, and remaining cases |
 | .github/TOOL-CAPABILITY-MATRIX.md | Distinguish client/runtime routes and documentation from observations |
 | .github/TOOLING-ASSUMPTIONS.md | Clarify explicit reads, per-environment access, and project test prerequisites |
 | .github/copilot-instructions.md | Qualify the Codex discovery statement while retaining mandatory reads when discovery is absent |

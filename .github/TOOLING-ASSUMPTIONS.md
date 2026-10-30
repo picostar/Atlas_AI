@@ -26,7 +26,9 @@ Codex has native .agents/skills discovery, while the experimental VS Code integr
 
 When docs/testing is present in the source kit, use [the parity fixture](../docs/testing/agent-parity.md) with an actual runnable project outside the source kit. The [Taskboard recipe](../docs/testing/taskboard-project.md), when present, is a Python standard-library example, not a mandatory Atlas dependency. Its scripts are created in the test project rather than installed from the kit manifest. These test documents are not installed by the current manifest.
 
-Keep Markdown active tasks, backlog, and history usable without GitHub. Record the kit revision, exact commands, expected result, actual output, and UAT handoff. The source-kit [baseline record](../docs/testing/baseline-2026-10-30.md), when present, reports application smoke, installed-project validation, and Taskboard UAT explicitly delegated by the user to Codex. It does not establish fresh-session discovery or independent human observation.
+Keep Markdown active tasks, backlog, and history usable without GitHub. Record the kit revision, exact commands, expected result, actual output, and UAT handoff. The source-kit [baseline record](../docs/testing/baseline-2026-10-30.md), when present, reports application smoke, installed-project validation, and Taskboard UAT explicitly delegated by the user to Codex. That connected-session run alone does not establish fresh-session discovery or independent human observation.
+
+Separate [native CLI checks](../docs/testing/native-cli-results-2026-10-30.md) observed instruction discovery, skill use, nested paths, saved-session recall, and explicit absent-file blockers in identified Codex, Claude, and Copilot builds. These results do not establish editor integration, compaction, network-outage handling, or full delivery parity. They preserve the shared skill source and explicit-read fallback.
 
 The installed-project validator remains a separate gate. Do not replace it with a passing application command, and do not apply its manifest completeness test to a manual explicit-read trial. The proposed session lifecycle is separate future work.
 

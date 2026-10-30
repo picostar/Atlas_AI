@@ -43,3 +43,16 @@ Result: pending | passed | failed
 ~~~
 
 The baseline's Taskboard acceptance sequence passed when the user explicitly delegated UAT to Codex. All six documented commands exited zero, and all eleven recorded checks passed. The completed task was removed from the sample project's active cycle and retained in its retrospective. See [the baseline record](baseline-2026-10-30.md) for scope and evidence. Unavailable configurations remain untested.
+
+## Loading acceptance checklist
+
+Use a disposable linked worktree of the validated application. Follow the README's capability-matrix selection and explicit-read fallback. Keep application acceptance separate from these read-only checks:
+
+1. In a fresh selected CLI, identify automatic instructions and available skills without reading files. Repeat from scripts/nested. Test-only markers must be withheld from the prompt.
+2. Invoke the native test skill, then read the actual shared advisor and ATLAS.md. Check that the reported 3 CU advice matches the installed table and no model switch occurs.
+3. Ask for a read-only Atlas documentation plan. Confirm the runtime follows its pointer or already loaded common instructions and reads the process, advisor, and project task/status records.
+4. Resume the saved discovery session and request its earlier conversation token, purpose, directory, and restriction without tools. This tests recall only.
+5. Require an absent mandatory source and forbid substitutes. Confirm an attempted read and explicit BLOCKED result.
+6. Compare the full before/after fixture file set and hashes. Record the actual reads and results, not just the final assertions.
+
+At the user's request, Codex orchestrated these six checks against Codex, Claude, and Copilot CLIs. All eighteen passed with an unchanged fixture. [The native result](native-cli-results-2026-10-30.md) records the observed loading scope. These were agent-executed checks; no independent human observation, editor acceptance, compaction pass, or full per-runtime application-delivery acceptance is claimed.
