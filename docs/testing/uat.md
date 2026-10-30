@@ -1,6 +1,6 @@
 # Actual-project user acceptance
 
-Use a dedicated test project created from [the Taskboard recipe](taskboard-project.md). These instructions are a UAT handoff. Automated output and agent-driven observations do not establish a user's acceptance.
+Use a dedicated test project created from [the Taskboard recipe](taskboard-project.md). These instructions are a UAT handoff. Routine automated checks do not establish a user's acceptance. If the user explicitly delegates acceptance testing to an agent, name the agent as tester and record the authorization and tested scope. Do not describe that run as an independent human observation.
 
 ## Application check
 
@@ -42,4 +42,4 @@ Evidence:
 Result: pending | passed | failed
 ~~~
 
-The initial baseline's user acceptance remains pending. Unavailable configurations remain untested.
+The baseline's Taskboard acceptance sequence passed when the user explicitly delegated UAT to Codex. All six documented commands exited zero, and all eleven recorded checks passed. The completed task was removed from the sample project's active cycle and retained in its retrospective. See [the baseline record](baseline-2026-10-30.md) for scope and evidence. Unavailable configurations remain untested.
