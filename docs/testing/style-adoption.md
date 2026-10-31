@@ -18,7 +18,7 @@ In the evolution workspace, run `python scripts/check-style-adoption.py --case c
 
 For editorial UAT, inspect `.github/style.md`, the shared prose instruction, README, manifest entry, and update migration note. Confirm that routine documentation uses the general rules, analytical reports use the additional citation requirements, inferences are distinguished from recommendations, and exact technical terms are permitted. Verify that the optional checker instructions do not require PowerShell. If Python 3 is available, save its fenced block as a temporary script and run `python /actual/path/check_style.py .github/style.md` from either isolated fixture; expect zero mechanical errors.
 
-Tester acceptance remains pending user review. Agent smoke results do not establish independent human acceptance, automatic style-file loading, or macOS/Linux execution. No complete installation-validation receipt is claimed.
+The user subsequently delegated commit, merge, and testing to Codex on 2026-10-31. Codex reviewed the scoped editorial acceptance items and ran six checker cases: valid citations, undefined citations, unused sources, duplicate sources, non-ASCII prose, and excluded literal regions. All six returned the expected results. Evidence is retained in the evolution workspace at `logs/style-39/delegated-review.json`. This is delegated agent acceptance for the writing standard and reference replacement. It does not establish independent human acceptance, automatic style-file loading, or macOS/Linux execution. No complete installation-validation receipt is claimed.
 
 ## Documentation impact
 
