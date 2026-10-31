@@ -32,6 +32,7 @@ Planning phase only: do not edit files, run migration scripts, move folders, ren
    - CGR and stages paths: `docs/cgr/` and `docs/cgr/PS.md` versus legacy `docs/projects/` and `CGR.md`
 4. Build and present a path compatibility matrix for this repository. Use `docs/reference/update-path-compatibility-map.md` when available. Show local path, SOT equivalent, and action (`keep`, `copy alongside`, `migrate later`).
 5. Apply default compatibility rule: keep local canonical paths as-is unless the user explicitly approves a migration. Never force in-place path migration by default.
+   - Writing-standard migration: when `.github/tropes.md` exists, compare its project-specific edits with source-kit `.github/style.md`. Propose the new file and update active references and the manifest together. Preserve needed local rules. Mark retirement of the old file as approval-gated and use the rollback path required below. Do not delete customized content or rewrite historical records automatically. Fresh installs use `.github/style.md`; its Python check is optional, not an installation requirement.
 6. Compare the local project against Atlas_AI source of truth using the compatibility map. Focus on:
    - root instruction files
    - new-project install contract files from `.atlas/` and the standalone `atlas_validate.md` workflow
