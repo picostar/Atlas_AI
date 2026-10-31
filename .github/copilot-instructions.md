@@ -56,7 +56,7 @@
 - Plain ASCII text only.
 - Standard markdown formatting is fine.
 - When generating or editing project files, follow the same rules.
-- When authoring prose docs, such as status, devcycle, retro, design notes, READMEs, and governance artifacts, also apply the writing-quality standard in `.github/tropes.md` to avoid common AI writing tells.
+- When authoring prose docs, such as status, devcycle, retro, design notes, READMEs, and governance artifacts, apply `.github/style.md`. Its general rules cover project prose; its additional analytical-report rules apply only to those reports. The embedded Python check is optional and adds no Atlas installation runtime requirement.
 
 ## Read Order
 1. `.github/copilot-instructions.md` -- this file

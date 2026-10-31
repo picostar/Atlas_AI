@@ -174,11 +174,13 @@ The startup check-in reviews current state, active devcycle work, and obvious bl
 - `ATLAS.md` -- default development process
 
 ### AI governance docs
-- `.github/tropes.md` -- writing quality standard, common AI writing tells to avoid
+- `.github/style.md` -- writing standard for project prose, with additional analytical-report rules and an optional portable Python check
 - `.github/TOOLING-ASSUMPTIONS.md` -- capability and tooling assumptions
 - `.github/TOOL-CAPABILITY-MATRIX.md` -- portability matrix across agent environments
 - `.github/FRONTMATTER-SCHEMA.md` -- prompt and skill metadata contract
 - `.github/INSTRUCTION-MAINTENANCE.md` -- instruction update and drift rules
+
+For existing projects, `atlas update` can propose replacing the former `.github/tropes.md` with `.github/style.md`. Review project-specific edits, preserve any needed rules, and approve retirement of the old file and updates to its active references. Fresh installations include only `.github/style.md`. The prose rules and Atlas installation do not require Python; the optional mechanical check requires Python 3.
 
 ### Core workflow prompts (installed by default)
 - `.github/prompts/atlas-realign.prompt.md` -- ATLAS health check and realignment prompt
