@@ -4,6 +4,8 @@ One line per merged pull request on the kit. Newest first. Format: date, PR, cha
 
 ## Unreleased
 
+- 2026-11-02 #42 Add required chat progress reporting with brief/normal/detailed levels to shared instructions; document agent trials and owner UAT. CU 3. Usage: Moderate, qualitative. Model Fit: retained, not benchmarked. Credits: unavailable.
+
 - 2026-10-31 #40 Replace tropes.md with style.md; update prose instructions, core manifest, README, and reviewed legacy migration guidance. CU 3. Usage: Moderate, qualitative. Model Fit: retained, not benchmarked. Credits: unavailable.
 
 - 2026-10-30 #33 Document bounded editor loading, missing-source blockers, Local duplicate-name selection and fresh skill revision reads. CU 8 (DT1), 3 (DT2). Usage: Heavy, qualitative. Model Fit: not evaluated. Credits: unavailable.
