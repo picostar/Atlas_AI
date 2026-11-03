@@ -159,6 +159,8 @@ Use these short chat phrases when you want the agent to run the standard ATLAS f
 - `atlas refresh models` or `refresh model tiers` -- refresh the model-tier-advisor skill's CU-to-tier mappings by consulting current benchmarks (artificialanalysis.ai, ockbench.github.io) and update the Verified dates. Useful when tier tables are stale or a model is deprecated.
 - `good night`, `goodnight`, `goodbye`, `that's all`, or `we are done` -- run the end-of-session closeout check.
 
+While a task runs, agents report progress in chat at three levels: ask for `brief`, `normal` (the default), or `detailed`. See [the trial results](docs/testing/progress-reporting.md), which show this is not yet consistent across runtimes.
+
 The startup check-in reviews current state, active devcycle work, and obvious blockers. The closeout check reviews smoketest, UAT, retro, status, commit, and GitHub follow-up readiness before the session ends. The model-tier refresh updates per-tool tier recommendations based on current market offerings and token-efficiency benchmarks.
 
 ## Included Files
