@@ -29,7 +29,7 @@ description: 'Set up a new project with atlas_ai. Use when bootstrapping a new r
    - Treat `github picostar/Atlas_AI` as source-kit reference only, not a clone destination, unless the user explicitly asks to clone it
    - Do not invoke deprecated legacy bootstrap scripts for prompt-driven newproject setup
 3. If Atlas control files are already present at the repo root, stop and use `atlas_update.md` from the kit for a plan-first legacy project update instead
-   - Otherwise preserve and merge root entries named by the manifest, and move every other pre-existing root entry into `docs/reference/preexisting-root/`
+   - Otherwise preserve and merge root entries named by the manifest, keep allowed root entries such as an existing `docs/` or `scripts/` in place, and move only unexpected root entries into `docs/reference/preexisting-root/`
    - If `.git` already exists, adopt that repository rather than reinitializing it
    - If setup used a local source-kit folder in the target root, such as `atlas_ai` or `Atlas_AI`, remove that temporary folder after install and do not stage or commit it
 4. Create committed `accounts.md` for non-secret cloud account and deployment destination binding
