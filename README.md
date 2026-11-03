@@ -306,7 +306,7 @@ Use github picostar/Atlas_AI as source kit, read README first, then run atlas pr
 
 Prompt-driven setup asks before changing files. It should ask whether to include the docs scaffold, initialize git when needed, include PS, include CGR, select a stack pattern, select a UX pattern, enable API-first when a stack pattern is selected, and create a GitHub repo. It should present stack and UX templates from the install manifest as numbered menus.
 
-If the project root already contains user files, setup preserves and merges manifest-approved root entries and moves every other entry into `docs/reference/preexisting-root/`. If `.git` already exists, setup adopts that repository instead of reinitializing it. If a temporary `atlas_ai` or `Atlas_AI` source-kit folder exists in the target project, remove that temporary folder after the selected files are installed. The setup records these actions in `.atlas/setup.json` and must pass Atlas validation before completion.
+If the project root already contains user files, setup keeps manifest-allowed root entries such as `docs/` and `scripts/` in place, merges Atlas files into them, and moves only unexpected entries into `docs/reference/preexisting-root/`. If `.git` already exists, setup adopts that repository instead of reinitializing it. If a temporary `atlas_ai` or `Atlas_AI` source-kit folder exists in the target project, remove that temporary folder after the selected files are installed. The setup records these actions in `.atlas/setup.json` and must pass Atlas validation before completion.
 
 ### CGR From Remote Source Kit
 
