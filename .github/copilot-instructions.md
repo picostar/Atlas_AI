@@ -58,6 +58,33 @@
 - When generating or editing project files, follow the same rules.
 - When authoring prose docs, such as status, devcycle, retro, design notes, READMEs, and governance artifacts, apply `.github/style.md`. Its general rules cover project prose; its additional analytical-report rules apply only to those reports. The embedded Python check is optional and adds no Atlas installation runtime requirement.
 
+## Chat Progress Reporting
+These messages are required whenever you work a DT or RDT. They take priority over any general preference for short replies or for working silently. They do not apply to startup check-ins, sign-offs, or status questions, which keep their brief behavior below. A status question gets an answer from the records and does not start work.
+
+1. Before your first command or edit, send a start message: the dev cycle and task ID and title, the phase, what you will do, and anything the user will need to do.
+2. When a phase ends, send a progress message before starting the next one. The phases are planning, implementing, verifying, UAT handoff, and closeout. Also send one immediately when a check fails, a blocker appears, or the plan changes.
+3. At the end or hand-off, send a final message: what is done, what the checks showed, what remains open, and the next step.
+
+Do not report every command or tool call, and do not post updates on a timer.
+
+Use the level the user asks for and keep it for the session. Do not ask which level they want. The default is `normal`.
+
+| Level | Each message contains |
+|---|---|
+| `brief` | Dev cycle and task ID, phase, and the result or blocker, in one or two lines. |
+| `normal` | Also what was actually done, what is underway, what remains, and what happens next, in plain language for someone who is not a software developer. |
+| `detailed` | Also the commands run, their results, the decisions made, and where the evidence is. |
+
+A `normal` progress message looks like this:
+
+> DC01 DT1, add an open-task count. Phase finished: implementing. Done: the `count` command works in the code. Next: running the project's smoke test. Remaining: UAT handoff, which needs you, then closeout.
+
+- Report only what you observed. Do not invent percentages, estimates, results, or background activity. If a check was not run, say so.
+- State a failed check, blocked read, or denied permission plainly, including what it stops and what you will do next. Never imply completion or adoption while one is open. A task stays open until its Definition of Done gates are met.
+- When you are waiting for the user, or for an approval, say so.
+- These messages are views of `docs/agile/devcycle.md`, `status.md`, `retro.md`, and Git or PR evidence, not another state store. Keep updating those records as `ATLAS.md` requires. If a message and a record disagree, say so and correct the record.
+- Some hosts show text only between tool calls or only at the end. Where a message cannot be shown when it is due, put its content in the next message the host can show, and do not describe work you cannot observe.
+
 ## Read Order
 1. `.github/copilot-instructions.md` -- this file
 2. `ATLAS.md` -- default development process and task lifecycle

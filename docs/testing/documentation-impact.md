@@ -38,3 +38,7 @@ README, the capability matrix, tooling assumptions, parity status and UAT guidan
 ## DC02 Local distribution evidence review
 
 README, this review, UAT, editor-results, capability matrix and tooling assumptions link the new skill-collision-results-2026-10-30.md. CHANGELOG records PR 33 and task CU. The actual Taskboard smoke passed before/after; all baseline hashes were preserved and the personal test directory was safely removed. Native attachments and the distinct fallback read support delegated acceptance. Existing process, pointers, production skills/prompts, lifecycle procedures, manifests/receipts, agile/governance/stack/UX templates and secrets guidance were reviewed and remain unaffected for the reasons above. No installer, package, production distribution rule or runtime policy changed.
+
+## Issue 34 chat progress review
+
+Updated: .github/copilot-instructions.md, the devcycle-management skill, README, and the new progress-reporting.md. ATLAS.md is unaffected because task lifecycle and records do not change, only what agents say in chat. Agent pointers still route to the same instructions. The manifest, setup, update, and validation procedures are unaffected because no installed path changes. The capability matrix update remains follow-up work, because the owner's acceptance covers two clients and the agent results are single runs. CHANGELOG waits for a PR number.
