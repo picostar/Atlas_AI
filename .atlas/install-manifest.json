@@ -199,6 +199,13 @@
       "key": "createGitHubRepository",
       "type": "boolean",
       "default": false
+    },
+    {
+      "key": "regressionSuite",
+      "type": "string",
+      "values": ["every-task", "pre-merge", "on-demand"],
+      "default": "pre-merge",
+      "missingMeans": "pre-merge"
     }
   ],
   "catalogs": {

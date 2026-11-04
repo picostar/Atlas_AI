@@ -15,6 +15,7 @@ Keep the process stable. Customize project names, paths, tools, and integration 
 - [Dev Cycle Loop](#dev-cycle-loop)
 - [Smoketest Rules](#smoketest-rules)
 - [UAT Rules](#uat-rules)
+- [Regression Suite Rules](#regression-suite-rules)
 - [Recommended Doc Structure](#recommended-doc-structure)
 - [Project Stages and Required Documents (Optional)](#project-stages-and-required-documents-optional)
 - [Rules](#rules)
@@ -33,7 +34,7 @@ Keep the process stable. Customize project names, paths, tools, and integration 
 8. Remove the completed task from the active task list and update current-state docs if the repo tracks them.
 9. Repeat.
 
-When the active cycle is burned down, close the cycle by confirming validation, review, and documentation are complete. If the repository uses GitHub pull requests, merge the pull request into the base branch, typically `main`, when the dev cycle, phase, or other reviewable task bundle is ready to close. Then pull the next priority from the backlog into a new cycle.
+When the active cycle is burned down, close the cycle by confirming validation, review, and documentation are complete, including a passing full regression run when `regressionSuite` is `every-task` or `pre-merge`. If the repository uses GitHub pull requests, merge the pull request into the base branch, typically `main`, when the dev cycle, phase, or other reviewable task bundle is ready to close. Then pull the next priority from the backlog into a new cycle.
 
 ---
 
@@ -50,7 +51,7 @@ Every dev task needs a repeatable smoketest before it can be treated as complete
 - Pass/fail: the smoketest must have a clear outcome that can be recorded in the retrospective log
 - No skip: if the smoketest fails, the task is still open unless the failure is captured as an explicit blocker
 - Every DT and RDT entry must include a `Smoketest:` section
-- Full harness coverage (optional): when a repo maintains a standing regression/UAT harness and a DT or RDT changes deployed behavior, add or update rows in that harness and its coverage map before closeout. If no full-harness row is appropriate, record why in the retrospective log.
+- Scope: the smoketest covers this task's change. Whether the whole regression suite also runs at closeout depends on `regressionSuite`; see [Regression Suite Rules](#regression-suite-rules).
 
 ---
 
@@ -67,6 +68,37 @@ Every dev task must include a `UAT:` section in the active task list.
   3. If the task is not UAT-eligible, record the internal validation expectation in the `UAT:` section.
   4. Record pass/fail feedback when UAT is performed.
   5. If issues are found, keep the task open and re-test.
+
+---
+
+## Regression Suite Rules
+
+These terms have their usual industry meaning:
+
+- Smoke test: a quick, repeatable check that one task's change works. Every DT and RDT has one in its `Smoketest:` section.
+- Regression suite: the accumulated checks for features built earlier, re-run to catch regressions, which are breaks in behavior that used to work.
+- Test harness: the runner plus the list of what it covers, which runs the regression suite in one command. A project keeps it under `docs/agile/testing/` or names its location there. The scaffold README in that folder is a placeholder, not a harness.
+
+The `regressionSuite` setting in `.atlas/setup.json` decides when the full suite runs:
+
+| Value | A task closes on | The full suite runs |
+|---|---|---|
+| `every-task` | its own checks plus a passing full run | at each DT or RDT closeout, before any merge to `main`, and when a dev cycle closes |
+| `pre-merge` (default) | its own checks | before any merge to `main`, when a dev cycle closes, and on request |
+| `on-demand` | its own checks | only on request |
+
+- A missing value means `pre-merge`.
+- A task's smoke test covers that task's change. When the project keeps a regression suite, add the task's new checks to it. Do not re-run the whole suite at task closeout unless the value is `every-task`.
+- When the project has no harness yet, the full suite is the standing smoke scripts under `scripts/`. If there are none, say so in the merge or cycle-close summary.
+- A failed full run blocks the merge or cycle close it gates. Propose a fix task, as an RDT when it interrupts the cycle, and keep the gate closed until a full run passes.
+- Under `on-demand`, a merge to `main` does not require a full run. State in the merge summary when the full suite has not run since the last change.
+
+Commands:
+
+- `atlas regression every-task`, `atlas regression pre-merge`, and `atlas regression on-demand` change the setting. Before a change to a less frequent value, show the current suite size, the date of the last full pass, and the effect on the active task, then ask the user to confirm. A change to a more frequent value needs no confirmation. Each change updates `answers.regressionSuite` in `.atlas/setup.json`, adds a dated line to `retro.md`, notes the change on the active task in `devcycle.md` when one exists, and updates the mode line. Commit these record changes.
+- `atlas regression run` runs the full suite now, under any value, and reports the checks run, the result, and how long it took.
+
+Mode line: show the active setting as `Atlas mode: standard, regression suite: <value>`. It appears in the first chat message of each session, at the start of each message under Chat Progress Reporting in `.github/copilot-instructions.md`, under the title of `docs/agile/status.md`, and in the `atlas validate` receipt.
 
 ---
 
@@ -158,7 +190,7 @@ For AI-assisted workflows, the `eMOE` CU score assigned when a DT or RDT starts 
 - Smoke test with CLI commands or a script before moving on.
 - Every DT and RDT must include both `Smoketest:` and `UAT:` sections.
 - When the active stack pattern says API-first mode is enabled, every DT and RDT should include an API result when feasible.
-- If the repository maintains a full regression/UAT harness (see `docs/agile/testing/`), update its coverage when the task changes deployed behavior, or record in the retrospective log why no update applies.
+- Smoke test the task's own change. Run the full regression suite only when `regressionSuite` requires it; see [Regression Suite Rules](#regression-suite-rules).
 - Create one small, descriptive commit per completed DT or RDT when the repo uses git.
 - If the repository has a GitHub remote, push the branch and complete the corresponding GitHub follow-up after each completed DT or RDT.
 - Do not merge to `main` after every DT by default. Merge the pull request when the dev cycle, phase, or other reviewable task bundle is ready to close.
@@ -174,7 +206,7 @@ By default, a task is done only when:
 6. The retrospective log is updated.
 7. Current-state documentation is updated if the repo tracks it.
 8. The task is removed from the active list.
-9. If the repository maintains a full regression/UAT harness, its coverage is added or updated for deployed behavior changes, or the retrospective log records why no full-harness row applies.
+9. When the project keeps a regression suite, the task's new checks are added to it, and when `regressionSuite` is `every-task`, a full run has passed.
 
 Optional repo-specific additions may include tagging, docs sync, deployment notes, or team notifications.
 

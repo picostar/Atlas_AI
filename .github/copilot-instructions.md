@@ -77,8 +77,10 @@ Use the level the user asks for and keep it for the session. Do not ask which le
 
 A `normal` progress message looks like this:
 
+> Atlas mode: standard, regression suite: pre-merge
 > DC01 DT1, add an open-task count. Phase finished: implementing. Done: the `count` command works in the code. Next: running the project's smoke test. Remaining: UAT handoff, which needs you, then closeout.
 
+- Begin each start, progress, and final message with the mode line defined in `ATLAS.md` under Regression Suite Rules, for example `Atlas mode: standard, regression suite: pre-merge`. Read the value from `answers.regressionSuite` in `.atlas/setup.json`; a missing value means `pre-merge`.
 - Report only what you observed. Do not invent percentages, estimates, results, or background activity. If a check was not run, say so.
 - State a failed check, blocked read, or denied permission plainly, including what it stops and what you will do next. Never imply completion or adoption while one is open. A task stays open until its Definition of Done gates are met.
 - When you are waiting for the user, or for an approval, say so.
@@ -99,6 +101,7 @@ A `normal` progress message looks like this:
 - If the user opens with a greeting or start-of-session phrase, such as `hi`, `hello`, `good morning`, `goodmorning`, or `ready to start`, treat it as a request for a quick project check-in.
 - Review where the project stands before proposing work. Use the read order above, then prioritize `docs/agile/status.md` for current state, `docs/agile/devcycle.md` for active work, and `docs/agile/backlog.md` if the active cycle is empty or unclear.
 - If the user opens with `atlas`, treat it as the same startup check-in flow.
+- Start the first chat message of each session with the mode line defined in `ATLAS.md` under Regression Suite Rules.
 - During startup check-in, if `.github/prompts/cgr.prompt.md` is present and governance is enabled for this project, check whether live MRD, PRD, and ESD artifacts exist in `docs/cgr/`.
 - If governance is enabled and live MRD, PRD, or ESD artifacts are missing, ask a single yes or no question: "Do you want to run CGR bootstrap now to generate draft MRD, PRD, and ESD from seed, reference, and project source materials?"
 - If the repository appears to be a scaffold or template, review template integrity and adoption readiness instead of expecting live project status.
@@ -115,6 +118,7 @@ A `normal` progress message looks like this:
 - For `atlas update`, classify legacy account-binding versus secret material before edits. Build committed `accounts.md` from non-secret values only, keep secrets in local-only `secrets.md`, and never copy secret values to committed files.
 - For `atlas update`, prefer tracked retirement path `docs/reference/retired-docs/` for historical artifacts and warn before any move into ignored directories.
 - For `atlas update`, create and record a rollback path before any update edits. Use a pre-update git branch or tag when git exists, or a timestamped filesystem backup path when git is absent.
+- For `atlas update`, when `.atlas/setup.json` has no `answers.regressionSuite`, propose adding `pre-merge` and the `status.md` mode line as approval-gated changes. If the project has a real test harness, with a runner and a list of what it covers, name it in the plan and ask which schedule to keep.
 - For `atlas update`, use deterministic validation criteria, including pre and post checks, reference integrity, secret leak checks, pattern availability checks, and Windows `safe.directory` fallback when needed.
 - If the user says `CGR`, `run CGR`, `atlas cgr`, or `do CGR`, treat it as a request to run the governance workflow defined in `.github/prompts/cgr.prompt.md` (or root-level `atlas_cgr.md` when this kit is not installed in the target).
 - For `CGR`: if `docs/cgr/` or live MRD, PRD, and ESD artifacts do not exist yet, create `docs/cgr/` and bootstrap draft docs from `seed.md`, `docs/reference/`, and relevant source files already in the project root, such as marketing copy, product notes, sales material, website content, specs, or discovery notes. Then run CGR and write `docs/cgr/CGR-results.md`.
@@ -132,7 +136,7 @@ A `normal` progress message looks like this:
 - If a blocker exists, call it out briefly and either resolve it or ask the minimum clarifying question needed to proceed.
 - For `newproject`, use prompt-first setup only so bootstrap works across Windows, Linux, and macOS. Do not invoke deprecated legacy bootstrap scripts during prompt-driven newproject execution.
 - For `newproject`, read `.atlas/install-manifest.json` from the source kit before asking questions or changing target files. Treat it as authoritative for install groups, allowed root entries, base skills, optional components, and pattern menus. Do not invent an Atlas-style layout.
-- For `newproject`, run an explicit setup questionnaire before applying changes. Capture yes or no choices for scaffold, git init when needed, PS, CGR, stack pattern selection, UX pattern selection, and GitHub repo creation. If a stack pattern is selected, capture API-first posture as yes or no. Do not silently apply defaults unless the user explicitly says to use defaults.
+- For `newproject`, run an explicit setup questionnaire before applying changes. Capture yes or no choices for scaffold, git init when needed, PS, CGR, stack pattern selection, UX pattern selection, and GitHub repo creation. If a stack pattern is selected, capture API-first posture as yes or no. Capture the regression suite schedule as `every-task`, `pre-merge`, or `on-demand`, with `pre-merge` as the default. Do not silently apply defaults unless the user explicitly says to use defaults.
 - For `newproject`, generate stack and UX pattern choices from the manifest catalogs, present them as numbered menus, and accept number, ID, or label answers. Do not hardcode the catalog or ask users for freeform template filenames or paths. When asking API-first posture, explain that API-first expects API results when feasible and smoketest verification of endpoints plus OpenAPI or Swagger docs when feasible.
 - For `newproject`, do not end the run with only installed-file notes, diagnostics, or generic next-step options. A successful run must either capture setup answers and apply them, or stop on a clear blocker.
 - For `newproject`, if a partial install already happened before the questionnaire, treat it as interrupted bootstrap. Ask only the missing setup questions, then continue execution to completion in the same run.
@@ -143,6 +147,7 @@ A `normal` progress message looks like this:
 - For `newproject`, if a user asks why legacy scripts were not used, explain that prompt-driven bootstrap is the supported path.
 - For `newproject`, write `.atlas/setup.json` with all questionnaire answers, source revision, selected pattern IDs, API-first posture, git and GitHub outcomes, and relocated root entries.
 - For `newproject`, run every check in `atlas_validate.md` with repository file tools after installation and write its validation receipt. Do not report successful setup until validation passes.
+- If the user says `atlas regression every-task`, `atlas regression pre-merge`, `atlas regression on-demand`, or `atlas regression run`, follow the commands in `ATLAS.md` under Regression Suite Rules.
 - If the user says `atlas validate`, read `atlas_validate.md` and validate the current project without changing it. This validation does not automatically gate Atlas update, CGR, or normal closeout.
 - Skills live in `.github/skills/<name>/SKILL.md`. When these instructions or `ATLAS.md` name a skill, read that file before acting on it. When discovery is absent or unverified, read the named file explicitly. Codex discovery depends on the runtime: its native path is `.agents/skills/`, while the experimental VS Code integration can discover workspace `.github/skills/`. Use `.github/TOOL-CAPABILITY-MATRIX.md` and, when present in the source kit, the parity fixture to distinguish documented routes from observed behavior; do not add duplicate skill copies before testing.
 - When working in the Atlas_AI kit itself (not an installed project), every pull request adds one line to `CHANGELOG.md` under Unreleased: date, PR number, change, CU, and the Usage, Model Fit and Credits lines. Kit work is tracked in GitHub Issues, never in `docs/agile/`.
@@ -165,7 +170,7 @@ A `normal` progress message looks like this:
 - Smoke test each task with CLI commands or a script before considering it complete.
 - Every devtask and reset devtask must include both a `Smoketest:` section and a `UAT:` section. If a task is not user-facing, the `UAT:` section must explicitly say that it is not UAT-eligible and state the required internal validation.
 - When `patterns/stack-patterns/active-stack-pattern.md` says API-first mode is enabled, every devtask and reset devtask should include an API result when feasible, and `Smoketest:` should include API endpoint verification plus OpenAPI or Swagger documentation verification when feasible.
-- If the repository maintains a full regression/UAT harness (see `docs/agile/testing/README.md` if present), update its coverage before closeout when a devtask or reset devtask changes deployed behavior. If no full-harness row is appropriate, record why in the retrospective log.
+- A task's smoketest covers that task's change. When the project keeps a regression suite, add the task's new checks to it. Run the full suite only when `regressionSuite` requires it, as `ATLAS.md` defines under Regression Suite Rules. The placeholder `docs/agile/testing/README.md` is not a harness.
 - After each completed devtask, create a task-level git commit.
 - After each completed devtask, if a GitHub remote exists, push the branch and perform the repo's GitHub follow-up step, typically creating or updating a pull request. If no remote exists, record that blocker clearly.
 - Do not merge to `main` after every devtask by default. Merge the pull request when the dev cycle, phase, or other reviewable task bundle is ready to close, after required status checks and review are complete.

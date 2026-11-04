@@ -39,12 +39,13 @@ Do not run deprecated bootstrap scripts. Use a prompt-driven workflow, ask only 
     - select an active UX pattern baseline now? yes or no (default no)
     - if UX pattern is yes, generate the numbered menu from `catalogs.uxPatterns` and accept a number, ID, or label. Do not use a hardcoded menu and do not ask for a filename or path
     - create GitHub repo now? yes or no (default no)
+    - regression suite: when should all earlier checks be re-run? Offer the three values with one line each: `every-task`, after every task, the slowest; `pre-merge`, before merging to main and at the end of each dev cycle, the default; `on-demand`, only when the user runs `atlas regression run`.
    - If `.git` already exists, do not ask whether to initialize it. Record `initializeGit: false` and `outcomes.git: adopted`.
 7. If the user replies with "use defaults" or equivalent, apply the manifest defaults and continue. Otherwise summarize captured answers and ask for a quick confirmation before execution.
    - Completion gate: do not output a final validation summary or next-step options until setup questionnaire answers are captured and applied, unless blocked.
    - Recovery mode: if a prior run already copied some files, for example only prompt files, without collecting setup answers, ask only the missing questions and continue execution to completion in this same run.
 8. After confirmation, create `docs/reference/preexisting-root/` and perform the planned root cleanup. Merge approved `.github` and `.claude` content without overwriting unrelated user-authored files. Move every other unexpected root entry to the preservation folder and record each moved root-relative name. Do not move the target's `.git` directory or git metadata. If a preservation destination already exists, stop and resolve the collision with the user instead of overwriting or inventing a renamed path.
-9. Install every path in the manifest `core` group, then install the selected `scaffold`, `cgr`, `ps`, and catalog-linked groups. The six base-process skills in the core group are unconditional. Do not install CGR prompts or documents unless `includeCGR` is true, except `docs/cgr/README.md` may also be installed when PS is selected. Merge compatible content at approved root entries. If an existing file conflicts with a required Atlas path, stop for a preservation decision instead of overwriting it. Execute in the current target folder, not a cloned subfolder.
+9. Install every path in the manifest `core` group, then install the selected `scaffold`, `cgr`, `ps`, and catalog-linked groups. The six base-process skills in the core group are unconditional. Do not install CGR prompts or documents unless `includeCGR` is true, except `docs/cgr/README.md` may also be installed when PS is selected. Merge compatible content at approved root entries. If an existing file conflicts with a required Atlas path, stop for a preservation decision instead of overwriting it. When `docs/agile/status.md` is installed, set its mode line to `Atlas mode: standard, regression suite: <answers.regressionSuite>`. Execute in the current target folder, not a cloned subfolder.
 10. Create `.atlas/setup.json` with this contract:
     - `schemaVersion`: `1`
     - `manifestVersion`: the manifest `manifestVersion`
@@ -67,6 +68,7 @@ Do not run deprecated bootstrap scripts. Use a prompt-driven workflow, ask only 
     - fix validation errors and rerun; do not report successful setup while validation fails or remains unverified
 19. Summarize:
    - setup questionnaire answers captured, and whether defaults were explicitly used
+   - the mode line, `Atlas mode: standard, regression suite: <value>`
    - files installed, including all base-process skills
    - manifest and setup receipt written
    - pre-existing user material preserved under `docs/reference/preexisting-root/`

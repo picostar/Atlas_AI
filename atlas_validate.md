@@ -25,7 +25,7 @@ Do not skip a check because it is tedious. Do not mark a check PASS without read
 | # | Check | Evidence to cite on FAIL |
 |---|---|---|
 | 1 | `.atlas/install-manifest.json` and `.atlas/setup.json` both parse as JSON and `schemaVersion` matches the manifest's supported version | file path and parse error, or the mismatched version |
-| 2 | Every `questionnaire[].key` in the manifest has an entry in receipt `answers`, and each value matches the declared `type` | missing or mistyped key |
+| 2 | Every `questionnaire[].key` in the manifest has an entry in receipt `answers`, each value matches the declared `type`, and a value is one of the declared `values` when the entry lists them. A key with `missingMeans` may be absent; report it under W4 instead | missing, mistyped, or unlisted value |
 | 3 | `outcomes.git` matches the questionnaire and the repository: `initializeGit` true requires a `.git` directory; false requires none unless adopted and recorded | receipt field and actual state |
 | 4 | `outcomes.github` matches `createGitHubRepository` and, when true, a remote named `origin` exists | receipt field and `git remote -v` result |
 | 5 | `answers.stackPattern` and `answers.uxPattern` are null or a catalog `id`; `answers.apiFirst` is null when `stackPattern` is null | offending value |
@@ -46,6 +46,7 @@ Do not skip a check because it is tedious. Do not mark a check PASS without read
 | W1 | `docs/agile/devcycle.md`, `retro.md`, `status.md`, `backlog.md` still contain placeholder scaffold content (expected on a fresh install; warn so the user knows the project is not yet activated) |
 | W2 | `.github/skills/model-tier-advisor/SKILL.md` `Verified` dates are older than 60 days; recommend `atlas refresh models` |
 | W3 | `accounts.md` exists but has no non-secret account binding filled in |
+| W4 | A questionnaire key with `missingMeans` is absent from receipt `answers`, which is expected for a receipt written before the key existed. Report the value in effect, for example `regressionSuite` absent, `pre-merge` in effect, and recommend `atlas update` to record it |
 
 ## Source-Kit Mode
 
@@ -66,6 +67,7 @@ Atlas validation: PASSED | FAILED
 Validated: <ISO date>
 Validator: <agent and model name>
 Mode: installed-project | source-kit
+Atlas mode: standard, regression suite: <value in effect> (installed-project only)
 Required: <n> PASS, <n> FAIL
 Warnings: <n>
 Failures:

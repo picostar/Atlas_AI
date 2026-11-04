@@ -1,35 +1,25 @@
-# Regression and UAT Harness
+# Regression Suite and Test Harness
 
-This directory is a home for a repeatable, deployed smoketest and UAT harness, distinct from per-task smokes under `scripts/`, for projects whose UAT surface has outgrown a single inline `UAT:` note.
+This directory is a placeholder for a future test harness. On its own, this README is not a harness, and its presence does not mean the project keeps a regression suite.
 
-## What This Is For
+## Terms
 
-Per-task smokes in individual `devcycle.md` entries prove one task's contract. When cross-feature regression coverage becomes worth tracking on its own, a standing harness holds the accumulated surface, encoding recurring failure modes pulled from `retro.md` so it catches regressions, not just happy paths.
+- Smoke test: a quick, repeatable check that one task's change works. It lives in the task's `Smoketest:` section, often with a script under `scripts/`.
+- Regression suite: the accumulated checks for features built earlier, re-run to catch regressions, which are breaks in behavior that used to work.
+- Test harness: the runner plus the list of what it covers, which runs the regression suite in one command.
 
-## Why This Exists
+## When the Suite Runs
 
-- Per-task smokes prove individual change contracts. All passing smokes do not guarantee no regressions across feature interaction.
-- A green regression/UAT harness run serves as the broad acceptance gate before deployment.
-- Per-task smokes remain the focused gates cited in individual retro entries.
+The `regressionSuite` setting in `.atlas/setup.json` decides when the full suite runs: `every-task`, `pre-merge`, which is the default, or `on-demand`. See Regression Suite Rules in `ATLAS.md` for what each value means, the commands that change it, and the mode line that shows it.
 
-## Optional Folder
+Per-task smoke tests still prove each task's change. Under `pre-merge` and `on-demand`, a task closes on its own checks, and the full suite runs at the gates the setting names.
 
-Delete this folder if your project's UAT fits in the inline `UAT:` field in `devcycle.md`. Create it when cross-feature regression coverage becomes important enough to track separately.
+## Adding a Harness
 
-## Coverage Rule
+Create a harness when cross-feature checks become worth running as one set. This directory then typically contains:
 
-When a devtask (DT) or reset devtask (RDT) changes deployed behavior, update this harness:
-- Add or update rows in the harness coverage map.
-- If no full-harness row is appropriate for the change, record why in the retrospective log.
+- A runner script or command, for example `run-harness.sh` or a test suite invocation
+- A coverage list naming what is covered, how to run each part, and the expected pass signal
+- A `reports/` folder for run logs and test output, usually gitignored
 
-This rule is a discipline, not a hard blocker. It documents intent and decisions without becoming a gate that blocks trivial changes.
-
-## Suggested Shape
-
-This directory typically contains:
-
-- An executor script or runner command (e.g., `run-harness.sh`, test suite invocation)
-- A coverage map file naming what is covered, how to run each part, and expected pass signal
-- A `reports/` folder for run logs and test output (usually gitignored)
-
-Each adopting project fills in the specifics. No templates or example content are provided here; this is a structural placeholder only.
+When a harness exists, add each task's new checks to it. Delete this directory if the project keeps no harness and its smoke tests live under `scripts/`.

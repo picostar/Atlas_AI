@@ -22,7 +22,7 @@ Refer to [ATLAS.md](../../../ATLAS.md) for the full process rules. Key steps:
 1. Pick the next DT from `docs/agile/devcycle.md`
 2. Use the model-tier-advisor skill to state a suggested model tier based on eMOE, using the table for whichever AI tool is active. If other active DT/RDT entries in `devcycle.md` also lack a `Suggested Model` field, apply the same suggestion to all of them in this pass (see model-tier-advisor's backfill procedure), not only the current task.
 3. Implement the task, reporting progress in chat as `.github/copilot-instructions.md` defines under Chat Progress Reporting
-4. Smoke test the change with CLI commands or a script
+4. Smoke test the change with CLI commands or a script. The smoke test covers this task's change; run the full regression suite only when `regressionSuite` requires it, as ATLAS.md defines under Regression Suite Rules
 5. Ensure the task entry includes both `Smoketest:` and `UAT:` sections
 6. Complete the `UAT:` section with either handoff instructions or an explicit non-UAT note
 
@@ -42,6 +42,7 @@ Refer to [ATLAS.md](../../../ATLAS.md) for the full process rules. Key steps:
 4. Complete it first, then resume the interrupted cycle
 
 ### When the Cycle Burns Down
+- When `regressionSuite` is `every-task` or `pre-merge`, run the full regression suite before closing the cycle or merging to `main`. A failed run keeps the cycle open and needs a fix task
 - Pull next priority from `docs/agile/backlog.md` into a new cycle
 
 ## CU Scale
