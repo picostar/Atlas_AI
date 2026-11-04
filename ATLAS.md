@@ -16,6 +16,7 @@ Keep the process stable. Customize project names, paths, tools, and integration 
 - [Smoketest Rules](#smoketest-rules)
 - [UAT Rules](#uat-rules)
 - [Regression Suite Rules](#regression-suite-rules)
+- [PoC Mode Rules](#poc-mode-rules)
 - [Recommended Doc Structure](#recommended-doc-structure)
 - [Project Stages and Required Documents (Optional)](#project-stages-and-required-documents-optional)
 - [Rules](#rules)
@@ -97,8 +98,32 @@ Commands:
 
 - `atlas regression every-task`, `atlas regression pre-merge`, and `atlas regression on-demand` change the setting. Before a change to a less frequent value, show the current suite size, the date of the last full pass, and the effect on the active task, then ask the user to confirm. A change to a more frequent value needs no confirmation. Each change updates `answers.regressionSuite` in `.atlas/setup.json`, adds a dated line to `retro.md`, notes the change on the active task in `devcycle.md` when one exists, and updates the mode line. Commit these record changes.
 - `atlas regression run` runs the full suite now, under any value, and reports the checks run, the result, and how long it took.
+- Under PoC mode, `atlas regression every-task` and `atlas regression pre-merge` record the value without confirmation and say that it takes effect after `atlas mode standard`.
 
-Mode line: show the active setting as `Atlas mode: standard, regression suite: <value>`. Read `.atlas/setup.json` first in each session to learn the value. The line appears in the first chat message that reports on the project, at the start of each start, progress, and final message under Chat Progress Reporting in `.github/copilot-instructions.md`, under the title of `docs/agile/status.md`, and in the `atlas validate` receipt.
+Mode line: show the active settings as `Atlas mode: <projectMode>, regression suite: <value in effect>`, for example `Atlas mode: standard, regression suite: pre-merge`. Under PoC mode the value in effect is `on-demand`; see [PoC Mode Rules](#poc-mode-rules). Read `.atlas/setup.json` first in each session to learn the values. The line appears in the first chat message that reports on the project, at the start of each start, progress, and final message under Chat Progress Reporting in `.github/copilot-instructions.md`, under the title of `docs/agile/status.md`, and in the `atlas validate` receipt.
+
+---
+
+## PoC Mode Rules
+
+The `projectMode` setting in `.atlas/setup.json` is `standard`, the default, or `poc`. A missing value means `standard`. PoC mode is for a fast proof of concept. For a project that selects it, PoC mode loosens the per-task checks and records below, and these rules override the rest of this file for those items. A `standard` project is unaffected.
+
+| Item | `standard` | `poc` |
+|---|---|---|
+| Smoketest | Exact commands or a script, with a pass signal, covering the task's change | One quick command that shows the feature runs, with its observed result |
+| UAT | Handoff instructions, or a `Not UAT-eligible` note | Show the user the working demo; when the user is away, give the run command |
+| Task entry in `devcycle.md` | Full entry with eMOE, Suggested Model, `Smoketest:`, and `UAT:` | Goal, run command, and done or not; no eMOE or Suggested Model |
+| Retro entry | Full entry with eMOE and aMOE | One line: date, `PoC`, task ID and title, run command, and result |
+| Regression suite | Runs as `regressionSuite` sets | Runs only on request, as `on-demand` |
+
+PoC mode does not change task-level commits, merges, pushes and GitHub follow-up, secrets handling in `secrets.md`, account bindings in `accounts.md`, current-state updates in `status.md`, or the mode line.
+
+A PoC task is done when the feature runs, the quick command and its result are reported, the demo is shown or the run command is given, the retro line is written, the task-level commit exists, and the task is removed from the active list.
+
+Commands:
+
+- `atlas mode poc` on a `standard` project lists what PoC mode loosens, says that the regression suite will run only on request, and asks the user to confirm. On confirmation, set `answers.projectMode` to `poc` and leave `answers.regressionSuite` as it is, so it resumes later. Add a dated line to `retro.md`, update the mode line, and commit these record changes.
+- `atlas mode standard` needs no confirmation. Set `answers.projectMode` to `standard`, add a dated line to `retro.md`, and update the mode line. List the tasks recorded with `PoC` retro lines since the last switch to PoC; each needs a standard smoketest before release. Show the list in chat, add it to `docs/agile/backlog.md` as one item, and commit these record changes.
 
 ---
 
@@ -207,6 +232,8 @@ By default, a task is done only when:
 7. Current-state documentation is updated if the repo tracks it.
 8. The task is removed from the active list.
 9. When the project keeps a regression suite, the task's new checks are added to it, and when `regressionSuite` is `every-task`, a full run has passed.
+
+Under PoC mode, the shorter definition in [PoC Mode Rules](#poc-mode-rules) applies instead.
 
 Optional repo-specific additions may include tagging, docs sync, deployment notes, or team notifications.
 

@@ -16,7 +16,7 @@ description: 'Manage dev tasks, devcycles, and retro logging. Use when creating 
 
 ## Procedure
 
-Refer to [ATLAS.md](../../../ATLAS.md) for the full process rules. Key steps:
+Refer to [ATLAS.md](../../../ATLAS.md) for the full process rules. Key steps for a `standard` project follow. When `projectMode` in `.atlas/setup.json` is `poc`, use the shorter forms in ATLAS.md under PoC Mode Rules instead: skip the model-tier suggestion, run one quick command as the smoketest, show the demo as UAT, and write one retro line.
 
 ### Starting a Task
 1. Pick the next DT from `docs/agile/devcycle.md`

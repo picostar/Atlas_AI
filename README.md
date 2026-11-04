@@ -54,7 +54,7 @@ Equivalent short form:
 newproject
 ```
 
-The agent should use `.atlas/install-manifest.json` and `atlas_newproject.md`, ask explicit setup questions first (scaffold, git init, PS, CGR, stack, UX, API-first when stack is selected, GitHub repo, regression suite schedule), preserve existing user files under `docs/reference/preexisting-root/`, install the selected Atlas files into the current target folder, write `.atlas/setup.json`, remove any temporary local source-kit folder such as `atlas_ai` or `Atlas_AI`, initialize or adopt git, and pass Atlas validation.
+The agent should use `.atlas/install-manifest.json` and `atlas_newproject.md`, ask explicit setup questions first (scaffold, git init, PS, CGR, stack, UX, API-first when stack is selected, GitHub repo, project mode, regression suite schedule), preserve existing user files under `docs/reference/preexisting-root/`, install the selected Atlas files into the current target folder, write `.atlas/setup.json`, remove any temporary local source-kit folder such as `atlas_ai` or `Atlas_AI`, initialize or adopt git, and pass Atlas validation.
 
 The run is not complete if it only installs prompt files and reports diagnostics. If that partial state occurs, the agent should ask the missing setup questions and continue to completion.
 
@@ -157,12 +157,15 @@ Use these short chat phrases when you want the agent to run the standard ATLAS f
 - `newproject` or `atlas project` -- run the standalone new-project bootstrap prompt, preserving pre-existing user material under `docs/reference/` and adopting `.git` when present.
 - `atlas validate` -- validate a new-project installation against `.atlas/install-manifest.json` and `.atlas/setup.json` without changing it.
 - `atlas regression every-task`, `atlas regression pre-merge`, or `atlas regression on-demand` -- change when the full regression suite runs. `atlas regression run` runs it now. See Regression Suite Rules in `ATLAS.md`.
+- `atlas mode poc` or `atlas mode standard` -- switch between PoC mode and the full process. Switching to standard lists the PoC tasks that need standard smoketests before release. See PoC Mode Rules in `ATLAS.md`.
 - `atlas refresh models` or `refresh model tiers` -- refresh the model-tier-advisor skill's CU-to-tier mappings by consulting current benchmarks (artificialanalysis.ai, ockbench.github.io) and update the Verified dates. Useful when tier tables are stale or a model is deprecated.
 - `good night`, `goodnight`, `goodbye`, `that's all`, or `we are done` -- run the end-of-session closeout check.
 
 While a task runs, agents report progress in chat at three levels: ask for `brief`, `normal` (the default), or `detailed`. See [the trial results](docs/testing/progress-reporting.md), which show this is not yet consistent across runtimes. Each message starts with the mode line, for example `Atlas mode: standard, regression suite: pre-merge`, which `docs/agile/status.md` also shows.
 
 The `regressionSuite` setup answer sets when the full regression suite runs. `every-task` re-runs it at every task closeout, which slows down as the suite grows. `pre-merge`, the default, runs it before merging to `main` and when a dev cycle closes. `on-demand` runs it only when asked. Each task's smoke test still covers that task's change.
+
+The `projectMode` setup answer is `standard`, the default, or `poc`. PoC mode is for a fast proof of concept: each task gets one quick check, a demo instead of a UAT handoff, a short task entry with no effort estimate, and one retro line, and the regression suite runs only on request. Commits, merges, pushes, secrets, and account bindings follow the normal rules. The mode line then reads `Atlas mode: poc, regression suite: on-demand`.
 
 The startup check-in reviews current state, active devcycle work, and obvious blockers. The closeout check reviews smoketest, UAT, retro, status, commit, and GitHub follow-up readiness before the session ends. The model-tier refresh updates per-tool tier recommendations based on current market offerings and token-efficiency benchmarks.
 
@@ -307,7 +310,7 @@ For most new projects, use:
 Use github picostar/Atlas_AI as source kit, read README first, then run atlas project here in place, no clone.
 ```
 
-Prompt-driven setup asks before changing files. It should ask whether to include the docs scaffold, initialize git when needed, include PS, include CGR, select a stack pattern, select a UX pattern, enable API-first when a stack pattern is selected, create a GitHub repo, and when to run the regression suite: `every-task`, `pre-merge` (the default), or `on-demand`. It should present stack and UX templates from the install manifest as numbered menus.
+Prompt-driven setup asks before changing files. It should ask whether to include the docs scaffold, initialize git when needed, include PS, include CGR, select a stack pattern, select a UX pattern, enable API-first when a stack pattern is selected, create a GitHub repo, whether to use the full process or PoC mode, and when to run the regression suite: `every-task`, `pre-merge` (the default), or `on-demand`. It should present stack and UX templates from the install manifest as numbered menus.
 
 If the project root already contains user files, setup keeps manifest-allowed root entries such as `docs/` and `scripts/` in place, merges Atlas files into them, and moves only unexpected entries into `docs/reference/preexisting-root/`. If `.git` already exists, setup adopts that repository instead of reinitializing it. If a temporary `atlas_ai` or `Atlas_AI` source-kit folder exists in the target project, remove that temporary folder after the selected files are installed. The setup records these actions in `.atlas/setup.json` and must pass Atlas validation before completion.
 

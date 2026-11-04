@@ -201,6 +201,13 @@
       "default": false
     },
     {
+      "key": "projectMode",
+      "type": "string",
+      "values": ["standard", "poc"],
+      "default": "standard",
+      "missingMeans": "standard"
+    },
+    {
       "key": "regressionSuite",
       "type": "string",
       "values": ["every-task", "pre-merge", "on-demand"],

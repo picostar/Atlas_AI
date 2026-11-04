@@ -67,7 +67,7 @@ Atlas validation: PASSED | FAILED
 Validated: <ISO date>
 Validator: <agent and model name>
 Mode: installed-project | source-kit
-Atlas mode: standard, regression suite: <value in effect> (installed-project only)
+Atlas mode: <projectMode in effect>, regression suite: <value in effect> (installed-project only)
 Required: <n> PASS, <n> FAIL
 Warnings: <n>
 Failures:

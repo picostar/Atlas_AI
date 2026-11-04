@@ -26,7 +26,8 @@ description: 'Set up a new project with atlas_ai. Use when bootstrapping a new r
    - Treat setup as incomplete until the required questionnaire answers are captured, or the user explicitly says to use defaults
    - Do not stop after partial file install plus diagnostics; if that state occurs, ask only missing setup questions and continue
    - Generate stack and UX menus from the manifest catalogs, accept number, ID, or label, and do not ask for freeform template filenames
-   - Ask for the regression suite schedule, `every-task`, `pre-merge`, or `on-demand`, explaining each in one line, with `pre-merge` as the default
+   - Ask for the project mode, `standard` or `poc`, explaining each in one line, with `standard` as the default
+   - For `standard`, ask for the regression suite schedule, `every-task`, `pre-merge`, or `on-demand`, explaining each in one line, with `pre-merge` as the default
    - Treat `github picostar/Atlas_AI` as source-kit reference only, not a clone destination, unless the user explicitly asks to clone it
    - Do not invoke deprecated legacy bootstrap scripts for prompt-driven newproject setup
 3. If Atlas control files are already present at the repo root, stop and use `atlas_update.md` from the kit for a plan-first legacy project update instead
