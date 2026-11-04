@@ -89,7 +89,7 @@ The `regressionSuite` setting in `.atlas/setup.json` decides when the full suite
 
 - A missing value means `pre-merge`.
 - A task's smoke test covers that task's change. When the project keeps a regression suite, add the task's new checks to it. Do not re-run the whole suite at task closeout unless the value is `every-task`.
-- When the project has no harness yet, the full suite is the standing smoke scripts under `scripts/`. If there are none, say so in the merge or cycle-close summary.
+- When the project has no harness yet, the full suite is the standing smoke scripts under `scripts/`. If there are none, say so in the merge or cycle-close summary. Leave the placeholder `docs/agile/testing/README.md` unchanged during routine tasks; replace it only when the user asks to set up a harness.
 - A failed full run blocks the merge or cycle close it gates. Propose a fix task, as an RDT when it interrupts the cycle, and keep the gate closed until a full run passes.
 - Under `on-demand`, a merge to `main` does not require a full run. State in the merge summary when the full suite has not run since the last change.
 
@@ -98,7 +98,7 @@ Commands:
 - `atlas regression every-task`, `atlas regression pre-merge`, and `atlas regression on-demand` change the setting. Before a change to a less frequent value, show the current suite size, the date of the last full pass, and the effect on the active task, then ask the user to confirm. A change to a more frequent value needs no confirmation. Each change updates `answers.regressionSuite` in `.atlas/setup.json`, adds a dated line to `retro.md`, notes the change on the active task in `devcycle.md` when one exists, and updates the mode line. Commit these record changes.
 - `atlas regression run` runs the full suite now, under any value, and reports the checks run, the result, and how long it took.
 
-Mode line: show the active setting as `Atlas mode: standard, regression suite: <value>`. It appears in the first chat message of each session, at the start of each message under Chat Progress Reporting in `.github/copilot-instructions.md`, under the title of `docs/agile/status.md`, and in the `atlas validate` receipt.
+Mode line: show the active setting as `Atlas mode: standard, regression suite: <value>`. Read `.atlas/setup.json` first in each session to learn the value. The line appears in the first chat message that reports on the project, at the start of each start, progress, and final message under Chat Progress Reporting in `.github/copilot-instructions.md`, under the title of `docs/agile/status.md`, and in the `atlas validate` receipt.
 
 ---
 

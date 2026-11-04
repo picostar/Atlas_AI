@@ -61,7 +61,7 @@
 ## Chat Progress Reporting
 These messages are required whenever you work a DT or RDT. They take priority over any general preference for short replies or for working silently. They do not apply to startup check-ins, sign-offs, or status questions, which keep their brief behavior below. A status question gets an answer from the records and does not start work.
 
-1. Before your first command or edit, send a start message: the dev cycle and task ID and title, the phase, what you will do, and anything the user will need to do.
+1. Before your first edit or task command, send a start message. Reading `.atlas/setup.json` for the mode line may come first. The start message gives: the dev cycle and task ID and title, the phase, what you will do, and anything the user will need to do.
 2. When a phase ends, send a progress message before starting the next one. The phases are planning, implementing, verifying, UAT handoff, and closeout. Also send one immediately when a check fails, a blocker appears, or the plan changes.
 3. At the end or hand-off, send a final message: what is done, what the checks showed, what remains open, and the next step.
 
@@ -80,7 +80,7 @@ A `normal` progress message looks like this:
 > Atlas mode: standard, regression suite: pre-merge
 > DC01 DT1, add an open-task count. Phase finished: implementing. Done: the `count` command works in the code. Next: running the project's smoke test. Remaining: UAT handoff, which needs you, then closeout.
 
-- Begin each start, progress, and final message with the mode line defined in `ATLAS.md` under Regression Suite Rules, for example `Atlas mode: standard, regression suite: pre-merge`. Read the value from `answers.regressionSuite` in `.atlas/setup.json`; a missing value means `pre-merge`.
+- Begin each start, progress, and final message with the mode line defined in `ATLAS.md` under Regression Suite Rules, for example `Atlas mode: standard, regression suite: pre-merge`. Read the value from `answers.regressionSuite` in `.atlas/setup.json` as your first action in a session, so the start message can carry it; a missing value means `pre-merge`. Short notes between tool calls, such as `reading the records`, are not start, progress, or final messages and do not need the line. Never guess the value.
 - Report only what you observed. Do not invent percentages, estimates, results, or background activity. If a check was not run, say so.
 - State a failed check, blocked read, or denied permission plainly, including what it stops and what you will do next. Never imply completion or adoption while one is open. A task stays open until its Definition of Done gates are met.
 - When you are waiting for the user, or for an approval, say so.
@@ -101,7 +101,7 @@ A `normal` progress message looks like this:
 - If the user opens with a greeting or start-of-session phrase, such as `hi`, `hello`, `good morning`, `goodmorning`, or `ready to start`, treat it as a request for a quick project check-in.
 - Review where the project stands before proposing work. Use the read order above, then prioritize `docs/agile/status.md` for current state, `docs/agile/devcycle.md` for active work, and `docs/agile/backlog.md` if the active cycle is empty or unclear.
 - If the user opens with `atlas`, treat it as the same startup check-in flow.
-- Start the first chat message of each session with the mode line defined in `ATLAS.md` under Regression Suite Rules.
+- Read `.atlas/setup.json` first in each session, then start the first chat message that reports on the project with the mode line defined in `ATLAS.md` under Regression Suite Rules.
 - During startup check-in, if `.github/prompts/cgr.prompt.md` is present and governance is enabled for this project, check whether live MRD, PRD, and ESD artifacts exist in `docs/cgr/`.
 - If governance is enabled and live MRD, PRD, or ESD artifacts are missing, ask a single yes or no question: "Do you want to run CGR bootstrap now to generate draft MRD, PRD, and ESD from seed, reference, and project source materials?"
 - If the repository appears to be a scaffold or template, review template integrity and adoption readiness instead of expecting live project status.

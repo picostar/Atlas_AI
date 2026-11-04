@@ -22,4 +22,4 @@ Create a harness when cross-feature checks become worth running as one set. This
 - A coverage list naming what is covered, how to run each part, and the expected pass signal
 - A `reports/` folder for run logs and test output, usually gitignored
 
-When a harness exists, add each task's new checks to it. Delete this directory if the project keeps no harness and its smoke tests live under `scripts/`.
+When a harness exists, add each task's new checks to it. Until then, leave this README unchanged during routine tasks; replace it only when the user asks to set up a harness. Delete this directory if the project keeps no harness and its smoke tests live under `scripts/`.
