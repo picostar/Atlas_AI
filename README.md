@@ -8,11 +8,17 @@ In current developer terminology, atlas_ai is best described as an agentic workf
 
 It gives you:
 - root-level AI instruction files for Copilot, Claude Code, ChatGPT, and Codex-style agents
-- reusable ATLAS prompt files for realignment and closeout checks
+- reusable ATLAS skills for realignment and closeout checks
 - a default workflow for task execution and delivery tracking, with per-tool model-tier suggestions and qualitative token-usage tracking
 - optional release stages and document gates for formal projects
 - optional compliance and governance review prompt
 - a starter docs scaffold for active work, backlog, status, retro, project docs, reference docs, stack-baseline guidance, and UX-baseline guidance
+
+## Workflow skills and VS Code compatibility
+
+Fresh installs use `atlas-closeout`, `atlas-realign`, `cgr`, `cgr-seed-to-cgr`, and `cgr-iterate` skills under `.github/skills/`. The first two are core; the CGR three install only when governance is selected. Where supported, invoke `/atlas-closeout`, `/atlas-realign`, `/cgr`, `/cgr-seed-to-cgr`, or `/cgr-iterate`. Ordinary phrases such as `good night` and `CGR` still route through shared instructions. If native discovery is unavailable, ask the agent to read the named `SKILL.md` explicitly.
+
+Manifest version 2 installs these skills without the five legacy prompt files, so a fresh project has no Atlas prompt files to convert. Existing projects should use `atlas update` with its reviewed plan and rollback, rather than VS Code Migrate, to preserve names and customized instructions. The source kit retains thin prompt routers for older Local workflows. Installed validation accepts a working skill or a complete corresponding legacy prompt, and fails a router with no destination. Keep the manifest and validator together when updating. See [workflow verification](https://github.com/picostar/Atlas_AI/blob/main/docs/testing/workflow-skills.md) for actual results and remaining VS Code acceptance steps.
 
 ## AI Agent Fast Path
 
@@ -21,7 +27,7 @@ If you are an AI coding agent using `picostar/Atlas_AI` as a remote source kit, 
 1. Identify the requested flow from the user's prompt.
 2. For `atlas project`, `newproject`, any request to set up an Atlas project, or a setup request that references `github/picostar/Atlas_AI` or this README, read `.atlas/install-manifest.json` and `atlas_newproject.md`, then ask the required setup questions before changing files.
 3. For `atlas update`, read `atlas_update.md`, compare the target project to this kit, and produce a plan before changing files.
-4. For `CGR` or `run CGR`, read `.github/prompts/cgr.prompt.md`, bootstrap `docs/cgr/` when needed, and write `docs/cgr/CGR-results.md`.
+4. For `CGR` or `run CGR`, read `.github/skills/cgr/SKILL.md`, bootstrap `docs/cgr/` when needed, and write `docs/cgr/CGR-results.md`.
 5. Treat `picostar/Atlas_AI` as a source kit reference. Work in the current target folder in place, do not clone Atlas_AI into a subfolder, and remove any temporary `atlas_ai` or `Atlas_AI` source-kit folder after setup.
 6. For new-project setup, write `.atlas/setup.json` and run the required validation gate before reporting success.
 7. If the requested flow is unclear, read only the `Start Here` and `Short Prompt Cheatsheet` sections below before asking a clarifying question.
@@ -54,7 +60,7 @@ Equivalent short form:
 newproject
 ```
 
-The agent should use `.atlas/install-manifest.json` and `atlas_newproject.md`, ask explicit setup questions first (scaffold, git init, PS, CGR, stack, UX, API-first when stack is selected, GitHub repo), preserve existing user files under `docs/reference/preexisting-root/`, install the selected Atlas files into the current target folder, write `.atlas/setup.json`, remove any temporary local source-kit folder such as `atlas_ai` or `Atlas_AI`, initialize or adopt git, and pass Atlas validation.
+The agent should use `.atlas/install-manifest.json` and `atlas_newproject.md`, ask explicit setup questions first (scaffold, git init, PS, CGR, stack, UX, API-first when stack is selected, GitHub repo, project mode, regression suite schedule), preserve existing user files under `docs/reference/preexisting-root/`, install the selected Atlas files into the current target folder, write `.atlas/setup.json`, remove any temporary local source-kit folder such as `atlas_ai` or `Atlas_AI`, initialize or adopt git, and pass Atlas validation.
 
 The run is not complete if it only installs prompt files and reports diagnostics. If that partial state occurs, the agent should ask the missing setup questions and continue to completion.
 
@@ -71,7 +77,7 @@ Use this when you have a new folder with marketing copy, website text, product n
 Use github picostar/Atlas_AI, read README first, and run CGR here
 ```
 
-The agent should use `.github/prompts/cgr.prompt.md`, create `docs/cgr/` if it does not exist, draft MRD, PRD, and ESD artifacts from the available source files, then write `docs/cgr/CGR-results.md`. It does not need to install the full Atlas kit first.
+The agent should use `.github/skills/cgr/SKILL.md`, create `docs/cgr/` if it does not exist, draft MRD, PRD, and ESD artifacts from the available source files, then write `docs/cgr/CGR-results.md`. It does not need to install the full Atlas kit first.
 
 ### Older Atlas Project Update
 
@@ -153,13 +159,19 @@ Use these short chat phrases when you want the agent to run the standard ATLAS f
 
 - `atlas` -- run the startup project check-in flow.
 - `hi`, `hello`, `good morning`, `goodmorning`, or `ready to start` -- also run the startup project check-in flow.
-- `CGR` or `run CGR` -- run the governance workflow from `.github/prompts/cgr.prompt.md`, bootstrapping `docs/cgr/` from seed, reference, or project source files when needed, and write `docs/cgr/CGR-results.md`.
+- `CGR` or `run CGR` -- run the governance workflow from `.github/skills/cgr/SKILL.md`, bootstrapping `docs/cgr/` from seed, reference, or project source files when needed, and write `docs/cgr/CGR-results.md`.
 - `newproject` or `atlas project` -- run the standalone new-project bootstrap prompt, preserving pre-existing user material under `docs/reference/` and adopting `.git` when present.
 - `atlas validate` -- validate a new-project installation against `.atlas/install-manifest.json` and `.atlas/setup.json` without changing it.
+- `atlas regression every-task`, `atlas regression pre-merge`, or `atlas regression on-demand` -- change when the full regression suite runs. `atlas regression run` runs it now. See Regression Suite Rules in `ATLAS.md`.
+- `atlas mode poc` or `atlas mode standard` -- switch between PoC mode and the full process. Switching to standard lists the PoC tasks that need standard smoketests before release. See PoC Mode Rules in `ATLAS.md`.
 - `atlas refresh models` or `refresh model tiers` -- refresh the model-tier-advisor skill's CU-to-tier mappings by consulting current benchmarks (artificialanalysis.ai, ockbench.github.io) and update the Verified dates. Useful when tier tables are stale or a model is deprecated.
 - `good night`, `goodnight`, `goodbye`, `that's all`, or `we are done` -- run the end-of-session closeout check.
 
-While a task runs, agents report progress in chat at three levels: ask for `brief`, `normal` (the default), or `detailed`. See [the trial results](docs/testing/progress-reporting.md), which show this is not yet consistent across runtimes.
+While a task runs, agents report progress in chat at three levels: ask for `brief`, `normal` (the default), or `detailed`. See [the trial results](docs/testing/progress-reporting.md), which show this is not yet consistent across runtimes. Each message starts with the mode line, for example `Atlas mode: standard, regression suite: pre-merge`, which `docs/agile/status.md` also shows.
+
+The `regressionSuite` setup answer sets when the full regression suite runs. `every-task` re-runs it at every task closeout, which slows down as the suite grows. `pre-merge`, the default, runs it before merging to `main` and when a dev cycle closes. `on-demand` runs it only when asked. Each task's smoke test still covers that task's change.
+
+The `projectMode` setup answer is `standard`, the default, or `poc`. PoC mode is for a fast proof of concept: each task gets one quick check, a demo instead of a UAT handoff, a short task entry with no effort estimate, and one retro line, and the regression suite runs only on request. Commits, merges, pushes, secrets, and account bindings follow the normal rules. The mode line then reads `Atlas mode: poc, regression suite: on-demand`.
 
 The startup check-in reviews current state, active devcycle work, and obvious blockers. The closeout check reviews smoketest, UAT, retro, status, commit, and GitHub follow-up readiness before the session ends. The model-tier refresh updates per-tool tier recommendations based on current market offerings and token-efficiency benchmarks.
 
@@ -184,14 +196,14 @@ The startup check-in reviews current state, active devcycle work, and obvious bl
 
 For existing projects, `atlas update` can propose replacing the former `.github/tropes.md` with `.github/style.md`. Review project-specific edits, preserve any needed rules, and approve retirement of the old file and updates to its active references. Fresh installations include only `.github/style.md`. The prose rules and Atlas installation do not require Python; the optional mechanical check requires Python 3.
 
-### Core workflow prompts (installed by default)
-- `.github/prompts/atlas-realign.prompt.md` -- ATLAS health check and realignment prompt
-- `.github/prompts/atlas-closeout.prompt.md` -- ATLAS closeout readiness prompt
+### Core workflow skills (installed by default)
+- `.github/skills/atlas-realign/SKILL.md` -- ATLAS health check and realignment skill
+- `.github/skills/atlas-closeout/SKILL.md` -- ATLAS closeout readiness skill
 
-### CGR workflow prompts (installed only when CGR is selected)
-- `.github/prompts/cgr.prompt.md` -- compliance and governance review workflow
-- `.github/prompts/cgr-seed-to-cgr.prompt.md` -- generate draft MRD PRD ESD from seed, reference, or project source material, then run CGR outputs
-- `.github/prompts/cgr-iterate.prompt.md` -- iterate and improve governance docs using CGR-results and score
+### CGR workflow skills (installed only when CGR is selected)
+- `.github/skills/cgr/SKILL.md` -- compliance and governance review skill
+- `.github/skills/cgr-seed-to-cgr/SKILL.md` -- generate draft MRD PRD ESD from seed, reference, or project source material, then run CGR outputs
+- `.github/skills/cgr-iterate/SKILL.md` -- iterate and improve governance docs using CGR-results and score
 
 ### Standalone root prompts
 - `atlas_newproject.md` -- standalone root-level guided new-project bootstrap prompt, kept outside the installed prompt catalog so users can copy it into a target project or say `newproject`
@@ -217,7 +229,7 @@ This `README.md` is for the kit itself. Use it as the first document an agent re
 - `docs/agile/backlog.md` -- future work queue
 - `docs/agile/status.md` -- current live state
 - `docs/agile/retro.md` -- completed work log
-- `docs/agile/testing/` -- optional regression and UAT harness, for projects whose cross-feature coverage has outgrown the inline `UAT:` field
+- `docs/agile/testing/` -- placeholder home for an optional test harness that runs the regression suite; the placeholder alone is not a harness
 - `docs/cgr/README.md` -- governance document guidance
 - `docs/cgr/PS.md` -- optional project stages and document gates (EVT/DVT/PVT/GA)
 - `docs/reference/README.md` -- reference docs guidance
@@ -238,7 +250,7 @@ This `README.md` is for the kit itself. Use it as the first document an agent re
 - `.github/skills/requirements-writing/SKILL.md` -- MRD and PRD authoring quality, market research, requirements traceability
 - `.github/skills/example-skill/SKILL.md` -- template for creating new skills
 
-Skills reference existing kit files (ATLAS.md, copilot-instructions.md) rather than duplicating content. Use `-SkillsSource "path"` to copy skills from another location instead of the defaults.
+Skills use the existing kit files (ATLAS.md, copilot-instructions.md) rather than duplicating content. Use `-SkillsSource "path"` to copy skills from another location instead of the defaults.
 
 ### Stack pattern support
 
@@ -275,11 +287,11 @@ These are bootstrap files only. On the first CGR run, remove `MRD_TEMPLATE.md` a
 
 When a governance review runs, save the output as `docs/cgr/CGR-results.md`.
 
-To run CGR, type `CGR` in AI chat. You can also say `run CGR`. The agent should use `.github/prompts/cgr.prompt.md` and write the review to `docs/cgr/CGR-results.md`. In a new project folder with marketing files, product notes, sales material, specifications, or other source material but no Atlas docs yet, the agent should create `docs/cgr/` and bootstrap MRD, PRD, ESD, and CGR artifacts there.
+To run CGR, type `CGR` in AI chat. You can also say `run CGR`. The agent should use `.github/skills/cgr/SKILL.md` and write the review to `docs/cgr/CGR-results.md`. In a new project folder with marketing files, product notes, sales material, specifications, or other source material but no Atlas docs yet, the agent should create `docs/cgr/` and bootstrap MRD, PRD, ESD, and CGR artifacts there.
 
 Optional scoring extension: teams that want numeric governance tracking can derive a scorecard from `docs/cgr/CGR-results.md` and save it as `docs/cgr/score.md`.
 
-For seeded projects, teams can bootstrap governance drafts from `seed.md`, `docs/reference/`, or source files already in the project folder using `.github/prompts/cgr-seed-to-cgr.prompt.md`, then iteratively improve with `.github/prompts/cgr-iterate.prompt.md` using `docs/cgr/CGR-results.md` and `docs/cgr/score.md`. Source files can include marketing copy, website text, product notes, sales material, specifications, discovery notes, or other text-readable project context. `seed.md` can be as small as a one-line project idea.
+For seeded projects, teams can bootstrap governance drafts from `seed.md`, `docs/reference/`, or source files already in the project folder using `.github/skills/cgr-seed-to-cgr/SKILL.md`, then iteratively improve with `.github/skills/cgr-iterate/SKILL.md` using `docs/cgr/CGR-results.md` and `docs/cgr/score.md`. Source files can include marketing copy, website text, product notes, sales material, specifications, discovery notes, or other text-readable project context. `seed.md` can be as small as a one-line project idea.
 
 ### What CGR Means And Why It Matters
 
@@ -304,7 +316,7 @@ For most new projects, use:
 Use github picostar/Atlas_AI as source kit, read README first, then run atlas project here in place, no clone.
 ```
 
-Prompt-driven setup asks before changing files. It should ask whether to include the docs scaffold, initialize git when needed, include PS, include CGR, select a stack pattern, select a UX pattern, enable API-first when a stack pattern is selected, and create a GitHub repo. It should present stack and UX templates from the install manifest as numbered menus.
+Prompt-driven setup asks before changing files. It should ask whether to include the docs scaffold, initialize git when needed, include PS, include CGR, select a stack pattern, select a UX pattern, enable API-first when a stack pattern is selected, create a GitHub repo, whether to use the full process or PoC mode, and when to run the regression suite: `every-task`, `pre-merge` (the default), or `on-demand`. It should present stack and UX templates from the install manifest as numbered menus.
 
 If the project root already contains user files, setup keeps manifest-allowed root entries such as `docs/` and `scripts/` in place, merges Atlas files into them, and moves only unexpected entries into `docs/reference/preexisting-root/`. If `.git` already exists, setup adopts that repository instead of reinitializing it. If a temporary `atlas_ai` or `Atlas_AI` source-kit folder exists in the target project, remove that temporary folder after the selected files are installed. The setup records these actions in `.atlas/setup.json` and must pass Atlas validation before completion.
 
@@ -316,7 +328,7 @@ For a new folder that already contains marketing copy, website text, product not
 Use github picostar/Atlas_AI as source kit, read README first, then run CGR here.
 ```
 
-The agent should use `.github/prompts/cgr.prompt.md`, create `docs/cgr/` when needed, bootstrap draft MRD, PRD, and ESD artifacts from available source files, and write `docs/cgr/CGR-results.md`. Installing the full Atlas kit is not required before this CGR path.
+The agent should use `.github/skills/cgr/SKILL.md`, create `docs/cgr/` when needed, bootstrap draft MRD, PRD, and ESD artifacts from available source files, and write `docs/cgr/CGR-results.md`. Installing the full Atlas kit is not required before this CGR path.
 
 ### Adding PS Or CGR Later
 
@@ -327,7 +339,7 @@ Use github picostar/Atlas_AI as source kit, read README first, then add docs/cgr
 ```
 
 ```text
-Use github picostar/Atlas_AI as source kit, read README first, then add .github/prompts/cgr.prompt.md to this project.
+Use github picostar/Atlas_AI as source kit, read README first, then add .github/skills/cgr/SKILL.md to this project.
 ```
 
 ### Existing repo updates
@@ -385,12 +397,12 @@ Placement guidance:
 
 If the agent cannot perform setup from the remote source kit, use `.atlas/install-manifest.json` as the manual copy list. Copy every path in its `core` group, generate its `generatedPaths`, then add selected optional groups. Important entries include:
 - `.github/copilot-instructions.md` -- always
-- `.github/prompts/atlas-realign.prompt.md` -- recommended
-- `.github/prompts/atlas-closeout.prompt.md` -- recommended
+- `.github/skills/atlas-realign/SKILL.md` -- required
+- `.github/skills/atlas-closeout/SKILL.md` -- required
 - `atlas_newproject.md` -- recommended for guided new-project bootstrap
 - `atlas_update.md` -- recommended for guided legacy atlas updates
 - `atlas_validate.md` -- required validation prompt for new-project completion and later standalone checks
-- `.github/prompts/cgr.prompt.md` -- only if the project uses governance review
+- `.github/skills/cgr/SKILL.md` -- only if the project uses governance review
 - `CLAUDE.md` -- always
 - `CHATGPT.md` -- always
 - `GEMINI.md` -- optional pointer for Gemini-oriented workflows
@@ -503,7 +515,7 @@ After prompt-driven setup installs the selected kit files into a new repository:
 5. Add repo-specific setup notes in `docs/reference/`, and if the repo has agreed architecture or UX baselines, capture them in `patterns/stack-patterns/active-stack-pattern.md` and `patterns/ux-patterns/active-ux-pattern.md`.
 6. If the repo uses git, create one commit per completed `DT` or `RDT`. If the repo has a GitHub remote, push the branch and update or create the related pull request after each completed task.
 7. Optionally, add `docs/cgr/PS.md` later if the project grows into formal release stages.
-8. Optionally, add `.github/prompts/cgr.prompt.md` later if the project needs governance review. Update `.atlas/setup.json` when selected components change.
+8. Optionally, add `.github/skills/cgr/SKILL.md` later if the project needs governance review. Update `.atlas/setup.json` when selected components change.
 
 ## Design Principles
 

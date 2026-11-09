@@ -13,7 +13,7 @@ Use this standalone prompt after new-project setup or when the user says `atlas 
 
 1. Resolve the target project root. Use the current project when no path is supplied.
 2. Read `.atlas/install-manifest.json` and `.atlas/setup.json` from the target.
-3. Run every check in the Required Checks table. Record each as PASS or FAIL with the exact path or receipt field that decided it.
+3. Resolve workflow paths as defined under Workflow Compatibility, then run every check in the Required Checks table. Record each as PASS or FAIL with the exact path or receipt field that decided it.
 4. Run the Warning Checks. Record each as OK or WARN. Warnings never fail validation.
 5. Write the Validation Receipt (below) into the response and, for `newproject` runs, into `.atlas/setup.json` under `validation`.
 6. Report `Atlas validation passed` only when every required check is PASS. Any FAIL means the report reads `Atlas validation failed` followed by the FAIL rows.
@@ -25,19 +25,39 @@ Do not skip a check because it is tedious. Do not mark a check PASS without read
 | # | Check | Evidence to cite on FAIL |
 |---|---|---|
 | 1 | `.atlas/install-manifest.json` and `.atlas/setup.json` both parse as JSON and `schemaVersion` matches the manifest's supported version | file path and parse error, or the mismatched version |
-| 2 | Every `questionnaire[].key` in the manifest has an entry in receipt `answers`, and each value matches the declared `type` | missing or mistyped key |
+| 2 | Every `questionnaire[].key` in the manifest has an entry in receipt `answers`, each value matches the declared `type`, and a value is one of the declared `values` when the entry lists them. A key with `missingMeans` may be absent; report it under W4 instead | missing, mistyped, or unlisted value |
 | 3 | `outcomes.git` matches the questionnaire and the repository: `initializeGit` true requires a `.git` directory; false requires none unless adopted and recorded | receipt field and actual state |
 | 4 | `outcomes.github` matches `createGitHubRepository` and, when true, a remote named `origin` exists | receipt field and `git remote -v` result |
 | 5 | `answers.stackPattern` and `answers.uxPattern` are null or a catalog `id`; `answers.apiFirst` is null when `stackPattern` is null | offending value |
-| 6 | Every path in the manifest `core.requiredPaths` exists | each missing path |
+| 6 | Every path in the manifest `core.requiredPaths` exists or resolves to a working workflow alternative under Workflow Compatibility | each missing path |
 | 7 | Every path in `core.generatedPaths` exists | each missing path |
-| 8 | For each selected optional group (`scaffold`, `cgr`, `ps`, and the group named by the selected stack pattern), every `requiredPaths` entry exists | group name and each missing path |
+| 8 | For each selected optional group (`scaffold`, `cgr`, `ps`, and the group named by the selected stack pattern), every `requiredPaths` entry exists or resolves to a working workflow alternative under Workflow Compatibility | group name and each missing path |
 | 9 | Each active pattern file (`patterns/stack-patterns/active-stack-pattern.md`, `patterns/ux-patterns/active-ux-pattern.md`) exists when selected and records the selected Atlas pattern ID | file path and missing or mismatched ID |
 | 10 | The active stack pattern records `API-First: Enabled` or `API-First: Disabled` and it agrees with `answers.apiFirst` | file line and receipt value |
 | 11 | Every direct child of the target root is listed in `allowedRootEntries.always`, `gitMetadata`, or a selected group's allowlist; report each extra as `Unexpected root entry: <name>` | each unexpected entry |
 | 12 | `secrets.md` appears as an exact line in `.gitignore` and `git ls-files secrets.md` returns nothing | `.gitignore` content or the tracked path |
 | 13 | Every item in receipt `relocatedRootEntries` exists under `docs/reference/preexisting-root/`, and every direct child of that folder is listed in the receipt | each unmatched entry in either direction |
 | 14 | No directory named in manifest `temporarySourceKitNames` remains in the target root | the directory name |
+
+## Workflow Compatibility
+
+Manifest version 2 keeps schema version 1 and adds `workflowCompatibility`, a list of `skillPath`, `legacyPromptPath`, and `group` entries. Required paths name the canonical skills. Fresh installation always copies those canonical paths. Installed-project checks 6 and 8 may resolve either side of a pair to its counterpart; cite the actual file used in the receipt. All other required paths still require their exact location.
+
+For older manifests without this list, use only these five built-in pairs, so a converted project can be checked before its manifest is updated:
+
+| Group | Canonical skill | Legacy prompt |
+|---|---|---|
+| core | `.github/skills/atlas-closeout/SKILL.md` | `.github/prompts/atlas-closeout.prompt.md` |
+| core | `.github/skills/atlas-realign/SKILL.md` | `.github/prompts/atlas-realign.prompt.md` |
+| cgr | `.github/skills/cgr/SKILL.md` | `.github/prompts/cgr.prompt.md` |
+| cgr | `.github/skills/cgr-seed-to-cgr/SKILL.md` | `.github/prompts/cgr-seed-to-cgr.prompt.md` |
+| cgr | `.github/skills/cgr-iterate/SKILL.md` | `.github/prompts/cgr-iterate.prompt.md` |
+
+Read each workflow used to satisfy a required path. A full legacy prompt is valid without a skill. A compatibility router is valid only when its referenced skill exists and contains the procedure. An absent workflow, an empty file, invalid skill frontmatter, or a router whose destination is missing fails the relevant check. Skill frontmatter must have `name` matching its folder and a nonempty `description`. Report a missing canonical skill with a working legacy prompt as W5, recommending `atlas update`; do not silently install or migrate anything. A missing optional CGR workflow fails only when that group is selected.
+
+The stable skill names are the five names above. Do not treat VS Code's automatically renamed, explicit-only conversion as equivalent: it can change command names and leave prompt-relative references broken. Use the approved Atlas update to reconcile those copies and preserve customizations.
+
+In source-kit mode, require all canonical skill paths themselves, validate their frontmatter and local procedure references, and inspect the retained legacy routers. Alternatives cannot hide a missing release asset.
 
 ## Warning Checks
 
@@ -46,6 +66,8 @@ Do not skip a check because it is tedious. Do not mark a check PASS without read
 | W1 | `docs/agile/devcycle.md`, `retro.md`, `status.md`, `backlog.md` still contain placeholder scaffold content (expected on a fresh install; warn so the user knows the project is not yet activated) |
 | W2 | `.github/skills/model-tier-advisor/SKILL.md` `Verified` dates are older than 60 days; recommend `atlas refresh models` |
 | W3 | `accounts.md` exists but has no non-secret account binding filled in |
+| W4 | A questionnaire key with `missingMeans` is absent from receipt `answers`, which is expected for a receipt written before the key existed. Report the value in effect, for example `regressionSuite` absent, `pre-merge` in effect, and recommend `atlas update` to record it |
+| W5 | A required workflow is satisfied by its complete legacy prompt because the canonical skill is absent; recommend an approved `atlas update` |
 
 ## Source-Kit Mode
 
@@ -66,6 +88,7 @@ Atlas validation: PASSED | FAILED
 Validated: <ISO date>
 Validator: <agent and model name>
 Mode: installed-project | source-kit
+Atlas mode: <projectMode in effect>, regression suite: <value in effect> (installed-project only)
 Required: <n> PASS, <n> FAIL
 Warnings: <n>
 Failures:

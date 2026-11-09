@@ -14,11 +14,13 @@ This file defines how to keep instruction files aligned over time.
 4. Update prompts and skills that depend on changed paths or lifecycle rules.
 5. When new-project install groups, root entries, questionnaire fields, or pattern catalogs change, update `.atlas/install-manifest.json` first and run source-kit validation.
 6. When governance behavior changes, update these together:
-	- `.github/prompts/cgr.prompt.md`
+	- `.github/skills/cgr/SKILL.md`
 	- `docs/cgr/PS.md`
 	- `docs/cgr/score.md`
 	- `docs/cgr/remediation-tracking.md`
 	- `docs/cgr/README.md`
+
+The five workflow skills are authoritative. The corresponding `.github/prompts/*.prompt.md` files are legacy routers retained in the source kit, not installed by the version 2 manifest. Update a workflow in its skill and keep its router target valid. Keep CGR optional.
 
 ## Drift Prevention
 - Keep pointer files short and declarative.

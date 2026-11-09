@@ -3,6 +3,11 @@
 This folder stores reusable agent skills for atlas_ai workflows.
 
 ## Included Skills
+- `atlas-closeout`
+- `atlas-realign`
+- `cgr` (optional CGR group)
+- `cgr-seed-to-cgr` (optional CGR group)
+- `cgr-iterate` (optional CGR group)
 - `azure-deploy`
 - `devcycle-management`
 - `model-tier-advisor`

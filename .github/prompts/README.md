@@ -1,6 +1,6 @@
 # Prompt Catalog
 
-This folder stores reusable prompt files for common atlas_ai workflows.
+This source-kit folder retains legacy Local prompt routers. The authoritative procedures are `.github/skills/<name>/SKILL.md` with the same five names. Manifest version 2 installs the skills and this catalog, not the legacy routers. Existing projects may keep complete older prompts until an approved update migrates their customizations. Do not use VS Code Migrate on the routers.
 
 ## Included Prompts
 - `atlas-realign.prompt.md` -- ATLAS alignment and readiness review
@@ -17,11 +17,11 @@ Standalone root prompts live at the repo root so they are easy to copy into anot
 ## Usage
 - Use prompts when you want a structured review with fixed output format.
 - Prefer prompts for repeatable quality checks and governance checks.
-- To run the governance workflow, type `CGR` or say `run CGR` in AI chat. The agent should use `cgr.prompt.md`.
+- To run the governance workflow, type `CGR` or say `run CGR` in AI chat. The agent should use `.github/skills/cgr/SKILL.md`, or explicitly read its complete legacy prompt on an older install.
 
 ## CGR Prompt Notes
 
-`cgr.prompt.md` is designed to:
+The `cgr` skill is designed to:
 - enforce mandatory-field completeness before `Compliant` status,
 - evaluate cross-document consistency across MRD, PRD, and ESD,
 - support balanced external reference usage when repository sources are incomplete,

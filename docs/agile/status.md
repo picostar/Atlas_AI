@@ -2,6 +2,8 @@
 
 # Status
 
+Atlas mode: standard, regression suite: pre-merge
+
 Current live state of the project.
 
 ## Summary

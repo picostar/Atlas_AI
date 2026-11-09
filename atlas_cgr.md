@@ -23,7 +23,7 @@ You are running a Compliance and Governance Review on this repository.
 
 1. Read local repository instructions first if present, especially `.github/copilot-instructions.md`, `ATLAS.md`, and any root pointer files.
 
-2. Establish access to the current Atlas_AI source kit. Use the full CGR workflow defined in `.github/prompts/cgr.prompt.md` from the source kit as the operational source of truth for this run. If you cannot reach the source kit, ask the user for a local path or proceed with this standalone prompt only.
+2. Establish access to the current Atlas_AI source kit. Use the full CGR workflow defined in `.github/skills/cgr/SKILL.md` from the source kit as the operational source of truth for this run. If you cannot reach the source kit, ask the user for a local path or proceed with this standalone prompt only.
 
 3. Select the target project root.
    - If the current folder has `docs/cgr/` or contains source artifacts to evaluate, treat it as the project root.
