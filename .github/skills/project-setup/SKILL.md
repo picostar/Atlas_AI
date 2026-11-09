@@ -21,6 +21,7 @@ description: 'Set up a new project with atlas_ai. Use when bootstrapping a new r
 2. Prefer the standalone prompt-first workflow in `atlas_newproject.md` for agent-driven setup
    - Read `.atlas/install-manifest.json` before asking questions or changing target files
    - Treat the manifest as authoritative for install groups, allowed root entries, base skills, optional components, and pattern catalogs
+   - Fresh installs copy canonical skill paths, not `workflowCompatibility` legacy prompt alternatives. Keep the three CGR skills optional with the CGR group
    - Use it to bootstrap the repo without relying on any platform-specific script or shell
    - Ask only the minimum setup questions, then install the selected Atlas_AI files directly
    - Treat setup as incomplete until the required questionnaire answers are captured, or the user explicitly says to use defaults

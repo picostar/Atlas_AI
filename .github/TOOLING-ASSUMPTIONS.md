@@ -37,3 +37,7 @@ The installed-project validator remains a separate gate. Do not replace it with 
 Report missing tools, unavailable sources, permission denials, and untested configurations explicitly. Do not change authorization policy to turn a failed test into a pass. Retain evidence and resume only after the target, task, source revision, and pending checks are identified.
 
 [Local duplicate-name and revision checks](../docs/testing/skill-collision-results-2026-10-30.md) observed the project body and a fresh-session update, with separate explicit-read evidence. Verify the actual source/revision before distributing procedures; the trial does not implement packaging or change authoritative shared paths.
+
+## Workflow skill packaging
+
+The five Atlas workflows now have stable skill entry points. Fresh installs omit legacy prompt files; older projects migrate with the reviewed Atlas update plan. This packaging change does not establish native discovery or menu invocation on every runtime. See [the versioned workflow results](../docs/testing/workflow-skills.md).

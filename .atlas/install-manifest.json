@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "manifestVersion": 1,
+  "manifestVersion": 2,
   "kit": {
     "name": "Atlas_AI",
     "repository": "picostar/Atlas_AI"
@@ -70,8 +70,8 @@
         ".github/TOOLING-ASSUMPTIONS.md",
         ".github/copilot-instructions.md",
         ".github/prompts/README.md",
-        ".github/prompts/atlas-closeout.prompt.md",
-        ".github/prompts/atlas-realign.prompt.md",
+        ".github/skills/atlas-closeout/SKILL.md",
+        ".github/skills/atlas-realign/SKILL.md",
         ".github/skills/README.md",
         ".github/skills/devcycle-management/SKILL.md",
         ".github/skills/git-workflow/SKILL.md",
@@ -124,9 +124,9 @@
     },
     "cgr": {
       "requiredPaths": [
-        ".github/prompts/cgr-iterate.prompt.md",
-        ".github/prompts/cgr-seed-to-cgr.prompt.md",
-        ".github/prompts/cgr.prompt.md",
+        ".github/skills/cgr-iterate/SKILL.md",
+        ".github/skills/cgr-seed-to-cgr/SKILL.md",
+        ".github/skills/cgr/SKILL.md",
         "atlas_cgr.md",
         "docs/cgr/ESD_TEMPLATE.md",
         "docs/cgr/MRD-PRD-ESD-TRACEABILITY.md",
@@ -203,14 +203,21 @@
     {
       "key": "projectMode",
       "type": "string",
-      "values": ["standard", "poc"],
+      "values": [
+        "standard",
+        "poc"
+      ],
       "default": "standard",
       "missingMeans": "standard"
     },
     {
       "key": "regressionSuite",
       "type": "string",
-      "values": ["every-task", "pre-merge", "on-demand"],
+      "values": [
+        "every-task",
+        "pre-merge",
+        "on-demand"
+      ],
       "default": "pre-merge",
       "missingMeans": "pre-merge"
     }
@@ -288,5 +295,32 @@
         "destinationPath": "patterns/ux-patterns/active-ux-pattern.md"
       }
     ]
-  }
+  },
+  "workflowCompatibility": [
+    {
+      "skillPath": ".github/skills/atlas-closeout/SKILL.md",
+      "legacyPromptPath": ".github/prompts/atlas-closeout.prompt.md",
+      "group": "core"
+    },
+    {
+      "skillPath": ".github/skills/atlas-realign/SKILL.md",
+      "legacyPromptPath": ".github/prompts/atlas-realign.prompt.md",
+      "group": "core"
+    },
+    {
+      "skillPath": ".github/skills/cgr/SKILL.md",
+      "legacyPromptPath": ".github/prompts/cgr.prompt.md",
+      "group": "cgr"
+    },
+    {
+      "skillPath": ".github/skills/cgr-seed-to-cgr/SKILL.md",
+      "legacyPromptPath": ".github/prompts/cgr-seed-to-cgr.prompt.md",
+      "group": "cgr"
+    },
+    {
+      "skillPath": ".github/skills/cgr-iterate/SKILL.md",
+      "legacyPromptPath": ".github/prompts/cgr-iterate.prompt.md",
+      "group": "cgr"
+    }
+  ]
 }

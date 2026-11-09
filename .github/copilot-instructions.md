@@ -91,7 +91,7 @@ A `normal` progress message looks like this:
 1. `.github/copilot-instructions.md` -- this file
 2. `ATLAS.md` -- default development process and task lifecycle
 3. `docs/cgr/PS.md` -- optional project stages and document gates, only when the project uses formal EVT/DVT/PVT/GA stages
-4. `.github/prompts/cgr.prompt.md` -- optional governance review prompt, only when governance or stage-gate review is requested
+4. `.github/skills/cgr/SKILL.md` -- optional governance review prompt, only when governance or stage-gate review is requested
 5. If `patterns/stack-patterns/active-stack-pattern.md` exists and the task affects architecture, hosting, deployment, infrastructure, or platform selection, read it before proposing or changing the stack.
 6. If `patterns/ux-patterns/active-ux-pattern.md` exists and the task affects layout, navigation, page hierarchy, interaction flow, or UI generation, read it before proposing or changing UX structure.
 7. Repo-specific planning docs if they exist, such as `docs/agile/devcycle.md`, `docs/agile/retro.md`, `docs/agile/backlog.md`, `docs/agile/status.md`
@@ -102,7 +102,7 @@ A `normal` progress message looks like this:
 - Review where the project stands before proposing work. Use the read order above, then prioritize `docs/agile/status.md` for current state, `docs/agile/devcycle.md` for active work, and `docs/agile/backlog.md` if the active cycle is empty or unclear.
 - If the user opens with `atlas`, treat it as the same startup check-in flow.
 - Read `.atlas/setup.json` first in each session, then start the first chat message that reports on the project with the mode line defined in `ATLAS.md` under Regression Suite Rules.
-- During startup check-in, if `.github/prompts/cgr.prompt.md` is present and governance is enabled for this project, check whether live MRD, PRD, and ESD artifacts exist in `docs/cgr/`.
+- During startup check-in, if `.github/skills/cgr/SKILL.md` is present and governance is enabled for this project, check whether live MRD, PRD, and ESD artifacts exist in `docs/cgr/`.
 - If governance is enabled and live MRD, PRD, or ESD artifacts are missing, ask a single yes or no question: "Do you want to run CGR bootstrap now to generate draft MRD, PRD, and ESD from seed, reference, and project source materials?"
 - If the repository appears to be a scaffold or template, review template integrity and adoption readiness instead of expecting live project status.
 - Confirm whether the project appears ready to begin the next task. Mention obvious blockers, missing planning artifacts, or stale status if they affect readiness.
@@ -120,13 +120,13 @@ A `normal` progress message looks like this:
 - For `atlas update`, create and record a rollback path before any update edits. Use a pre-update git branch or tag when git exists, or a timestamped filesystem backup path when git is absent.
 - For `atlas update`, when `.atlas/setup.json` has no `answers.projectMode` or `answers.regressionSuite`, propose adding `standard` and `pre-merge` and the `status.md` mode line as approval-gated changes. If the project has a real test harness, with a runner and a list of what it covers, name it in the plan and ask which schedule to keep.
 - For `atlas update`, use deterministic validation criteria, including pre and post checks, reference integrity, secret leak checks, pattern availability checks, and Windows `safe.directory` fallback when needed.
-- If the user says `CGR`, `run CGR`, `atlas cgr`, or `do CGR`, treat it as a request to run the governance workflow defined in `.github/prompts/cgr.prompt.md` (or root-level `atlas_cgr.md` when this kit is not installed in the target).
+- If the user says `CGR`, `run CGR`, `atlas cgr`, or `do CGR`, treat it as a request to run the governance workflow defined in `.github/skills/cgr/SKILL.md` (or root-level `atlas_cgr.md` when this kit is not installed in the target).
 - For `CGR`: if `docs/cgr/` or live MRD, PRD, and ESD artifacts do not exist yet, create `docs/cgr/` and bootstrap draft docs from `seed.md`, `docs/reference/`, and relevant source files already in the project root, such as marketing copy, product notes, sales material, website content, specs, or discovery notes. Then run CGR and write `docs/cgr/CGR-results.md`.
 - For `CGR`: if live MRD, PRD, or ESD artifacts already exist in `docs/cgr/`, use them as the base and improve them using current user instructions plus any new materials in `seed.md`, `docs/reference/`, or relevant project source files.
 - For `CGR` remote-source phrasing: if the user says something like `do CGR from github picostar/Atlas_AI on folder "<localpath>"`, `run CGR using picostar/atlas_ai on <localpath>`, or any equivalent that names a source kit repo plus a local target folder, treat it as a remote-sourced CGR run.
-  - Source kit resolution order: (a) local checkout of `picostar/Atlas_AI` if one is already open in this workspace or under a known parent directory, (b) `.github/prompts/cgr.prompt.md` plus `docs/cgr/*_TEMPLATE.md` already present in the source-kit path, (c) fetch the current contents of `atlas_cgr.md`, `.github/prompts/cgr.prompt.md`, `docs/cgr/MRD_TEMPLATE.md`, `docs/cgr/PRD_TEMPLATE.md`, and `docs/cgr/ESD_TEMPLATE.md` from `github.com/picostar/Atlas_AI` on the default branch via the fetch tool, (d) if none of the above succeed, ask the user for a local path to the source kit.
+  - Source kit resolution order: (a) local checkout of `picostar/Atlas_AI` if one is already open in this workspace or under a known parent directory, (b) `.github/skills/cgr/SKILL.md` plus `docs/cgr/*_TEMPLATE.md` already present in the source-kit path, (c) fetch the current contents of `atlas_cgr.md`, `.github/skills/cgr/SKILL.md`, `docs/cgr/MRD_TEMPLATE.md`, `docs/cgr/PRD_TEMPLATE.md`, and `docs/cgr/ESD_TEMPLATE.md` from `github.com/picostar/Atlas_AI` on the default branch via the fetch tool, (d) if none of the above succeed, ask the user for a local path to the source kit.
   - Target folder resolution: treat the quoted path as the CGR target root. If it does not exist, ask before creating it. Do not modify any folder other than the named target.
-  - Execution: apply the full CGR workflow from `.github/prompts/cgr.prompt.md` against the target folder, write all output under `<target>/docs/cgr/`, and follow the bootstrap quality floor (substantive answers, `[DRAFT INFERENCE]` tags, `TBD` only for owner-only facts).
+  - Execution: apply the full CGR workflow from `.github/skills/cgr/SKILL.md` against the target folder, write all output under `<target>/docs/cgr/`, and follow the bootstrap quality floor (substantive answers, `[DRAFT INFERENCE]` tags, `TBD` only for owner-only facts).
   - Scope guard: never write into the source kit folder while running a remote-sourced CGR against a separate target.
 - If the user says `newproject`, `atlas project`, asks to set up or bootstrap an Atlas project, or references `github/picostar/Atlas_AI` or its `README.md` while asking for project setup, treat it as a request to use root-level `atlas_newproject.md` as the prompt-first new-project bootstrap workflow.
 - Before acting, perform a brief ATLAS readiness check. Review the current state, confirm the next task is clear, and look for obvious blockers or missing planning context.
@@ -190,6 +190,11 @@ A `normal` progress message looks like this:
 - `patterns/` -- stack and UX baseline patterns, active baselines, and template catalogs
 - `scripts/` -- reusable operational and verification scripts
 - `archive/` -- superseded artifacts and one-off outputs, usually gitignored
+
+## Workflow Compatibility
+- Prefer `.github/skills/<name>/SKILL.md` for `atlas-closeout`, `atlas-realign`, `cgr`, `cgr-seed-to-cgr`, and `cgr-iterate`. If skill discovery is unavailable, read the named file explicitly.
+- On older installs, when the skill is absent, read the matching `.github/prompts/<name>.prompt.md` as the legacy fallback. CGR can also use root `atlas_cgr.md` when working from an uninstalled kit. Report an unavailable workflow when no complete procedure can be read.
+- New installs use skills and do not need VS Code's prompt-to-skill conversion. Existing installs use the plan-first `atlas update` to preserve custom content and stable command names.
 
 ## AI Tool Coverage
 - Copilot uses `.github/copilot-instructions.md`.
