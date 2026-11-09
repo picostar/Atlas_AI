@@ -4,6 +4,8 @@ One line per merged pull request on the kit. Newest first. Format: date, PR, cha
 
 ## Unreleased
 
+- 2026-11-09 #46 Add regression-suite scheduling and a visible mode line, PoC project mode, and stable workflow skills with compatible validation and plan-first legacy migration. CU 3 (DT7), 5 (DT8), 5 (DT10). Usage: Heavy, qualitative. Model Fit: retained, not benchmarked. Credits: unavailable.
+
 - 2026-11-03 #44 Keep manifest-allowed root entries such as docs/ and scripts/ in place during newproject; move only unexpected entries, matching validator check 11. CU 2. Usage: Light, qualitative. Model Fit: retained, not benchmarked. Credits: unavailable.
 
 - 2026-11-02 #42 Add required chat progress reporting with brief/normal/detailed levels to shared instructions; document agent trials and owner UAT. CU 3. Usage: Moderate, qualitative. Model Fit: retained, not benchmarked. Credits: unavailable.
