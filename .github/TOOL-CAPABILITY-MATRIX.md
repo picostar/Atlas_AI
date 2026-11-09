@@ -48,4 +48,4 @@ The [bounded Local collision trial](../docs/testing/skill-collision-results-2026
 
 ## Workflow skill packaging
 
-The five Atlas workflows now have stable skill entry points. Fresh installs omit legacy prompt files; older projects migrate with the reviewed Atlas update plan. This packaging change does not establish native discovery or menu invocation on every runtime. See [the versioned workflow results](../docs/testing/workflow-skills.md).
+The five Atlas workflows now have stable skill entry points. Fresh installs omit legacy prompt files; older projects migrate with the reviewed Atlas update plan. This packaging change does not establish native discovery or menu invocation on every runtime. See [the versioned workflow results](https://github.com/picostar/Atlas_AI/blob/main/docs/testing/workflow-skills.md).

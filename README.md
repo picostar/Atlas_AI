@@ -18,7 +18,7 @@ It gives you:
 
 Fresh installs use `atlas-closeout`, `atlas-realign`, `cgr`, `cgr-seed-to-cgr`, and `cgr-iterate` skills under `.github/skills/`. The first two are core; the CGR three install only when governance is selected. Where supported, invoke `/atlas-closeout`, `/atlas-realign`, `/cgr`, `/cgr-seed-to-cgr`, or `/cgr-iterate`. Ordinary phrases such as `good night` and `CGR` still route through shared instructions. If native discovery is unavailable, ask the agent to read the named `SKILL.md` explicitly.
 
-Manifest version 2 installs these skills without the five legacy prompt files, so a fresh project has no Atlas prompt files to convert. Existing projects should use `atlas update` with its reviewed plan and rollback, rather than VS Code Migrate, to preserve names and customized instructions. The source kit retains thin prompt routers for older Local workflows. Installed validation accepts a working skill or a complete corresponding legacy prompt, and fails a router with no destination. Keep the manifest and validator together when updating. See [workflow verification](docs/testing/workflow-skills.md) for actual results and remaining VS Code acceptance steps.
+Manifest version 2 installs these skills without the five legacy prompt files, so a fresh project has no Atlas prompt files to convert. Existing projects should use `atlas update` with its reviewed plan and rollback, rather than VS Code Migrate, to preserve names and customized instructions. The source kit retains thin prompt routers for older Local workflows. Installed validation accepts a working skill or a complete corresponding legacy prompt, and fails a router with no destination. Keep the manifest and validator together when updating. See [workflow verification](https://github.com/picostar/Atlas_AI/blob/main/docs/testing/workflow-skills.md) for actual results and remaining VS Code acceptance steps.
 
 ## AI Agent Fast Path
 
@@ -196,11 +196,11 @@ The startup check-in reviews current state, active devcycle work, and obvious bl
 
 For existing projects, `atlas update` can propose replacing the former `.github/tropes.md` with `.github/style.md`. Review project-specific edits, preserve any needed rules, and approve retirement of the old file and updates to its active references. Fresh installations include only `.github/style.md`. The prose rules and Atlas installation do not require Python; the optional mechanical check requires Python 3.
 
-### Core workflow prompts (installed by default)
+### Core workflow skills (installed by default)
 - `.github/skills/atlas-realign/SKILL.md` -- ATLAS health check and realignment skill
 - `.github/skills/atlas-closeout/SKILL.md` -- ATLAS closeout readiness skill
 
-### CGR workflow prompts (installed only when CGR is selected)
+### CGR workflow skills (installed only when CGR is selected)
 - `.github/skills/cgr/SKILL.md` -- compliance and governance review skill
 - `.github/skills/cgr-seed-to-cgr/SKILL.md` -- generate draft MRD PRD ESD from seed, reference, or project source material, then run CGR outputs
 - `.github/skills/cgr-iterate/SKILL.md` -- iterate and improve governance docs using CGR-results and score
@@ -397,8 +397,8 @@ Placement guidance:
 
 If the agent cannot perform setup from the remote source kit, use `.atlas/install-manifest.json` as the manual copy list. Copy every path in its `core` group, generate its `generatedPaths`, then add selected optional groups. Important entries include:
 - `.github/copilot-instructions.md` -- always
-- `.github/skills/atlas-realign/SKILL.md` -- recommended
-- `.github/skills/atlas-closeout/SKILL.md` -- recommended
+- `.github/skills/atlas-realign/SKILL.md` -- required
+- `.github/skills/atlas-closeout/SKILL.md` -- required
 - `atlas_newproject.md` -- recommended for guided new-project bootstrap
 - `atlas_update.md` -- recommended for guided legacy atlas updates
 - `atlas_validate.md` -- required validation prompt for new-project completion and later standalone checks
