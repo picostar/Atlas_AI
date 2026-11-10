@@ -1,6 +1,6 @@
 # Tool capability matrix
 
-Choose the client, agent runtime, execution target, and policy before choosing a loading route. Model selection does not select instruction discovery. Check actual tool access and, when docs/testing is present in the source kit, record observations using [the parity fixture](../docs/testing/agent-parity.md).
+Choose the client, agent runtime, execution target, and policy before choosing a loading route. Model selection does not select instruction discovery. Check actual tool access and, when docs/testing is present in the source kit, record observations using [the parity fixture](https://github.com/picostar/Atlas_AI/blob/main/docs/testing/agent-parity.md).
 
 ## Loading routes
 
@@ -19,7 +19,7 @@ The source of shared Atlas procedures remains .github/skills/<name>/SKILL.md. Th
 | Connected Codex/ChatGPT tool session | Environment-dependent; this trial explicitly read the source instructions and ATLAS.md | Explicit shared-skill reads in the current session | File read/write, CLI, Git, and actual-project smoke observed; no automatic discovery claim |
 | Chat-only or other hosted model | User-provided context or explicitly available file tools | Paste or read the named procedure when supported | No filesystem, terminal, or GitHub access guarantee |
 
-Routes above distinguish documented mechanisms from bounded CLI and [editor observations](../docs/testing/editor-results-2026-10-30.md), not a full cross-runtime parity pass. See [the versioned CLI results](../docs/testing/native-cli-results-2026-10-30.md) for cases and limits. Official sources checked during this review: [VS Code skills](https://code.visualstudio.com/docs/agent-customization/agent-skills), [VS Code customizations](https://code.visualstudio.com/docs/agent-customization/overview), [Codex skills](https://learn.chatgpt.com/docs/build-skills), [Codex instructions](https://learn.chatgpt.com/docs/agent-configuration/agents-md), [Claude skills](https://code.claude.com/docs/en/skills), and [Copilot CLI](https://docs.github.com/en/copilot/how-tos/copilot-cli/use-copilot-cli/overview).
+Routes above distinguish documented mechanisms from bounded CLI and [editor observations](https://github.com/picostar/Atlas_AI/blob/main/docs/testing/editor-results-2026-10-30.md), not a full cross-runtime parity pass. See [the versioned CLI results](https://github.com/picostar/Atlas_AI/blob/main/docs/testing/native-cli-results-2026-10-30.md) for cases and limits. Official sources checked during this review: [VS Code skills](https://code.visualstudio.com/docs/agent-customization/agent-skills), [VS Code customizations](https://code.visualstudio.com/docs/agent-customization/overview), [Codex skills](https://learn.chatgpt.com/docs/build-skills), [Codex instructions](https://learn.chatgpt.com/docs/agent-configuration/agents-md), [Claude skills](https://code.claude.com/docs/en/skills), and [Copilot CLI](https://docs.github.com/en/copilot/how-tos/copilot-cli/use-copilot-cli/overview).
 
 VS Code documents an experimental Codex reuse route for .github/skills. Test the selected configuration before adding copies. Managed policy, disabled features, or unsupported targets can make a documented route unavailable.
 
@@ -42,9 +42,9 @@ Retain an authoritative shared procedure per skill and preserve existing paths. 
 
 Developer-level or plugin distribution requires its own tested version/update process and duplicate-name handling. Do not assume symbolic links work on Windows, remote hosts, or cloud packaging. Prefer a clear unsupported/untested result to competing authoritative copies.
 
-When docs/testing is present in the source kit, see [the baseline record](../docs/testing/baseline-2026-10-30.md) for installed versions, observed commands, and pending cases. Test docs are not installed by the current manifest. Revalidate after changes to client/runtime versions, loading routes, or policy.
+When docs/testing is present in the source kit, see [the baseline record](https://github.com/picostar/Atlas_AI/blob/main/docs/testing/baseline-2026-10-30.md) for installed versions, observed commands, and pending cases. Test docs are not installed by the current manifest. Revalidate after changes to client/runtime versions, loading routes, or policy.
 
-The [bounded Local collision trial](../docs/testing/skill-collision-results-2026-10-30.md) selected a project test copy while a same-named personal file existed, then read the updated project revision in a fresh chat. This does not establish personal-only discovery or precedence on other routes.
+The [bounded Local collision trial](https://github.com/picostar/Atlas_AI/blob/main/docs/testing/skill-collision-results-2026-10-30.md) selected a project test copy while a same-named personal file existed, then read the updated project revision in a fresh chat. This does not establish personal-only discovery or precedence on other routes.
 
 ## Workflow skill packaging
 
