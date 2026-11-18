@@ -4,7 +4,7 @@ One line per merged pull request on the kit. Newest first. Format: date, PR, cha
 
 ## Unreleased
 
-- Pending: Add generic `video.md`, `atlas make a demo video` routing, core packaging, and customization-preserving update guidance. Capture audience, focus, stories, duration, and presentation choices without a fixed video length. Media-production acceptance and release are pending.
+- 2026-11-18 Direct main delivery at the owner's request, without a task branch or PR: Add generic `video.md`, `atlas make a demo video` routing, core packaging, and customization-preserving update guidance. Capture audience, focus, stories, duration, and presentation choices without a fixed video length. CU 3. Bounded checks passed; media-production acceptance remains pending. Usage: Moderate, qualitative. Model Fit: selected session retained. Credits: unavailable.
 
 - 2026-11-18 #50 Require one installation question per turn and wait for each reply across shared setup entry points; preserve explicit answers, requested defaults, conditional questions, and placement-plan confirmation. CU 2. Usage: Moderate, qualitative. Model Fit: current session retained, not benchmarked. Credits: unavailable.
 
