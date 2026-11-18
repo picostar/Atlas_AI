@@ -23,9 +23,9 @@ description: 'Set up a new project with atlas_ai. Use when bootstrapping a new r
    - Treat the manifest as authoritative for install groups, allowed root entries, base skills, optional components, and pattern catalogs
    - Fresh installs copy canonical skill paths, not `workflowCompatibility` legacy prompt alternatives. Keep the three CGR skills optional with the CGR group
    - Use it to bootstrap the repo without relying on any platform-specific script or shell
-   - Ask only the minimum setup questions, then install the selected Atlas_AI files directly
+   - Ask exactly one unanswered setup question per assistant turn, then stop and wait for the user's reply. A question tool must contain only that one question. Do not batch questions or substitute recommended settings. Follow `atlas_newproject.md` for conditional menus, explicit answers or requested defaults, recovery, and final placement-plan confirmation, then install the selected Atlas_AI files directly
    - Treat setup as incomplete until the required questionnaire answers are captured, or the user explicitly says to use defaults
-   - Do not stop after partial file install plus diagnostics; if that state occurs, ask only missing setup questions and continue
+   - Do not stop after partial file install plus diagnostics; if that state occurs, ask only missing setup questions, one per turn, and resume after the answers and placement-plan confirmation
    - Generate stack and UX menus from the manifest catalogs, accept number, ID, or label, and do not ask for freeform template filenames
    - Ask for the project mode, `standard` or `poc`, explaining each in one line, with `standard` as the default
    - For `standard`, ask for the regression suite schedule, `every-task`, `pre-merge`, or `on-demand`, explaining each in one line, with `pre-merge` as the default
