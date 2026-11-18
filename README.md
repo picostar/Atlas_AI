@@ -164,6 +164,7 @@ Use these short chat phrases when you want the agent to run the standard ATLAS f
 - `CGR` or `run CGR` -- run the governance workflow from `.github/skills/cgr/SKILL.md`, bootstrapping `docs/cgr/` from seed, reference, or project source files when needed, and write `docs/cgr/CGR-results.md`.
 - `newproject` or `atlas project` -- run the standalone new-project bootstrap prompt, preserving pre-existing user material under `docs/reference/` and adopting `.git` when present.
 - `atlas validate` -- validate a new-project installation against `.atlas/install-manifest.json` and `.atlas/setup.json` without changing it.
+- `atlas make a demo video` or `atlas demo video` -- follow [video.md](video.md) to choose audience, business or technical focus, user stories, duration, and presentation style, then capture and verify a real application walkthrough. There is no fixed video length. The agent asks missing questions one at a time and retains supplied choices.
 - `atlas regression every-task`, `atlas regression pre-merge`, or `atlas regression on-demand` -- change when the full regression suite runs. `atlas regression run` runs it now. See Regression Suite Rules in `ATLAS.md`.
 - `atlas mode poc` or `atlas mode standard` -- switch between PoC mode and the full process. Switching to standard lists the PoC tasks that need standard smoketests before release. See PoC Mode Rules in `ATLAS.md`.
 - `atlas refresh models` or `refresh model tiers` -- refresh the model-tier-advisor skill's CU-to-tier mappings by consulting current benchmarks (artificialanalysis.ai, ockbench.github.io) and update the Verified dates. Useful when tier tables are stale or a model is deprecated.
@@ -176,6 +177,8 @@ The `regressionSuite` setup answer sets when the full regression suite runs. `ev
 The `projectMode` setup answer is `standard`, the default, or `poc`. PoC mode is for a fast proof of concept: each task gets one quick check, a demo instead of a UAT handoff, a short task entry with no effort estimate, and one retro line, and the regression suite runs only on request. Commits, merges, pushes, secrets, and account bindings follow the normal rules. The mode line then reads `Atlas mode: poc, regression suite: on-demand`.
 
 The startup check-in reviews current state, active devcycle work, and obvious blockers. The closeout check reviews smoketest, UAT, retro, status, commit, and GitHub follow-up readiness before the session ends. The model-tier refresh updates per-tool tier recommendations based on current market offerings and token-efficiency benchmarks.
+
+For demo videos, provide any brief details in the initial request, for example `atlas make a demo video for executives, business focus, show account lookup, about 45 seconds, English narration`. You can also request a longer technical walkthrough or story-led timing without a fixed duration. The agent skips supplied answers and asks only missing questions. Capture and narration depend on the connected runtime's actual tools; the prompt does not install them. Existing projects can obtain `video.md` through a reviewed `atlas update`, preserving their local video preferences. See the [demo-video acceptance procedure](https://github.com/picostar/Atlas_AI/blob/main/docs/testing/demo-video.md) for checks and evidence limits.
 
 ## Included Files
 
@@ -208,6 +211,7 @@ For existing projects, `atlas update` can propose replacing the former `.github/
 - `.github/skills/cgr-iterate/SKILL.md` -- iterate and improve governance docs using CGR-results and score
 
 ### Standalone root prompts
+- `video.md` -- generic demo-video workflow, installed with the core kit; asks about the brief, records real application behavior, and verifies the requested media deliverables
 - `atlas_newproject.md` -- standalone root-level guided new-project bootstrap prompt, kept outside the installed prompt catalog so users can copy it into a target project or say `newproject`
 - `atlas_update.md` -- standalone root-level guided legacy atlas update planning prompt, kept outside the installed prompt catalog so users can copy it and say `atlas update` in existing projects
 - `atlas_validate.md` -- standalone read-only validator prompt, used automatically after new-project setup and manually through `atlas validate`
