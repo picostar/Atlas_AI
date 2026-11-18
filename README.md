@@ -25,7 +25,7 @@ Manifest version 2 installs these skills without the five legacy prompt files, s
 If you are an AI coding agent using `picostar/Atlas_AI` as a remote source kit, do this before reading the full README:
 
 1. Identify the requested flow from the user's prompt.
-2. For `atlas project`, `newproject`, any request to set up an Atlas project, or a setup request that references `github/picostar/Atlas_AI` or this README, read `.atlas/install-manifest.json` and `atlas_newproject.md`, then ask the required setup questions before changing files.
+2. For `atlas project`, `newproject`, `install atlas`, any request to set up an Atlas project, or a setup request that references `github/picostar/Atlas_AI` or this README, read `.atlas/install-manifest.json` and `atlas_newproject.md`. Ask exactly one unanswered setup question per assistant turn, then stop and wait for the user's reply. Do not batch questions or substitute recommended settings. Follow the prompt's explicit-answer, requested-defaults, and placement-plan rules before changing files.
 3. For `atlas update`, read `atlas_update.md`, compare the target project to this kit, and produce a plan before changing files.
 4. For `CGR` or `run CGR`, read `.github/skills/cgr/SKILL.md`, bootstrap `docs/cgr/` when needed, and write `docs/cgr/CGR-results.md`.
 5. Treat `picostar/Atlas_AI` as a source kit reference. Work in the current target folder in place, do not clone Atlas_AI into a subfolder, and remove any temporary `atlas_ai` or `Atlas_AI` source-kit folder after setup.
@@ -60,9 +60,11 @@ Equivalent short form:
 newproject
 ```
 
-The agent should use `.atlas/install-manifest.json` and `atlas_newproject.md`, ask explicit setup questions first (scaffold, git init, PS, CGR, stack, UX, API-first when stack is selected, GitHub repo, project mode, regression suite schedule), preserve existing user files under `docs/reference/preexisting-root/`, install the selected Atlas files into the current target folder, write `.atlas/setup.json`, remove any temporary local source-kit folder such as `atlas_ai` or `Atlas_AI`, initialize or adopt git, and pass Atlas validation.
+The agent must use `.atlas/install-manifest.json` and `atlas_newproject.md` and ask setup questions one at a time, waiting for each reply. With no supplied answers, its first question is: "Include the Atlas docs scaffold? Yes or no (default yes)." It must not offer a recommended-settings bundle in place of the questions. Choices the user explicitly supplies are retained; an explicit request to use defaults fills only unanswered choices. After all applicable answers, the agent presents the file placement plan for confirmation. See the [questionnaire acceptance guide](https://github.com/picostar/Atlas_AI/blob/main/docs/testing/install-questionnaire.md) for reply-by-reply checks and untested limits.
 
-The run is not complete if it only installs prompt files and reports diagnostics. If that partial state occurs, the agent should ask the missing setup questions and continue to completion.
+After confirmation, the agent preserves existing user files under `docs/reference/preexisting-root/`, installs the selected Atlas files into the current target folder, writes `.atlas/setup.json`, removes any temporary local source-kit folder such as `atlas_ai` or `Atlas_AI`, initializes or adopts git, and passes Atlas validation.
+
+The run is not complete if it only installs prompt files and reports diagnostics. If that partial state occurs, the agent must ask the missing setup questions one at a time, wait for each reply, and resume after placement-plan confirmation.
 
 The setup questionnaire generates stack and UX choices from the manifest catalogs instead of maintaining a second hardcoded list. It accepts a number, manifest ID, or label, not a freeform template filename. If a stack pattern is selected, include an API-first yes or no question and state that API-first expects API results when feasible plus endpoint and OpenAPI or Swagger verification in smoketests when feasible.
 
